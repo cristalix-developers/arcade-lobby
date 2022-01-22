@@ -8,6 +8,7 @@ import ru.cristalix.uiengine.element.RectangleElement
 import ru.cristalix.uiengine.element.TextElement
 import ru.cristalix.uiengine.eventloop.animate
 import ru.cristalix.uiengine.utility.*
+import sun.security.jgss.GSSToken.readInt
 
 const val MARGIN = 5
 const val WIDTH = 140.0

@@ -7,8 +7,12 @@ import dev.implario.games5e.node.NoopGameNode
 import dev.implario.games5e.sdk.cristalix.MapLoader
 import dev.implario.games5e.sdk.cristalix.WorldMeta
 import dev.implario.platform.impl.darkpaper.PlatformDarkPaper
+import me.func.mod.Glow
+import me.func.protocol.GlowingPlace
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
+import java.awt.Color.red
+import java.util.*
 
 lateinit var app: App
 

@@ -25,8 +25,9 @@ apply plugin: 'kotlin'
 dependencies {
     compileOnly 'ru.cristalix:client-api:latest-SNAPSHOT'
     implementation 'ru.cristalix:uiengine:3.13.8'
-    implementation 'ru.cristalix:client-sdk:5.3.0'
+    implementation 'ru.cristalix:client-sdk:5.4.0'
     implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.5.0'
+    implementation 'dev.implario.games5e:bukkit-worker-core:2.1.20'
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
