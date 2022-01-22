@@ -5,10 +5,12 @@ import me.func.mod.Anime
 import me.func.mod.Glow
 import me.func.protocol.GlowColor
 import me.func.protocol.Indicators
+import net.minecraft.server.v1_12_R1.MinecraftServer
 import org.bukkit.Bukkit
 import org.bukkit.GameMode
 import org.bukkit.Material
 import org.bukkit.event.EventHandler
+import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockPhysicsEvent
 import org.bukkit.event.entity.EntityDamageEvent
@@ -23,18 +25,14 @@ object LobbyListener : Listener {
         spawnLocation = app.spawn
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     fun PlayerJoinEvent.handle() {
         player.teleport(app.spawn)
         player.gameMode = GameMode.ADVENTURE
         joinMessage = null
-        Bukkit.getScheduler().runTaskLater(app, {
-            Glow.showAllPlaces(player)
+        MinecraftServer.SERVER.postToNextTick {
             Anime.hideIndicator(player, Indicators.HEALTH, Indicators.EXP, Indicators.HUNGER)
-            Anime.marker(player, app.marker)
-
-            app.arcades.forEach { it.sendCreation(player) }
-        }, 5)
+        }
     }
 
     @EventHandler

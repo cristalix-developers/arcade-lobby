@@ -13,7 +13,7 @@ import javax.imageio.ImageIO
 data class RemoteTexture(val location: ResourceLocation, val sha1: String)
 
 const val NAMESPACE = "cache/animation-api"
-const val FILE_STORE = "http://51.38.128.132"
+const val FILE_STORE = "https://implario.dev"
 
 private val cacheDir = Paths.get("$NAMESPACE/")
 
