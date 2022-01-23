@@ -324,7 +324,7 @@ class App : JavaPlugin() {
         )
 
         lobbyNpc(
-            Triple(-14.5, 87.0, -15.5),
+            Triple(-14.5, 87.5, -15.5),
             null,
             UUID.fromString("ef2fb6fb-a6b5-11e8-8374-1cb72caa35fd"),
             null,
