@@ -76,7 +76,7 @@ class App : JavaPlugin() {
 
         lobbyNpc(
             Triple(-17.5, 88.0, -13.5),
-            Pair(-115.0f, 0f),
+            -115.0f,
             "func",
             UUID.fromString("307264a1-2c69-11e8-b5ea-1cb72caa35fd"),
             Dialog(
@@ -98,7 +98,7 @@ class App : JavaPlugin() {
 
         lobbyNpc(
             Triple(-17.5, 88.0, -14.5),
-            Pair(-75.0f, 0f),
+            -75.0f,
             "Faelan_",
             UUID.fromString("6f3f4a2e-7f84-11e9-8374-1cb72caa35fd"),
             Dialog(
@@ -120,7 +120,7 @@ class App : JavaPlugin() {
 
         lobbyNpc(
             Triple(-11.5, 88.0, -17.5),
-            Pair(135.0f, 0f),
+            135.0f,
             "rigb0s",
             UUID.fromString("c155c00c-e4c0-11eb-acca-1cb72caa35fd"),
             null
@@ -128,7 +128,7 @@ class App : JavaPlugin() {
 
         lobbyNpc(
             Triple(-17.5, 88.0, -18.5),
-            Pair(-45.0f, 0f),
+            -45.0f,
             "ZentoFX",
             UUID.fromString("307b1c52-2c69-11e8-b5ea-1cb72caa35fd"),
             null
@@ -136,7 +136,7 @@ class App : JavaPlugin() {
 
         lobbyNpc(
             Triple(-16.5, 88.0, -18.5),
-            Pair(-45.0f, 0f),
+            -45.0f,
             "Fiwka1338",
             UUID.fromString("845e92f3-7006-11ea-acca-1cb72caa35fd"),
             Dialog(
@@ -159,7 +159,7 @@ class App : JavaPlugin() {
 
         lobbyNpc(
             Triple(-11.5, 88.0, -18.5),
-            Pair(45.0f, 0f),
+            45.0f,
             "_Demaster_",
             UUID.fromString("303c31eb-2c69-11e8-b5ea-1cb72caa35fd"),
             Dialog(
@@ -174,7 +174,7 @@ class App : JavaPlugin() {
 
         lobbyNpc(
             Triple(-11.5, 88.0, 21.5),
-            Pair(140.0f, 0f),
+            140.0f,
             "DiamondDen",
             UUID.fromString("ee476051-dc55-11e8-8374-1cb72caa35fd"),
             null
@@ -182,7 +182,7 @@ class App : JavaPlugin() {
 
         lobbyNpc(
             Triple(-13.8, 88.75, -18.5),
-            Pair(0.0f, 0f),
+            0.0f,
             "nurtalshok",
             UUID.fromString("ef2fb6fb-a6b5-11e8-8374-1cb72caa35fd"),
             Dialog(
@@ -202,7 +202,7 @@ class App : JavaPlugin() {
 
         lobbyNpc(
             Triple(-17.5, 88.0, -17.5),
-            Pair(-105.0f, 0f),
+            -105f,
             "Sworroo",
             UUID.fromString("ae7abc6b-d142-11e8-8374-1cb72caa35fd"),
             Dialog(
@@ -223,7 +223,7 @@ class App : JavaPlugin() {
 
         lobbyNpc(
             Triple(-10.5, 88.0, -20.5),
-            Pair(45.0f, 0f),
+            45.0f,
             "kasdo",
             UUID.fromString("303dc644-2c69-11e8-b5ea-1cb72caa35fd"),
             null
@@ -231,7 +231,7 @@ class App : JavaPlugin() {
 
         lobbyNpc(
             Triple(-11.5, 88.0, -15.5),
-            Pair(70.0f, 0f),
+            70.0f,
             "Zabelov",
             UUID.fromString("308380a9-2c69-11e8-b5ea-1cb72caa35fd"),
             Dialog(
@@ -251,7 +251,7 @@ class App : JavaPlugin() {
 
         lobbyNpc(
             Triple(-11.5, 88.0, -14.5),
-            Pair(120.0f, 0f),
+            120.0f,
             "WhiteNights",
             UUID.fromString("3089411e-2c69-11e8-b5ea-1cb72caa35fd"),
             Dialog(
@@ -275,7 +275,7 @@ class App : JavaPlugin() {
 
         lobbyNpc(
             Triple(-11.5, 88.0, -13.5),
-            Pair(-180.0f, 0f),
+            -180.0f,
             "ItsPVX",
             UUID.fromString("2bd88cc8-603c-11ec-acca-1cb72caa35fd"),
             Dialog(
@@ -293,7 +293,7 @@ class App : JavaPlugin() {
 
         lobbyNpc(
             Triple(-17.5, 88.0, 21.5),
-            Pair(-130.0f, 0f),
+            -130.0f,
             "Sefeo",
             UUID.fromString("30a1bff7-2c69-11e8-b5ea-1cb72caa35fd"),
             Dialog(
@@ -311,7 +311,7 @@ class App : JavaPlugin() {
 
         lobbyNpc(
             Triple(-11.5, 88.0, 20.5),
-            Pair(40.0f, 0f),
+            40.0f,
             "Master_chan",
             UUID.fromString("3044712b-2c69-11e8-b5ea-1cb72caa35fd"),
             null
@@ -319,7 +319,7 @@ class App : JavaPlugin() {
 
         lobbyNpc(
             Triple(-15.5, 88.0, 21.5),
-            Pair(180.0f, 0f),
+            180.0f,
             "СразуЛегенд",
             UUID.fromString("f03c2e10-f6ac-11eb-acca-1cb72caa35fd"),
             Dialog(
@@ -339,7 +339,7 @@ class App : JavaPlugin() {
 
         lobbyNpc(
             Triple(-16.5, 88.0, 21.5),
-            Pair(20.0f, 0f),
+            20.0f,
             "Псина_",
             UUID.fromString("f12a63a0-ca64-11e9-80c4-1cb72caa35fd"),
             null
@@ -347,7 +347,7 @@ class App : JavaPlugin() {
 
         lobbyNpc(
             Triple(-13.5, 88.0, 21.5),
-            Pair(0.0f, 0f),
+            0.0f,
             "Mr_Zlodey_5",
             UUID.fromString("30581daf-2c69-11e8-b5ea-1cb72caa35fd"),
             null
@@ -355,7 +355,7 @@ class App : JavaPlugin() {
 
         lobbyNpc(
             Triple(-12.5, 88.0, 21.5),
-            Pair(35.0f, 0f),
+            35.0f,
             "Pony",
             UUID.fromString("306f45f5-2c69-11e8-b5ea-1cb72caa35fd"),
             null
@@ -363,7 +363,7 @@ class App : JavaPlugin() {
 
         lobbyNpc(
             Triple(-11.5, 88.0, 17.5),
-            Pair(160.0f, 0f),
+            160.0f,
             "Zenk__",
             UUID.fromString("573f139e-57f5-11eb-acca-1cb72caa35fd"),
             Dialog(
@@ -383,7 +383,7 @@ class App : JavaPlugin() {
 
         lobbyNpc(
             Triple(-11.5, 88.0, 16.5),
-            Pair(20.0f, 0f),
+            20.0f,
             "iLisov",
             UUID.fromString("94964b0d-f545-11e8-8374-1cb72caa35fd"),
             Dialog(
@@ -401,7 +401,7 @@ class App : JavaPlugin() {
 
         lobbyNpc(
             Triple(-17.5, 88.0, 18.5),
-            Pair(-60.0f, 0f),
+            -60.0f,
             "ONE1SIDE",
             UUID.fromString("7f3fea26-be9f-11e9-80c4-1cb72caa35fd"),
             null
@@ -409,7 +409,7 @@ class App : JavaPlugin() {
 
         lobbyNpc(
             Triple(-17.5, 88.0, 17.5),
-            Pair(-60.0f, 0f),
+            -60.0f,
             "BaggiYT",
             UUID.fromString("64c67d57-a461-11e8-8374-1cb72caa35fd"),
             Dialog(
@@ -461,14 +461,14 @@ class App : JavaPlugin() {
     ) {
     }
 
-    fun lobbyNpc(blockPos: Triple<Double, Double, Double>, view: Pair<Float, Float>, name: String?, uuid: UUID, dialog: Dialog?, sitting: Boolean = true, sleeping: Boolean = false) {
+    fun lobbyNpc(blockPos: Triple<Double, Double, Double>, view: Float, name: String?, uuid: UUID, dialog: Dialog?, sitting: Boolean = true, sleeping: Boolean = false) {
         Npc.npc {
             this.x = blockPos.first
             this.y = blockPos.second
             this.z = blockPos.third
 
-            this.yaw = view.first
-            this.pitch = view.second
+            this.yaw = view
+            this.pitch = 0f
 
             this.sitting = sitting
             this.sleeping = sleeping
