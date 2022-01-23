@@ -91,40 +91,6 @@ object LoadNpc : Listener {
                 Anime.dialog(it.player, achievementDialog, "achievement")
             }
         }
-
-        val funcDialog = Dialog(
-            Entrypoint(
-                "delfikpro",
-                "delfikpro",
-                Screen(
-                    "Говорю мужу",
-                    "§a§l$ sudo docker stop cristalix-core",
-                    "§fОтвет убил:",
-                    "§cADM ¨c90000DiamondDen » §aты чё сделал %$#!",
-                ).buttons(
-                    Button("Вернуть как было").actions(Action(Actions.CLOSE)),
-                    Button("/ignore DiamondDen").actions(Action.command("/ignore DiamondDen"), Action(Actions.CLOSE))
-                )
-            )
-        )
-
-        npc {
-            x = -12.5
-            y = 88.0
-            z = -18.5
-
-            sitting = true
-            behaviour = NpcBehaviour.STARE_AND_LOOK_AROUND
-
-            skinUrl = "https://webdata.c7x.dev/textures/skin/e7c13d3d-ac38-11e8-8374-1cb72caa35fd"
-            skinDigest = "e7c13d3d-ac38-11e8-8374-1cb72caa35fd"
-
-            onClick {
-                if (it.hand == EquipmentSlot.OFF_HAND)
-                    return@onClick
-                Anime.dialog(it.player, funcDialog, "delfikpro")
-            }
-        }
     }
 
     @EventHandler
