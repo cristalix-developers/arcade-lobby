@@ -77,7 +77,7 @@ class App : JavaPlugin() {
         })
 
         lobbyNpc(
-            Triple(-14.5, 88.0, -18.5),
+            Triple(-17.5, 88.0, -13.5),
             "func",
             UUID.fromString("307264a1-2c69-11e8-b5ea-1cb72caa35fd"),
             Dialog(
@@ -98,14 +98,14 @@ class App : JavaPlugin() {
         )
 
         lobbyNpc(
-            Triple(-15.5, 88.0, -18.5),
+            Triple(-17.5, 88.0, -14.5),
             "Faelan_",
             UUID.fromString("6f3f4a2e-7f84-11e9-8374-1cb72caa35fd"),
             null
         )
 
         lobbyNpc(
-            Triple(-16.5, 88.0, -18.5),
+            Triple(-11.75, 88.0, -18.15),
             "rigb0s",
             UUID.fromString("c155c00c-e4c0-11eb-acca-1cb72caa35fd"),
             null
@@ -119,7 +119,7 @@ class App : JavaPlugin() {
         )
 
         lobbyNpc(
-            Triple(-12.5, 88.0, -18.5),
+            Triple(-16.5, 88.0, -18.5),
             "Fiwka1338",
             UUID.fromString("845e92f3-7006-11ea-acca-1cb72caa35fd"),
             Dialog(
@@ -162,7 +162,7 @@ class App : JavaPlugin() {
         )
 
         lobbyNpc(
-            Triple(-11.5, 88.0, -17.5),
+            Triple(-10.5, 89.0, -12.5),
             "Sworroo",
             UUID.fromString("ae7abc6b-d142-11e8-8374-1cb72caa35fd"),
             Dialog(
@@ -179,7 +179,7 @@ class App : JavaPlugin() {
         )
 
         lobbyNpc(
-            Triple(-11.5, 88.0, -16.5),
+            Triple(-10.5, 88.0, -20.5),
             "kasdo",
             UUID.fromString("303dc644-2c69-11e8-b5ea-1cb72caa35fd"),
             null
@@ -206,7 +206,18 @@ class App : JavaPlugin() {
             Triple(-11.5, 88.0, -14.5),
             "WhiteNights",
             UUID.fromString("3089411e-2c69-11e8-b5ea-1cb72caa35fd"),
-            null
+            Dialog(
+                Entrypoint(
+                    "WhiteNights",
+                    "WhiteNights",
+                    Screen(
+                        "Сегодня вечером сделаю обнову",
+                        "Вечером: Ayaka Shizumy был в сети сегодня в 11:54",
+                    ).buttons(
+                        Button("Напомнить завтра").actions(Action(Actions.CLOSE)),
+                    )
+                )
+            )
         )
 
         lobbyNpc(
