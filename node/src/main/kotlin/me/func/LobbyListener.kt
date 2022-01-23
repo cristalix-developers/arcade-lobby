@@ -1,6 +1,7 @@
 package me.func
 
 import com.destroystokyo.paper.event.player.PlayerInitialSpawnEvent
+import dev.implario.bukkit.item.item
 import me.func.mod.Anime
 import me.func.mod.Banners
 import me.func.mod.Banners.location
@@ -11,14 +12,19 @@ import me.func.protocol.Indicators
 import net.minecraft.server.v1_12_R1.MinecraftServer
 import org.bukkit.GameMode
 import org.bukkit.Material
+import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockPhysicsEvent
 import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.entity.FoodLevelChangeEvent
+import org.bukkit.event.inventory.InventoryClickEvent
+import org.bukkit.event.player.PlayerDropItemEvent
+import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerMoveEvent
+import org.bukkit.inventory.ItemStack
 import java.util.*
 
 object LobbyListener : Listener {
@@ -55,8 +61,31 @@ object LobbyListener : Listener {
         spawnLocation = app.spawn
     }
 
+    private val compass = item {
+        type = Material.COMPASS
+        text("§bАркады")
+        nbt("click", "play")
+    }.build()
+    private var cosmeticItem: ItemStack = item {
+        type = Material.CLAY_BALL
+        text("§aПерсонаж")
+        nbt("other", "clothes")
+        nbt("click", "menu")
+    }.build()
+    private var backItem: ItemStack = item {
+        type = Material.CLAY_BALL
+        text("§cВыйти")
+        nbt("other", "cancel")
+        nbt("click", "leave")
+    }.build()
+
     @EventHandler(priority = EventPriority.LOWEST)
     fun PlayerJoinEvent.handle() {
+        player.inventory.apply {
+            setItem(0, compass)
+            setItem(4, cosmeticItem)
+            setItem(8, backItem)
+        }
         player.teleport(app.spawn)
         player.gameMode = GameMode.ADVENTURE
         joinMessage = null
@@ -75,6 +104,15 @@ object LobbyListener : Listener {
     }
 
     @EventHandler
+    fun PlayerInteractEvent.handle() {
+        item ?: return
+
+        val nmsItem = CraftItemStack.asNMSCopy(item)
+        if (nmsItem.hasTag() && nmsItem.tag.hasKeyOfType("click", 8))
+            player.performCommand(nmsItem.tag.getString("click"))
+    }
+
+    @EventHandler
     fun EntityDamageEvent.handle() {
         cancelled = true
     }
@@ -89,4 +127,13 @@ object LobbyListener : Listener {
         foodLevel = 20
     }
 
+    @EventHandler
+    fun PlayerDropItemEvent.handle() {
+        cancel = true
+    }
+
+    @EventHandler
+    fun InventoryClickEvent.handle() {
+        isCancelled = true
+    }
 }

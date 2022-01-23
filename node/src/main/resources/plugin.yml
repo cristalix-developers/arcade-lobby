@@ -10,3 +10,12 @@ commands:
   lootboxsound:
     description: Проигрывает звук открытия лутбокса
     usage: /<lootboxsound>
+  leave:
+    description: Возвращает вас в хаб
+    usage: /<leave>
+  battlepass:
+    description: Показывает вам BattlePass
+    usage: /<battlepass>
+  play:
+    description: Открывает компасс
+    usage: /<play>

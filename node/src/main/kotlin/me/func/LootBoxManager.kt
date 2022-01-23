@@ -60,7 +60,7 @@ object LootBoxManager : Listener {
     )
 
     private val chest = item {
-        type = Material.CHEST
+        type = Material.ENDER_CHEST
     }.build()
     private val lootbox = app.map.getLabels("lootbox").map { LootBox(it.clone().add(1.0, -0.6, 1.0)) }
     private const val lootboxPrice = 192

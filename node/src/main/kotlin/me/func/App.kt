@@ -4,6 +4,7 @@ import dev.implario.bukkit.platform.Platforms
 import dev.implario.bukkit.world.Label
 import dev.implario.games5e.node.CoordinatorClient
 import dev.implario.games5e.node.NoopGameNode
+import dev.implario.games5e.sdk.cristalix.Cristalix
 import dev.implario.games5e.sdk.cristalix.MapLoader
 import dev.implario.games5e.sdk.cristalix.WorldMeta
 import dev.implario.platform.impl.darkpaper.PlatformDarkPaper
@@ -21,6 +22,10 @@ import org.bukkit.plugin.java.JavaPlugin
 import ru.cristalix.core.CoreApi
 import ru.cristalix.core.inventory.IInventoryService
 import ru.cristalix.core.inventory.InventoryService
+import ru.cristalix.core.realm.RealmId
+import ru.cristalix.core.transfer.ITransferService
+import ru.cristalix.core.transfer.TransferService
+import sun.audio.AudioPlayer.player
 import java.util.*
 
 lateinit var app: App
@@ -40,6 +45,7 @@ class App : JavaPlugin() {
         app = this
 
         CoreApi.get().registerService(IInventoryService::class.java, InventoryService())
+        CoreApi.get().registerService(ITransferService::class.java, TransferService(CoreApi.get().socketClient))
         Platforms.set(PlatformDarkPaper())
         Arcade.start()
 
@@ -59,6 +65,14 @@ class App : JavaPlugin() {
         getCommand("menu").setExecutor(CommandExecutor { sender, _, _, _ ->
             if (sender is Player)
                 PersonalizationMenu.open(sender)
+            return@CommandExecutor true
+        })
+
+        val hub = RealmId.of("HUB")
+
+        getCommand("leave").setExecutor(CommandExecutor { sender, _, _, _ ->
+            if (sender is Player)
+                ITransferService.get().transfer(sender.uniqueId, hub)
             return@CommandExecutor true
         })
 
