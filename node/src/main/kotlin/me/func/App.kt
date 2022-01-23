@@ -403,19 +403,19 @@ class App : JavaPlugin() {
 
     fun lobbyNpc(blockPos: Triple<Double, Double, Double>, view: Pair<Float, Float>, name: String?, uuid: UUID, dialog: Dialog?, sitting: Boolean = true, sleeping: Boolean = false) {
         Npc.npc {
-            x = blockPos.first
-            y = blockPos.second
-            z = blockPos.third
+            this.x = blockPos.first
+            this.y = blockPos.second
+            this.z = blockPos.third
 
-            yaw = view.first
-            pitch = view.second
+            this.yaw = view.first
+            this.pitch = view.second
 
             this.sitting = sitting
             this.sleeping = sleeping
-            behaviour = NpcBehaviour.NONE
+            this.behaviour = NpcBehaviour.NONE
 
-            skinUrl = "https://webdata.c7x.dev/textures/skin/$uuid"
-            skinDigest = uuid.toString() + "1"
+            this.skinUrl = "https://webdata.c7x.dev/textures/skin/$uuid"
+            this.skinDigest = uuid.toString() + "1"
 
             onClick {
                 dialog ?: return@onClick
