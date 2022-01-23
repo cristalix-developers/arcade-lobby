@@ -109,7 +109,7 @@ object LoadNpc : Listener {
         )
 
         npc {
-            x = -13.5
+            x = -12.5
             y = 88.0
             z = -18.5
 

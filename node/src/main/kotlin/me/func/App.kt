@@ -105,7 +105,7 @@ class App : JavaPlugin() {
         )
 
         lobbyNpc(
-            Triple(-11.75, 88.0, -18.15),
+            Triple(-11.5, 88.0, -17.5),
             "rigb0s",
             UUID.fromString("c155c00c-e4c0-11eb-acca-1cb72caa35fd"),
             null
@@ -162,7 +162,7 @@ class App : JavaPlugin() {
         )
 
         lobbyNpc(
-            Triple(-10.5, 89.0, -12.5),
+            Triple(-14.5, 88.5, -15.5),
             "Sworroo",
             UUID.fromString("ae7abc6b-d142-11e8-8374-1cb72caa35fd"),
             Dialog(
@@ -175,7 +175,9 @@ class App : JavaPlugin() {
                         Button("Поверить").actions(Action(Actions.CLOSE)),
                     )
                 )
-            )
+            ),
+            sitting = false,
+            sleeping = true
         )
 
         lobbyNpc(
@@ -299,6 +301,8 @@ class App : JavaPlugin() {
                     "Zenk__",
                     Screen(
                         "Лисов мой раб!",
+                        "...",
+                        "§9Dev ¨36d87aWhiteNights ¨36d87a» §aНе верю"
                     ).buttons(
                         Button("Да").actions(Action(Actions.CLOSE)),
                     )
