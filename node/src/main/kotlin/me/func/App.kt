@@ -55,6 +55,8 @@ class App : JavaPlugin() {
 
         Bukkit.getPluginManager().registerEvents(LobbyListener, this)
         Bukkit.getPluginManager().registerEvents(LoadNpc, this)
+        Bukkit.getPluginManager().registerEvents(LootBoxManager, this)
+
         getCommand("menu").setExecutor(CommandExecutor { sender, _, _, _ ->
             if (sender is Player)
                 PersonalizationMenu.open(sender)

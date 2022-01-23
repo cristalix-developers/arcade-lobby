@@ -18,7 +18,9 @@ import org.bukkit.inventory.EquipmentSlot
 object LoadNpc : Listener {
 
     private val costume: Label = app.map.getLabel("costume")
-    private val marker = Marker(costume.x, costume.y + 3.4, costume.z, MarkerSign.ARROW_DOWN)
+    private val markerHelp = Marker(costume.x, costume.y + 3.4, costume.z, MarkerSign.ARROW_DOWN)
+    private val achievement: Label = app.map.getLabel("achievement")
+    private val newAchievement = Marker(achievement.x, achievement.y + 3.0, achievement.z, MarkerSign.QUESTION_WARNING)
 
     init {
         val npcDialog = Dialog(
@@ -41,9 +43,9 @@ object LoadNpc : Listener {
 
         Bukkit.getScheduler().runTaskTimer(app, {
             counter++
-            marker.y += if (counter % 2 == 0) 0.5 else -0.5
+            markerHelp.y += if (counter % 2 == 0) 0.5 else -0.5
             Bukkit.getOnlinePlayers().forEach {
-                Anime.moveMarker(it, marker, 0.5)
+                Anime.moveMarker(it, markerHelp, 0.5)
             }
         }, 10, 10)
 
@@ -60,6 +62,34 @@ object LoadNpc : Listener {
                 Anime.dialog(it.player, npcDialog, "npc")
             }
             location(costume)
+        }
+
+        val achievementDialog = Dialog(
+            Entrypoint(
+                "achievement",
+                "Достижения",
+                Screen(
+                    "Привет, сейчас у меня нет списка",
+                    "достижений для тебя, как только они",
+                    "появятся - я дам знать!",
+                ).buttons(Button("Пока").actions(Action(Actions.CLOSE)),)
+            )
+        )
+
+        npc {
+            behaviour = NpcBehaviour.STARE_AT_PLAYER
+            name = "§lДостижения"
+
+            skinUrl = "https://webdata.c7x.dev/textures/skin/dc890a09-9962-11e9-80c4-1cb72caa35fd"
+            skinDigest = "dc890a09-9962-11e9-80c4-1cb72caa35fd"
+            slimArms = true
+
+            location(achievement)
+            onClick {
+                if (it.hand == EquipmentSlot.OFF_HAND)
+                    return@onClick
+                Anime.dialog(it.player, achievementDialog, "achievement")
+            }
         }
 
         val funcDialog = Dialog(
@@ -101,7 +131,7 @@ object LoadNpc : Listener {
     @EventHandler
     fun PlayerJoinEvent.handle() {
         Bukkit.getScheduler().runTaskLater(app, {
-            Anime.marker(player, marker)
+            Anime.markers(player, markerHelp, newAchievement)
         }, 5)
     }
 }
