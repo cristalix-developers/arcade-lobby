@@ -113,9 +113,11 @@ object LoadNpc : Listener {
             y = 88.0
             z = -18.5
 
+            yaw = -45.0f
+            pitch = 0.0f
+
             sitting = true
-            behaviour = NpcBehaviour.STARE_AT_PLAYER
-            name = "delfikpro"
+            behaviour = NpcBehaviour.NONE
 
             skinUrl = "https://webdata.c7x.dev/textures/skin/e7c13d3d-ac38-11e8-8374-1cb72caa35fd"
             skinDigest = "e7c13d3d-ac38-11e8-8374-1cb72caa35fd"
