@@ -104,84 +104,119 @@ class App : JavaPlugin() {
         )
 
         lobbyNpc(
-            Triple(-11.5, 88.0, -17.5),
+            Triple(-11.5, 88.0, 21.5),
             "DiamondDen",
             UUID.fromString("ee476051-dc55-11e8-8374-1cb72caa35fd"),
             null
         )
 
         lobbyNpc(
-            Triple(-11.5, 88.0, -16.5),
+            Triple(-11.5, 88.0, 20.5),
             "Sworroo",
             UUID.fromString("ae7abc6b-d142-11e8-8374-1cb72caa35fd"),
             null
         )
 
         lobbyNpc(
-            Triple(-11.5, 88.0, -15.5),
+            Triple(-11.5, 88.0, 19.5),
             "kasdo",
             UUID.fromString("303dc644-2c69-11e8-b5ea-1cb72caa35fd"),
             null
         )
 
         lobbyNpc(
-            Triple(-11.5, 88.0, -14.5),
+            Triple(-11.5, 88.0, 18.5),
             "Zabelov",
             UUID.fromString("308380a9-2c69-11e8-b5ea-1cb72caa35fd"),
             null
         )
 
         lobbyNpc(
-            Triple(-11.5, 88.0, -14.5),
+            Triple(-11.5, 88.0, 17.5),
             "WhiteNights",
             UUID.fromString("3089411e-2c69-11e8-b5ea-1cb72caa35fd"),
             null
         )
 
         lobbyNpc(
-            Triple(-11.5, 88.0, -13.5),
+            Triple(-11.5, 88.0, 16.5),
             "ItsPVX",
             UUID.fromString("2bd88cc8-603c-11ec-acca-1cb72caa35fd"),
             null
         )
 
         lobbyNpc(
-            Triple(-17.5, 88.0, -17.5),
+            Triple(-17.5, 88.0, 21.5),
             "Sefeo",
             UUID.fromString("30a1bff7-2c69-11e8-b5ea-1cb72caa35fd"),
             null
         )
 
         lobbyNpc(
-            Triple(-17.5, 88.0, -16.5),
+            Triple(-16.5, 88.0, 21.5),
+            "Master_chan",
+            UUID.fromString("3044712b-2c69-11e8-b5ea-1cb72caa35fd"),
+            null
+        )
+
+        lobbyNpc(
+            Triple(-15.5, 88.0, 21.5),
+            "СразуЛегенд",
+            UUID.fromString("f03c2e10-f6ac-11eb-acca-1cb72caa35fd"),
+            null
+        )
+
+        lobbyNpc(
+            Triple(-14.5, 88.0, 21.5),
+            "Псина_",
+            UUID.fromString("f12a63a0-ca64-11e9-80c4-1cb72caa35fd"),
+            null
+        )
+
+        lobbyNpc(
+            Triple(-13.5, 88.0, 21.5),
+            "Mr_Zlodey_5",
+            UUID.fromString("30581daf-2c69-11e8-b5ea-1cb72caa35fd"),
+            null
+        )
+
+        lobbyNpc(
+            Triple(-12.5, 88.0, 21.5),
+            "Pony",
+            UUID.fromString("306f45f5-2c69-11e8-b5ea-1cb72caa35fd"),
+            null
+        )
+
+        lobbyNpc(
+            Triple(-17.5, 88.0, 20.5),
             "Zenk__",
             UUID.fromString("573f139e-57f5-11eb-acca-1cb72caa35fd"),
             null
         )
 
         lobbyNpc(
-            Triple(-17.5, 88.0, -15.5),
+            Triple(-17.5, 88.0, 19.5),
             "iLisov",
             UUID.fromString("94964b0d-f545-11e8-8374-1cb72caa35fd"),
             null
         )
 
         lobbyNpc(
-            Triple(-17.5, 88.0, -14.5),
+            Triple(-17.5, 88.0, 18.5),
             "ONE1SIDE",
             UUID.fromString("7f3fea26-be9f-11e9-80c4-1cb72caa35fd"),
             null
         )
 
         lobbyNpc(
-            Triple(-17.5, 88.0, -13.5),
+            Triple(-17.5, 88.0, 17.5),
             "BaggiYT",
             UUID.fromString("64c67d57-a461-11e8-8374-1cb72caa35fd"),
             null
         )
 
         lobbyNpc(
-            Triple(-14.5, 88.0, -15.5),
+            Triple(-14.5, 87.0, -15.5),
             null,
             UUID.fromString("ef2fb6fb-a6b5-11e8-8374-1cb72caa35fd"),
             null,
