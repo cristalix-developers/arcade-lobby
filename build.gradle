@@ -2,19 +2,21 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.6.0'
 }
 
-repositories {
-    mavenLocal()
-    maven {
-        url 'https://repo.implario.dev/public/'
-    }
-    maven {
-        url 'https://repo.implario.dev/cristalix/'
-        credentials {
-            username project.properties["IMPLARIO_REPO_USER"]
-            password project.properties["IMPLARIO_REPO_PASSWORD"]
+allprojects {
+    repositories {
+        mavenLocal()
+        maven {
+            url 'https://repo.implario.dev/public/'
         }
+        maven {
+            url 'https://repo.implario.dev/cristalix/'
+            credentials {
+                username = project.properties["IMPLARIO_REPO_USER"] ?: System.getenv("IMPLARIO_REPO_USER")
+                password = project.properties["IMPLARIO_REPO_PASSWORD"] ?: System.getenv("IMPLARIO_REPO_PASSWORD")
+            }
+        }
+        mavenCentral()
     }
-    mavenCentral()
 }
 
 apply plugin: 'kotlin'

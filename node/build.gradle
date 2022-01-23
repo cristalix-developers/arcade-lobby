@@ -1,18 +1,3 @@
-repositories {
-    mavenLocal()
-    maven {
-        url 'https://repo.implario.dev/public/'
-    }
-    maven {
-        url 'https://repo.implario.dev/cristalix/'
-        credentials {
-            username project.properties["IMPLARIO_REPO_USER"]
-            password project.properties["IMPLARIO_REPO_PASSWORD"]
-        }
-    }
-    mavenCentral()
-}
-
 apply plugin: 'kotlin'
 
 group = 'me.func'
