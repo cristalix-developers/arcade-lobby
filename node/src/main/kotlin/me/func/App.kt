@@ -7,16 +7,18 @@ import dev.implario.games5e.node.NoopGameNode
 import dev.implario.games5e.sdk.cristalix.MapLoader
 import dev.implario.games5e.sdk.cristalix.WorldMeta
 import dev.implario.platform.impl.darkpaper.PlatformDarkPaper
-import me.func.mod.Glow
-import me.func.protocol.GlowingPlace
+import me.func.misc.PersonalizationMenu
 import org.bukkit.Bukkit
+import org.bukkit.command.CommandExecutor
+import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
-import java.awt.Color.red
-import java.util.*
+import ru.cristalix.core.CoreApi
+import ru.cristalix.core.inventory.IInventoryService
+import ru.cristalix.core.inventory.InventoryService
 
 lateinit var app: App
 
-class App: JavaPlugin() {
+class App : JavaPlugin() {
 
     val map = WorldMeta(MapLoader.load("func", "basic"))
     val client = CoordinatorClient(NoopGameNode())
@@ -30,6 +32,8 @@ class App: JavaPlugin() {
     override fun onEnable() {
         app = this
 
+
+        CoreApi.get().registerService(IInventoryService::class.java, InventoryService())
         Platforms.set(PlatformDarkPaper())
         Arcade.start()
 
@@ -44,6 +48,11 @@ class App: JavaPlugin() {
 
         Bukkit.getPluginManager().registerEvents(LobbyListener, this)
         Bukkit.getPluginManager().registerEvents(LoadNpc, this)
+        getCommand("menu").setExecutor(CommandExecutor { sender, _, _, _ ->
+            if (sender is Player)
+                PersonalizationMenu.open(sender)
+            return@CommandExecutor true
+        })
     }
 
 }

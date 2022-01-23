@@ -1,0 +1,9 @@
+main: me.func.App
+name: ArcadeLobby
+version: 1.0.0
+depend:
+  - CoreAPI
+commands:
+  menu:
+    description: Открывает меню персонализации
+    usage: /<menu>

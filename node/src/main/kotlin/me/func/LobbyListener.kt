@@ -9,7 +9,6 @@ import me.func.protocol.GlowColor
 import me.func.protocol.GlowingPlace
 import me.func.protocol.Indicators
 import net.minecraft.server.v1_12_R1.MinecraftServer
-import org.bukkit.Bukkit
 import org.bukkit.GameMode
 import org.bukkit.Material
 import org.bukkit.event.EventHandler
@@ -23,7 +22,6 @@ import org.bukkit.event.player.PlayerMoveEvent
 import java.util.*
 
 object LobbyListener : Listener {
-
 
     init {
         val center = app.map.getLabel("center")

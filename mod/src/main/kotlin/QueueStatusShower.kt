@@ -115,7 +115,7 @@ object QueueStatus {
             }
         }
 
-        App::class.mod.registerChannel("queue:show") {
+  /*      App::class.mod.registerChannel("queue:show") {
             if (box.enabled)
                 return@registerChannel
             box.enabled = true
@@ -151,5 +151,6 @@ object QueueStatus {
                 box.enabled = false
             }
         }
+    }*/
     }
 }

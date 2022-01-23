@@ -42,10 +42,10 @@ class Games5eMod : KotlinMod() {
             }
         }
 
-        loadTextureFromJar("games5e", "clock", "clock.png")
-        loadTextureFromJar("games5e", "face", "face.png")
-        loadTextureFromJar("games5e", "clockthin", "clockthin.png")
-        loadTextureFromJar("games5e", "facethin", "facethin.png")
+        //loadTextureFromJar("games5e", "clock", "clock.png")
+        //loadTextureFromJar("games5e", "face", "face.png")
+        //loadTextureFromJar("games5e", "clockthin", "clockthin.png")
+        //loadTextureFromJar("games5e", "facethin", "facethin.png")
 
         clientApi.clientConnection().sendPayload("g5e:loaded", Unpooled.EMPTY_BUFFER)
     }
