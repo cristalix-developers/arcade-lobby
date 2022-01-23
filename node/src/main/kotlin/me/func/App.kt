@@ -39,7 +39,6 @@ class App : JavaPlugin() {
     override fun onEnable() {
         app = this
 
-
         CoreApi.get().registerService(IInventoryService::class.java, InventoryService())
         Platforms.set(PlatformDarkPaper())
         Arcade.start()
@@ -72,12 +71,13 @@ class App : JavaPlugin() {
                     "func",
                     "func",
                     Screen(
-                        "Фишка, давай зарандомь расположение НПС!",
-                        "Так будет лучше!",
-                        "Мой голос решающий!"
+                        "Коцепной комплекс внешних",
+                        "дифференциальных форм на гладком",
+                        "многообразии."
                     ).buttons(
-                        Button("Не согласиться").actions(Action(Actions.CLOSE)),
-                        Button("Не согласиться").actions(Action(Actions.CLOSE)),
+                        Button("Нинавижу когомологии").actions(Action(Actions.CLOSE)),
+                        Button("Сложно...").actions(Action(Actions.CLOSE)),
+                        Button("Ок").actions(Action(Actions.CLOSE)),
                     )
                 )
             )
