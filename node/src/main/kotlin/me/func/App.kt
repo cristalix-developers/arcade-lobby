@@ -181,7 +181,7 @@ class App : JavaPlugin() {
         )
 
         lobbyNpc(
-            Triple(-13.8, 88.75, -18.5),
+            Triple(-14.8, 88.75, -19.5),
             0.0f,
             "nurtalshok",
             UUID.fromString("ef2fb6fb-a6b5-11e8-8374-1cb72caa35fd"),
@@ -467,8 +467,8 @@ class App : JavaPlugin() {
             this.y = blockPos.second
             this.z = blockPos.third
 
-            this.yaw = view
-            this.pitch = 0f
+            this.yaw = 0f
+            this.pitch = view
 
             this.sitting = sitting
             this.sleeping = sleeping
