@@ -160,7 +160,7 @@ class App : JavaPlugin() {
         )
 
         lobbyNpc(
-            Triple(-14.5, 89.0, -15.5),
+            Triple(-14.5, 88.75, -15.5),
             "nurtalshok",
             UUID.fromString("ef2fb6fb-a6b5-11e8-8374-1cb72caa35fd"),
             Dialog(
@@ -393,12 +393,12 @@ class App : JavaPlugin() {
             y = blockPos.second
             z = blockPos.third
 
+            yaw = 0.0f
+            pitch = 0.0f
+
             this.sitting = sitting
             this.sleeping = sleeping
             behaviour = NpcBehaviour.STARE_AT_PLAYER
-
-            if (name != null)
-                this.name = name
 
             skinUrl = "https://webdata.c7x.dev/textures/skin/$uuid"
             skinDigest = uuid.toString() + "1"
