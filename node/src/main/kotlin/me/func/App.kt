@@ -113,35 +113,35 @@ class App : JavaPlugin() {
         )
 
         lobbyNpc(
-            Triple(-11.5, 88.0, 20.5),
+            Triple(-11.5, 88.0, -17.5),
             "Sworroo",
             UUID.fromString("ae7abc6b-d142-11e8-8374-1cb72caa35fd"),
             null
         )
 
         lobbyNpc(
-            Triple(-11.5, 88.0, 19.5),
+            Triple(-11.5, 88.0, -16.5),
             "kasdo",
             UUID.fromString("303dc644-2c69-11e8-b5ea-1cb72caa35fd"),
             null
         )
 
         lobbyNpc(
-            Triple(-11.5, 88.0, 18.5),
+            Triple(-11.5, 88.0, -15.5),
             "Zabelov",
             UUID.fromString("308380a9-2c69-11e8-b5ea-1cb72caa35fd"),
             null
         )
 
         lobbyNpc(
-            Triple(-11.5, 88.0, 17.5),
+            Triple(-11.5, 88.0, -14.5),
             "WhiteNights",
             UUID.fromString("3089411e-2c69-11e8-b5ea-1cb72caa35fd"),
             null
         )
 
         lobbyNpc(
-            Triple(-11.5, 88.0, 16.5),
+            Triple(-11.5, 88.0, -13.5),
             "ItsPVX",
             UUID.fromString("2bd88cc8-603c-11ec-acca-1cb72caa35fd"),
             null
