@@ -7,3 +7,6 @@ commands:
   menu:
     description: Открывает меню персонализации
     usage: /<menu>
+  lootboxsound:
+    description: Проигрывает звук открытия лутбокса
+    usage: /<lootboxsound>
