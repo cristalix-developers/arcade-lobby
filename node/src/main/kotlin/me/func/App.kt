@@ -4,7 +4,6 @@ import dev.implario.bukkit.platform.Platforms
 import dev.implario.bukkit.world.Label
 import dev.implario.games5e.node.CoordinatorClient
 import dev.implario.games5e.node.NoopGameNode
-import dev.implario.games5e.sdk.cristalix.Cristalix
 import dev.implario.games5e.sdk.cristalix.MapLoader
 import dev.implario.games5e.sdk.cristalix.WorldMeta
 import dev.implario.platform.impl.darkpaper.PlatformDarkPaper
@@ -25,7 +24,6 @@ import ru.cristalix.core.inventory.InventoryService
 import ru.cristalix.core.realm.RealmId
 import ru.cristalix.core.transfer.ITransferService
 import ru.cristalix.core.transfer.TransferService
-import sun.audio.AudioPlayer.player
 import java.util.*
 
 lateinit var app: App
@@ -162,7 +160,26 @@ class App : JavaPlugin() {
         )
 
         lobbyNpc(
-            Triple(-14.5, 88.5, -15.5),
+            Triple(-14.5, 89.0, -15.5),
+            "nurtalshok",
+            UUID.fromString("ef2fb6fb-a6b5-11e8-8374-1cb72caa35fd"),
+            Dialog(
+                Entrypoint(
+                    "nurtalshok",
+                    "nurtalshok",
+                    Screen(
+                        "Вообще-то мой ник пишется nutrolshok!",
+                    ).buttons(
+                        Button("Не верить").actions(Action(Actions.CLOSE)),
+                    )
+                )
+            ),
+            sitting = false,
+            sleeping = true
+        )
+
+        lobbyNpc(
+            Triple(-17.5, 88.0, -17.5),
             "Sworroo",
             UUID.fromString("ae7abc6b-d142-11e8-8374-1cb72caa35fd"),
             Dialog(
@@ -175,9 +192,7 @@ class App : JavaPlugin() {
                         Button("Поверить").actions(Action(Actions.CLOSE)),
                     )
                 )
-            ),
-            sitting = false,
-            sleeping = true
+            )
         )
 
         lobbyNpc(
@@ -243,11 +258,21 @@ class App : JavaPlugin() {
             Triple(-17.5, 88.0, 21.5),
             "Sefeo",
             UUID.fromString("30a1bff7-2c69-11e8-b5ea-1cb72caa35fd"),
-            null
+            Dialog(
+                Entrypoint(
+                    "Sefeo",
+                    "Sefeo",
+                    Screen(
+                        "О, заработало! А нет, показалось",
+                    ).buttons(
+                        Button("Панимаю").actions(Action(Actions.CLOSE))
+                    )
+                )
+            )
         )
 
         lobbyNpc(
-            Triple(-16.5, 88.0, 21.5),
+            Triple(-11.5, 88.0, 20.5),
             "Master_chan",
             UUID.fromString("3044712b-2c69-11e8-b5ea-1cb72caa35fd"),
             null
@@ -271,7 +296,7 @@ class App : JavaPlugin() {
         )
 
         lobbyNpc(
-            Triple(-14.5, 88.0, 21.5),
+            Triple(-16.5, 88.0, 21.5),
             "Псина_",
             UUID.fromString("f12a63a0-ca64-11e9-80c4-1cb72caa35fd"),
             null
@@ -292,7 +317,7 @@ class App : JavaPlugin() {
         )
 
         lobbyNpc(
-            Triple(-17.5, 88.0, 20.5),
+            Triple(-11.5, 88.0, 17.5),
             "Zenk__",
             UUID.fromString("573f139e-57f5-11eb-acca-1cb72caa35fd"),
             Dialog(
@@ -311,7 +336,7 @@ class App : JavaPlugin() {
         )
 
         lobbyNpc(
-            Triple(-17.5, 88.0, 19.5),
+            Triple(-11.5, 88.0, 16.5),
             "iLisov",
             UUID.fromString("94964b0d-f545-11e8-8374-1cb72caa35fd"),
             Dialog(
@@ -376,7 +401,7 @@ class App : JavaPlugin() {
                 this.name = name
 
             skinUrl = "https://webdata.c7x.dev/textures/skin/$uuid"
-            skinDigest = uuid.toString()
+            skinDigest = uuid.toString() + "1"
 
             onClick {
                 dialog ?: return@onClick
