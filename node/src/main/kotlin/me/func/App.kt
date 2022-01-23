@@ -67,7 +67,20 @@ class App : JavaPlugin() {
             Triple(-14.5, 88.0, -18.5),
             "func",
             UUID.fromString("307264a1-2c69-11e8-b5ea-1cb72caa35fd"),
-            null
+            Dialog(
+                Entrypoint(
+                    "func",
+                    "func",
+                    Screen(
+                        "Фишка, давай зарандомь расположение НПС!",
+                        "Так будет лучше!",
+                        "Мой голос решающий!"
+                    ).buttons(
+                        Button("Не согласиться").actions(Action(Actions.CLOSE)),
+                        Button("Не согласиться").actions(Action(Actions.CLOSE)),
+                    )
+                )
+            )
         )
 
         lobbyNpc(
@@ -95,14 +108,36 @@ class App : JavaPlugin() {
             Triple(-12.5, 88.0, -18.5),
             "Fiwka1338",
             UUID.fromString("845e92f3-7006-11ea-acca-1cb72caa35fd"),
-            null
+            Dialog(
+                Entrypoint(
+                    "Fiwka1338",
+                    "Fiwka1338",
+                    Screen(
+                        "ФАААНК! МНЕ НРАВИТСЯ КАК СТОЯТ НПС!",
+                        "Я ТАК РЕШИЛ! ТВОЁ МНЕНИЕ НИЧТОЖНО!"
+                    ).buttons(
+                        Button("Согласиться").actions(Action(Actions.CLOSE)),
+                        Button("Согласиться").actions(Action(Actions.CLOSE)),
+                    )
+                )
+            )
         )
 
         lobbyNpc(
             Triple(-11.5, 88.0, -18.5),
             "_Demaster_",
             UUID.fromString("303c31eb-2c69-11e8-b5ea-1cb72caa35fd"),
-            null
+            Dialog(
+                Entrypoint(
+                    "_Demaster_",
+                    "_Demaster_",
+                    Screen(
+                        "Эх, вот если бы не было читеров, было бы 10к онлайна",
+                    ).buttons(
+                        Button("Поставить античит").actions(Action(Actions.CLOSE)),
+                    )
+                )
+            )
         )
 
         lobbyNpc(
@@ -116,7 +151,17 @@ class App : JavaPlugin() {
             Triple(-11.5, 88.0, -17.5),
             "Sworroo",
             UUID.fromString("ae7abc6b-d142-11e8-8374-1cb72caa35fd"),
-            null
+            Dialog(
+                Entrypoint(
+                    "Sworroo",
+                    "Sworroo",
+                    Screen(
+                        "Уже завтра новый лаунчер!",
+                    ).buttons(
+                        Button("Поверить").actions(Action(Actions.CLOSE)),
+                    )
+                )
+            )
         )
 
         lobbyNpc(
@@ -130,7 +175,17 @@ class App : JavaPlugin() {
             Triple(-11.5, 88.0, -15.5),
             "Zabelov",
             UUID.fromString("308380a9-2c69-11e8-b5ea-1cb72caa35fd"),
-            null
+            Dialog(
+                Entrypoint(
+                    "Zabelov",
+                    "Zabelov",
+                    Screen(
+                        "Раст кринж! Котлин кринж! Жава мощь!11",
+                    ).buttons(
+                        Button("Отправить в дурку").actions(Action(Actions.CLOSE)),
+                    )
+                )
+            )
         )
 
         lobbyNpc(
@@ -144,7 +199,17 @@ class App : JavaPlugin() {
             Triple(-11.5, 88.0, -13.5),
             "ItsPVX",
             UUID.fromString("2bd88cc8-603c-11ec-acca-1cb72caa35fd"),
-            null
+            Dialog(
+                Entrypoint(
+                    "ItsPVX",
+                    "ItsPVX",
+                    Screen(
+                        "Винда @$#! Линукс топ!",
+                    ).buttons(
+                        Button("Поставить винду").actions(Action(Actions.CLOSE)),
+                    )
+                )
+            )
         )
 
         lobbyNpc(
@@ -165,7 +230,17 @@ class App : JavaPlugin() {
             Triple(-15.5, 88.0, 21.5),
             "СразуЛегенд",
             UUID.fromString("f03c2e10-f6ac-11eb-acca-1cb72caa35fd"),
-            null
+            Dialog(
+                Entrypoint(
+                    "СразуЛегенд",
+                    "СразуЛегенд",
+                    Screen(
+                        "ААААА! Не бейте!!",
+                    ).buttons(
+                        Button("Побить").actions(Action(Actions.CLOSE)),
+                    )
+                )
+            )
         )
 
         lobbyNpc(
@@ -193,14 +268,34 @@ class App : JavaPlugin() {
             Triple(-17.5, 88.0, 20.5),
             "Zenk__",
             UUID.fromString("573f139e-57f5-11eb-acca-1cb72caa35fd"),
-            null
+            Dialog(
+                Entrypoint(
+                    "Zenk__",
+                    "Zenk__",
+                    Screen(
+                        "Лисов мой раб!",
+                    ).buttons(
+                        Button("Да").actions(Action(Actions.CLOSE)),
+                    )
+                )
+            )
         )
 
         lobbyNpc(
             Triple(-17.5, 88.0, 19.5),
             "iLisov",
             UUID.fromString("94964b0d-f545-11e8-8374-1cb72caa35fd"),
-            null
+            Dialog(
+                Entrypoint(
+                    "iLisov",
+                    "iLisov",
+                    Screen(
+                        "Я не раб!",
+                    ).buttons(
+                        Button("Не поверить").actions(Action(Actions.CLOSE)),
+                    )
+                )
+            )
         )
 
         lobbyNpc(
@@ -214,7 +309,18 @@ class App : JavaPlugin() {
             Triple(-17.5, 88.0, 17.5),
             "BaggiYT",
             UUID.fromString("64c67d57-a461-11e8-8374-1cb72caa35fd"),
-            null
+            Dialog(
+                Entrypoint(
+                    "BaggiYT",
+                    "BaggiYT",
+                    Screen(
+                        "Я не ютубер!",
+                    ).buttons(
+                        Button("Подписаться на BaggiYT").actions(Action(Actions.CLOSE)),
+                        Button("Поставить лайк").actions(Action(Actions.CLOSE)),
+                    )
+                )
+            )
         )
 
         lobbyNpc(
