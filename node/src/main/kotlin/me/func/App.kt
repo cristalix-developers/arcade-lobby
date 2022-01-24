@@ -26,6 +26,7 @@ import me.func.protocol.npc.NpcBehaviour
 import net.minecraft.server.v1_12_R1.PacketDataSerializer
 import net.minecraft.server.v1_12_R1.PacketPlayOutCustomPayload
 import org.bukkit.Bukkit
+import org.bukkit.WorldCreator.name
 import org.bukkit.command.CommandExecutor
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer
 import org.bukkit.entity.Player
@@ -66,7 +67,12 @@ class App : JavaPlugin() {
         CoreApi.get().registerService(IInventoryService::class.java, InventoryService())
         CoreApi.get().registerService(ITransferService::class.java, TransferService(CoreApi.get().socketClient))
         CoreApi.get().registerService(IPartyService::class.java, PartyService(ISocketClient.get()))
-        IRealmService.get().currentRealmInfo.status = RealmStatus.WAITING_FOR_PLAYERS
+        val realm = IRealmService.get().currentRealmInfo
+
+        realm.status = RealmStatus.WAITING_FOR_PLAYERS
+        realm.isLobbyServer = true
+        realm.readableName = "Аркадное Лобби"
+        realm.servicedServers = arrayOf("MURP", *Arcades.values().map { it.name }.toTypedArray())
 
         Platforms.set(PlatformDarkPaper())
         Arcade.start()
