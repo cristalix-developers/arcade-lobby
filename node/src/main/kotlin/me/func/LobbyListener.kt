@@ -44,7 +44,7 @@ object LobbyListener : Listener {
                 2.7,
                 20
             )
-        )
+        ) { it.performCommand("play") }
 
         Banners.new {
             opacity = 0.0
@@ -91,6 +91,7 @@ object LobbyListener : Listener {
         joinMessage = null
         MinecraftServer.SERVER.postToNextTick {
             Anime.hideIndicator(player, Indicators.HEALTH, Indicators.EXP, Indicators.HUNGER)
+            Anime.topMessage(player, "Загрузка аркадного профиля ${player.playerListName}")
             Glow.showAllPlaces(player)
         }
     }

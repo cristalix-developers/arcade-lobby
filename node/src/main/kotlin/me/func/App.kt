@@ -76,6 +76,7 @@ class App : JavaPlugin() {
 
         lobbyNpc(
             Triple(-17.5, 88.0, -13.5),
+            -115.0f,
             "func",
             UUID.fromString("307264a1-2c69-11e8-b5ea-1cb72caa35fd"),
             Dialog(
@@ -92,18 +93,34 @@ class App : JavaPlugin() {
                         Button("Ок").actions(Action(Actions.CLOSE)),
                     )
                 )
-            )
+            ),
         )
 
         lobbyNpc(
             Triple(-17.5, 88.0, -14.5),
+            -75.0f,
             "Faelan_",
             UUID.fromString("6f3f4a2e-7f84-11e9-8374-1cb72caa35fd"),
-            null
+            Dialog(
+                Entrypoint(
+                    "Faelan_",
+                    "Faelan_",
+                    Screen(
+                        "Привет, я куратор билдеров,",
+                        "если хочешь начать строить у нас - напиши",
+                        "заявку на билдера на форуме. Ждем",
+                        "милых ребят :3"
+                    ).buttons(
+                        Button("Не умею строить :(").actions(Action(Actions.CLOSE)),
+                        Button("Сейчас напишу!").actions(Action(Actions.CLOSE)),
+                    )
+                )
+            )
         )
 
         lobbyNpc(
             Triple(-11.5, 88.0, -17.5),
+            135.0f,
             "rigb0s",
             UUID.fromString("c155c00c-e4c0-11eb-acca-1cb72caa35fd"),
             null
@@ -111,6 +128,7 @@ class App : JavaPlugin() {
 
         lobbyNpc(
             Triple(-17.5, 88.0, -18.5),
+            -45.0f,
             "ZentoFX",
             UUID.fromString("307b1c52-2c69-11e8-b5ea-1cb72caa35fd"),
             null
@@ -118,6 +136,7 @@ class App : JavaPlugin() {
 
         lobbyNpc(
             Triple(-16.5, 88.0, -18.5),
+            -45.0f,
             "Fiwka1338",
             UUID.fromString("845e92f3-7006-11ea-acca-1cb72caa35fd"),
             Dialog(
@@ -125,11 +144,14 @@ class App : JavaPlugin() {
                     "Fiwka1338",
                     "Fiwka1338",
                     Screen(
-                        "ФАААНК! МНЕ НРАВИТСЯ КАК СТОЯТ НПС!",
-                        "Я ТАК РЕШИЛ! ТВОЁ МНЕНИЕ НИЧТОЖНО!"
+                        "Сломался AmongUs? Пиши мне!",
+                        "§bvk.com/kostyan_konovalov"
                     ).buttons(
-                        Button("Согласиться").actions(Action(Actions.CLOSE)),
-                        Button("Согласиться").actions(Action(Actions.CLOSE)),
+                        Button("Написать").actions(
+                            Action.command("/msg fiwka1338 Among Us не работает!"),
+                            Action(Actions.CLOSE)
+                        ),
+                        Button("Пока").actions(Action(Actions.CLOSE)),
                     )
                 )
             )
@@ -137,30 +159,30 @@ class App : JavaPlugin() {
 
         lobbyNpc(
             Triple(-11.5, 88.0, -18.5),
+            45.0f,
             "_Demaster_",
             UUID.fromString("303c31eb-2c69-11e8-b5ea-1cb72caa35fd"),
             Dialog(
                 Entrypoint(
                     "_Demaster_",
                     "_Demaster_",
-                    Screen(
-                        "Эх, вот если бы не было читеров, было бы 10к онлайна",
-                    ).buttons(
-                        Button("Поставить античит").actions(Action(Actions.CLOSE)),
-                    )
+                    Screen("Эх, вот если бы не было читеров, было бы 10к онлайна")
+                        .buttons(Button("Поставить античит").actions(Action(Actions.CLOSE)))
                 )
             )
         )
 
         lobbyNpc(
             Triple(-11.5, 88.0, 21.5),
+            140.0f,
             "DiamondDen",
             UUID.fromString("ee476051-dc55-11e8-8374-1cb72caa35fd"),
             null
         )
 
         lobbyNpc(
-            Triple(-14.5, 88.75, -15.5),
+            Triple(-14.8, 88.75, -19.5),
+            0.0f,
             "nurtalshok",
             UUID.fromString("ef2fb6fb-a6b5-11e8-8374-1cb72caa35fd"),
             Dialog(
@@ -180,6 +202,7 @@ class App : JavaPlugin() {
 
         lobbyNpc(
             Triple(-17.5, 88.0, -17.5),
+            -105f,
             "Sworroo",
             UUID.fromString("ae7abc6b-d142-11e8-8374-1cb72caa35fd"),
             Dialog(
@@ -189,7 +212,10 @@ class App : JavaPlugin() {
                     Screen(
                         "Уже завтра новый лаунчер!",
                     ).buttons(
-                        Button("Поверить").actions(Action(Actions.CLOSE)),
+                        Button("Поверить").actions(
+                            Action.command("/msg sworroo Я тебе верю! Но когда лаунчер"),
+                            Action(Actions.CLOSE)
+                        ),
                     )
                 )
             )
@@ -197,6 +223,7 @@ class App : JavaPlugin() {
 
         lobbyNpc(
             Triple(-10.5, 88.0, -20.5),
+            45.0f,
             "kasdo",
             UUID.fromString("303dc644-2c69-11e8-b5ea-1cb72caa35fd"),
             null
@@ -204,6 +231,7 @@ class App : JavaPlugin() {
 
         lobbyNpc(
             Triple(-11.5, 88.0, -15.5),
+            70.0f,
             "Zabelov",
             UUID.fromString("308380a9-2c69-11e8-b5ea-1cb72caa35fd"),
             Dialog(
@@ -211,9 +239,11 @@ class App : JavaPlugin() {
                     "Zabelov",
                     "Zabelov",
                     Screen(
-                        "Раст кринж! Котлин кринж! Жава мощь!11",
+                        "Ребят, забеликс будет через пол",
+                        "года, ждемс."
                     ).buttons(
-                        Button("Отправить в дурку").actions(Action(Actions.CLOSE)),
+                        Button("Ок").actions(Action(Actions.CLOSE)),
+                        Button("забеликс?").actions(Action(Actions.CLOSE)),
                     )
                 )
             )
@@ -221,6 +251,7 @@ class App : JavaPlugin() {
 
         lobbyNpc(
             Triple(-11.5, 88.0, -14.5),
+            120.0f,
             "WhiteNights",
             UUID.fromString("3089411e-2c69-11e8-b5ea-1cb72caa35fd"),
             Dialog(
@@ -228,10 +259,15 @@ class App : JavaPlugin() {
                     "WhiteNights",
                     "WhiteNights",
                     Screen(
-                        "Сегодня вечером сделаю обнову",
-                        "Вечером: Ayaka Shizumy был в сети сегодня в 11:54",
+                        "Как дела? Сломался Tom & Jerry",
+                        "или может быть Sheep Wars? В любом",
+                        "случае пиши мне, я помогу."
                     ).buttons(
-                        Button("Напомнить завтра").actions(Action(Actions.CLOSE)),
+                        Button("Написать").actions(
+                            Action.command("/msg WhiteNights Что-то сломалось!"),
+                            Action(Actions.CLOSE)
+                        ),
+                        Button("Пока").actions(Action(Actions.CLOSE)),
                     )
                 )
             )
@@ -239,6 +275,7 @@ class App : JavaPlugin() {
 
         lobbyNpc(
             Triple(-11.5, 88.0, -13.5),
+            -180.0f,
             "ItsPVX",
             UUID.fromString("2bd88cc8-603c-11ec-acca-1cb72caa35fd"),
             Dialog(
@@ -256,6 +293,7 @@ class App : JavaPlugin() {
 
         lobbyNpc(
             Triple(-17.5, 88.0, 21.5),
+            -130.0f,
             "Sefeo",
             UUID.fromString("30a1bff7-2c69-11e8-b5ea-1cb72caa35fd"),
             Dialog(
@@ -273,6 +311,7 @@ class App : JavaPlugin() {
 
         lobbyNpc(
             Triple(-11.5, 88.0, 20.5),
+            40.0f,
             "Master_chan",
             UUID.fromString("3044712b-2c69-11e8-b5ea-1cb72caa35fd"),
             null
@@ -280,6 +319,7 @@ class App : JavaPlugin() {
 
         lobbyNpc(
             Triple(-15.5, 88.0, 21.5),
+            180.0f,
             "СразуЛегенд",
             UUID.fromString("f03c2e10-f6ac-11eb-acca-1cb72caa35fd"),
             Dialog(
@@ -290,6 +330,8 @@ class App : JavaPlugin() {
                         "ААААА! Не бейте!!",
                     ).buttons(
                         Button("Побить").actions(Action(Actions.CLOSE)),
+                        Button("Замахнуться").actions(Action(Actions.CLOSE)),
+                        Button("Оставить").actions(Action(Actions.CLOSE)),
                     )
                 )
             )
@@ -297,6 +339,7 @@ class App : JavaPlugin() {
 
         lobbyNpc(
             Triple(-16.5, 88.0, 21.5),
+            20.0f,
             "Псина_",
             UUID.fromString("f12a63a0-ca64-11e9-80c4-1cb72caa35fd"),
             null
@@ -304,6 +347,7 @@ class App : JavaPlugin() {
 
         lobbyNpc(
             Triple(-13.5, 88.0, 21.5),
+            0.0f,
             "Mr_Zlodey_5",
             UUID.fromString("30581daf-2c69-11e8-b5ea-1cb72caa35fd"),
             null
@@ -311,6 +355,7 @@ class App : JavaPlugin() {
 
         lobbyNpc(
             Triple(-12.5, 88.0, 21.5),
+            35.0f,
             "Pony",
             UUID.fromString("306f45f5-2c69-11e8-b5ea-1cb72caa35fd"),
             null
@@ -318,6 +363,7 @@ class App : JavaPlugin() {
 
         lobbyNpc(
             Triple(-11.5, 88.0, 17.5),
+            160.0f,
             "Zenk__",
             UUID.fromString("573f139e-57f5-11eb-acca-1cb72caa35fd"),
             Dialog(
@@ -337,6 +383,7 @@ class App : JavaPlugin() {
 
         lobbyNpc(
             Triple(-11.5, 88.0, 16.5),
+            20.0f,
             "iLisov",
             UUID.fromString("94964b0d-f545-11e8-8374-1cb72caa35fd"),
             Dialog(
@@ -354,6 +401,7 @@ class App : JavaPlugin() {
 
         lobbyNpc(
             Triple(-17.5, 88.0, 18.5),
+            -60.0f,
             "ONE1SIDE",
             UUID.fromString("7f3fea26-be9f-11e9-80c4-1cb72caa35fd"),
             null
@@ -361,6 +409,7 @@ class App : JavaPlugin() {
 
         lobbyNpc(
             Triple(-17.5, 88.0, 17.5),
+            -60.0f,
             "BaggiYT",
             UUID.fromString("64c67d57-a461-11e8-8374-1cb72caa35fd"),
             Dialog(
@@ -378,30 +427,55 @@ class App : JavaPlugin() {
         )
 
         lobbyNpc(
-            Triple(-14.5, 87.5, -15.5),
-            null,
-            UUID.fromString("ef2fb6fb-a6b5-11e8-8374-1cb72caa35fd"),
-            null,
-            sleeping = true,
-            sitting = false
+            Triple(-12.5, 88.0, -18.5),
+            "delfikpro",
+            UUID.fromString("e7c13d3d-ac38-11e8-8374-1cb72caa35fd"),
+            Dialog(
+                Entrypoint(
+                    "delfikpro",
+                    "delfikpro",
+                    Screen(
+                        "Говорю мужу",
+                        "§a§l$ sudo docker stop cristalix-core",
+                        "§fОтвет убил:",
+                        "§cADM ¨c90000DiamondDen » §aты чё сделал %$#!",
+                    ).buttons(
+                        Button("Вернуть как было").actions(Action(Actions.CLOSE)),
+                        Button("/ignore DiamondDen").actions(
+                            Action.command("/ignore DiamondDen"),
+                            Action(Actions.CLOSE)
+                        )
+                    )
+                )
+            )
         )
     }
 
-    fun lobbyNpc(blockPos: Triple<Double, Double, Double>, name: String?, uuid: UUID, dialog: Dialog?, sitting: Boolean = true, sleeping: Boolean = false) {
-        Npc.npc {
-            x = blockPos.first
-            y = blockPos.second
-            z = blockPos.third
+    fun lobbyNpc(
+        blockPos: Triple<Double, Double, Double>,
+        name: String?,
+        uuid: UUID,
+        dialog: Dialog?,
+        sitting: Boolean = true,
+        sleeping: Boolean = false
+    ) {
+    }
 
-            yaw = 0.0f
-            pitch = 0.0f
+    fun lobbyNpc(blockPos: Triple<Double, Double, Double>, view: Float, name: String?, uuid: UUID, dialog: Dialog?, sitting: Boolean = true, sleeping: Boolean = false) {
+        Npc.npc {
+            this.x = blockPos.first
+            this.y = blockPos.second
+            this.z = blockPos.third
+
+            this.yaw = 0f
+            this.pitch = view
 
             this.sitting = sitting
             this.sleeping = sleeping
-            behaviour = NpcBehaviour.STARE_AT_PLAYER
+            this.behaviour = NpcBehaviour.NONE
 
-            skinUrl = "https://webdata.c7x.dev/textures/skin/$uuid"
-            skinDigest = uuid.toString() + "1"
+            this.skinUrl = "https://webdata.c7x.dev/textures/skin/$uuid"
+            this.skinDigest = uuid.toString() + "1"
 
             onClick {
                 dialog ?: return@onClick
