@@ -2,29 +2,50 @@ package me.func
 
 import dev.implario.bukkit.platform.Platforms
 import dev.implario.bukkit.world.Label
+import dev.implario.games5e.QueueProperties
 import dev.implario.games5e.node.CoordinatorClient
 import dev.implario.games5e.node.NoopGameNode
+import dev.implario.games5e.packets.PacketOk
+import dev.implario.games5e.packets.PacketQueueEnter
+import dev.implario.games5e.packets.PacketQueueState
+import dev.implario.games5e.sdk.cristalix.Cristalix
 import dev.implario.games5e.sdk.cristalix.MapLoader
 import dev.implario.games5e.sdk.cristalix.WorldMeta
 import dev.implario.platform.impl.darkpaper.PlatformDarkPaper
+import dev.xdark.feder.NetUtil
+import io.netty.buffer.ByteBuf
+import io.netty.buffer.Unpooled
 import me.func.misc.PersonalizationMenu
 import me.func.mod.Anime
 import me.func.mod.Npc
+import me.func.mod.Npc.npc
 import me.func.mod.Npc.onClick
+import me.func.mod.conversation.ModTransfer
 import me.func.protocol.dialog.*
 import me.func.protocol.npc.NpcBehaviour
+import net.minecraft.server.v1_12_R1.PacketDataSerializer
+import net.minecraft.server.v1_12_R1.PacketPlayOutCustomPayload
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandExecutor
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer
 import org.bukkit.entity.Player
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.plugin.java.JavaPlugin
 import ru.cristalix.core.CoreApi
 import ru.cristalix.core.inventory.IInventoryService
 import ru.cristalix.core.inventory.InventoryService
+import ru.cristalix.core.lib.Futures
+import ru.cristalix.core.network.ISocketClient
+import ru.cristalix.core.party.IPartyService
+import ru.cristalix.core.party.PartyService
+import ru.cristalix.core.realm.IRealmService
 import ru.cristalix.core.realm.RealmId
+import ru.cristalix.core.realm.RealmInfo
+import ru.cristalix.core.realm.RealmStatus
 import ru.cristalix.core.transfer.ITransferService
 import ru.cristalix.core.transfer.TransferService
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 lateinit var app: App
 
@@ -44,6 +65,9 @@ class App : JavaPlugin() {
 
         CoreApi.get().registerService(IInventoryService::class.java, InventoryService())
         CoreApi.get().registerService(ITransferService::class.java, TransferService(CoreApi.get().socketClient))
+        CoreApi.get().registerService(IPartyService::class.java, PartyService(ISocketClient.get()))
+        IRealmService.get().currentRealmInfo.status = RealmStatus.WAITING_FOR_PLAYERS
+
         Platforms.set(PlatformDarkPaper())
         Arcade.start()
 
@@ -71,6 +95,77 @@ class App : JavaPlugin() {
         getCommand("leave").setExecutor(CommandExecutor { sender, _, _, _ ->
             if (sender is Player)
                 ITransferService.get().transfer(sender.uniqueId, hub)
+            return@CommandExecutor true
+        })
+
+        getCommand("play").setExecutor(CommandExecutor { sender, _, _, _ ->
+            if (sender is Player)
+                Anime.sendEmptyBuffer("g5e:open", sender)
+            return@CommandExecutor true
+        })
+
+        Games5e
+
+        getCommand("queue").setExecutor(CommandExecutor { sender, _, _, args ->
+            if (sender is Player) {
+                val queueOnline = Games5e.client.queueOnline
+                val queueId = UUID.fromString(args[0])
+                if (!queueOnline.containsKey(queueId)) {
+                    Anime.killboardMessage(sender, "§cНет такой очереди.")
+                    return@CommandExecutor false
+                }
+                Futures.timeout(IPartyService.get().getPartyByMember(sender.uniqueId), 1, TimeUnit.SECONDS)
+                    .whenComplete { party, err ->
+                        err?.printStackTrace()
+                        if (party.isPresent && !party.get().leader.equals(sender.uniqueId)) {
+                            val buffer: ByteBuf = Unpooled.buffer()
+                            NetUtil.writeUtf8("Вы не лидер пати", buffer)
+                            (sender as CraftPlayer).handle.playerConnection.sendPacket(
+                                PacketPlayOutCustomPayload("g5e:qerror", PacketDataSerializer(buffer))
+                            )
+                            return@whenComplete
+                        }
+                        val players: List<UUID> = if (party.isPresent)
+                            party.get().members.toMutableList()
+                        else Collections.singletonList(sender.uniqueId)
+                        val opt: Optional<PacketQueueState> = Games5e.client.allQueues.stream()
+                            .filter { q: PacketQueueState ->
+                                q.properties.queueId == queueId
+                            }.findFirst()
+                        if (!opt.isPresent) return@whenComplete
+                        val properties: QueueProperties = opt.get().properties
+                        if (properties.strategy == "noop") {
+                            val realmType = properties.tags["realm_type"]
+                            val ri: Optional<RealmInfo> =
+                                IRealmService.get().getStreamRealmsOfType(realmType)
+                                    .filter { s: RealmInfo ->
+                                        s.status == RealmStatus.WAITING_FOR_PLAYERS || s.status == RealmStatus.STARTING_GAME || s.status == RealmStatus.GAME_STARTED_CAN_JOIN
+                                    }
+                                    .filter { s: RealmInfo -> s.currentPlayers + players.size <= s.maxPlayers }
+                                    .max(Comparator.comparingInt(RealmInfo::getMaxPlayers))
+                            if (ri.isPresent) {
+                                ITransferService.get().transferBatch(players, ri.get().realmId)
+                            } else {
+                                sender.sendMessage("§cНе удалось найти ни одного свободного сервера $realmType")
+                            }
+                        } else {
+                            Futures.timeout(
+                                Games5e.client.client.send(
+                                    PacketQueueEnter(
+                                        queueId,
+                                        players, false, true,
+                                        HashMap()
+                                    )
+                                ).awaitFuture(PacketOk::class.java), 1, TimeUnit.SECONDS
+                            ).whenComplete { _, err1 ->
+                                    if (err1 != null) {
+                                        err1.printStackTrace()
+                                        sender.sendMessage("§cОшибка: " + err1::class.java.simpleName)
+                                    }
+                                }
+                        }
+                    }
+            }
             return@CommandExecutor true
         })
 
@@ -428,6 +523,7 @@ class App : JavaPlugin() {
 
         lobbyNpc(
             Triple(-12.5, 88.0, -18.5),
+            120f,
             "delfikpro",
             UUID.fromString("e7c13d3d-ac38-11e8-8374-1cb72caa35fd"),
             Dialog(
@@ -449,16 +545,43 @@ class App : JavaPlugin() {
                 )
             )
         )
-    }
 
-    fun lobbyNpc(
-        blockPos: Triple<Double, Double, Double>,
-        name: String?,
-        uuid: UUID,
-        dialog: Dialog?,
-        sitting: Boolean = true,
-        sleeping: Boolean = false
-    ) {
+        val dialog = Dialog(
+            Entrypoint(
+                "cristalix",
+                "Команда Cristalix",
+                Screen(
+                    "Привет, мы решили пересмотреть",
+                    "наш взгляд на аркады, мы долго работали,",
+                    "но мы еще ведем доработку,",
+                    "надеемся вам не помешает эта стройка.",
+                ).buttons(
+                    Button("Пока").actions(Action(Actions.CLOSE)),
+                    Button("Спасибо!").actions(Action(Actions.CLOSE)),
+                )
+            )
+        )
+
+        npc {
+            x = -12.0
+            y = 87.0
+            z = 3.0
+
+            yaw = 115f
+            behaviour = NpcBehaviour.STARE_AT_PLAYER
+
+            name = "Команда Cristalix"
+
+            skinUrl = "https://implario.dev/Builder.png"
+            skinDigest = "JHIhuhgyushgsufsghoyufsgfsussf"
+
+            onClick {
+                if (it.hand == EquipmentSlot.OFF_HAND)
+                    return@onClick
+                Anime.dialog(it.player, dialog, "cristalix")
+            }
+        }
+
     }
 
     fun lobbyNpc(blockPos: Triple<Double, Double, Double>, view: Float, name: String?, uuid: UUID, dialog: Dialog?, sitting: Boolean = true, sleeping: Boolean = false) {

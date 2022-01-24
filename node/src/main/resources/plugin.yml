@@ -19,3 +19,6 @@ commands:
   play:
     description: Открывает компасс
     usage: /<play>
+  queue:
+    description: Игра!!!
+    usage: /<queue>
