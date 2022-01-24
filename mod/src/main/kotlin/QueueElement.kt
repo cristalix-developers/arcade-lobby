@@ -93,44 +93,44 @@ class QueueElement(val info: QueueProperties) : RectangleElement() {
 
     }
 
-    private val queueFlex = queueMask + flex {
-        flexSpacing = 3.0
+    private val queueText = queueMask + text {
+//        flexSpacing = 3.0
+        color.alpha = 0.7
         align = CENTER
         origin = CENTER
-        flexDirection = FlexDirection.RIGHT
+        shadow = true
+        offset.x = 1.0
     }
 
     init {
-        queueFlex + rectangle {
-            size = V3(8.0, 8.0)
-            beforeRender {
-                val unicode = JavaMod.clientApi.fontRenderer().unicodeFlag
-                val texturePath = if (unicode) "clockthin" else "clock"
-                if (texturePath != textureLocation?.path) {
-                    textureLocation = ResourceLocation.of("games5e", texturePath)
-                }
-            }
-            color = WHITE
-            color.alpha = 0.62
-        }
-        size = V3(72.0, 72.0 + 18.0)
+        size = V3(72.0, 72.0 + 18.0 + 18.0)
     }
 
-
-    private val queueText = queueFlex + text {
-        color.alpha = 0.62
-        shadow = true
-    }
+    var queueShining = false
 
     var queued: Int = -1
     set(value) {
+        val prev = field
         field = value
         if (value < 0) {
-            queueMask.enabled = false
+            queueText.enabled = false
         } else {
-            queueMask.enabled = true
+            queueText.enabled = true
+            // ToDo: Better missing info
+            val required = (info.globalMapDefinition?.amount?.min ?: 0) * (info.globalMapDefinition?.size?.min ?: 0)
+
             // ToDo: Short form for values beyond 1k
-            queueText.content = "$value"
+            if (value == 0) queueText.content = "§8$value/$required"
+            else queueText.content = "$value§7/§f$required"
+
+
+            val queueHasPlayers = value != 0
+            if (queueHasPlayers != this.queueShining) {
+                this.queueShining = queueHasPlayers
+                queueText.animate(0.2) {
+                    color.alpha = if (queueHasPlayers) 1.0 else 0.7
+                }
+            }
         }
     }
 

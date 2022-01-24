@@ -1,25 +1,17 @@
-buildscript {
-    repositories {
-        google()
-        jcenter()
-        maven {
-            url "https://repo.implario.dev/public"
-        }
-    }
-    dependencies {
-        classpath("ru.cristalix:bundler:2.3.2")
-    }
+plugins {
+    id 'java'
+    id 'org.jetbrains.kotlin.jvm'
+    id 'dev.implario.bundler' version '3.0.3' apply false
 }
 
-apply plugin: 'ru.cristalix.uiengine.bundler'
-apply plugin: 'kotlin'
+apply plugin: 'dev.implario.bundler'
 
 dependencies {
     compileOnly 'ru.cristalix:client-api:latest-SNAPSHOT'
-    implementation 'ru.cristalix:uiengine:3.13.8'
-    implementation 'ru.cristalix:client-sdk:5.3.0'
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.5.0'
-    implementation 'dev.implario.games5e:bukkit-worker-core:2.1.20'
+    implementation 'ru.cristalix:uiengine:3.15.3'
+    implementation 'ru.cristalix:client-sdk:5.4.1'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.5.20'
+    implementation 'dev.implario.games5e:commons:2.1.4'
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
@@ -28,17 +20,22 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
     }
 }
 
-configurations.all {
-    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
-}
+//configurations.all {
+//    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+//}
 
 jar {
-    from configurations.runtimeClasspath.collect { it.directory ? it : zipTree(it) }
+    duplicatesStrategy DuplicatesStrategy.EXCLUDE
+    from {
+        configurations.runtimeClasspath.collect { it.directory ? it : zipTree(it) }
+    }
 }
 
 bundler {
     name 'Arcade Lobby'
-    mainClass 'App'
+    mainClass 'Games5eMod'
     version '1.0'
     author 'func'
 }
+
+if (file('upload.gradle').file) apply from: 'upload.gradle'

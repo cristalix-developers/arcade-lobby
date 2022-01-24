@@ -1,12 +1,15 @@
 import com.google.gson.Gson
 import dev.implario.games5e.QueueProperties
+import dev.xdark.clientapi.event.lifecycle.GameLoop
 import io.netty.buffer.Unpooled
+import org.lwjgl.input.Keyboard
 import org.lwjgl.opengl.GL11.*
 import ru.cristalix.clientapi.KotlinMod
 import ru.cristalix.clientapi.readId
 import ru.cristalix.clientapi.readUtf8
 import ru.cristalix.clientapi.readVarInt
 import ru.cristalix.uiengine.UIEngine
+import ru.cristalix.uiengine.element.debug
 
 lateinit var mod: Games5eMod
 
@@ -42,10 +45,12 @@ class Games5eMod : KotlinMod() {
             }
         }
 
-        //loadTextureFromJar("games5e", "clock", "clock.png")
-        //loadTextureFromJar("games5e", "face", "face.png")
-        //loadTextureFromJar("games5e", "clockthin", "clockthin.png")
-        //loadTextureFromJar("games5e", "facethin", "facethin.png")
+        registerHandler<GameLoop> { debug = Keyboard.isKeyDown(Keyboard.KEY_F12) }
+
+        loadTextureFromJar("games5e", "clock", "clock.png")
+        loadTextureFromJar("games5e", "face", "face.png")
+        loadTextureFromJar("games5e", "clockthin", "clockthin.png")
+        loadTextureFromJar("games5e", "facethin", "facethin.png")
 
         clientApi.clientConnection().sendPayload("g5e:loaded", Unpooled.EMPTY_BUFFER)
     }
