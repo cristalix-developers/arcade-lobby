@@ -32,7 +32,7 @@ object LoadNpc : Listener {
                     "аркад, покажу настоящее веселье, так же могу",
                     "показать баттлпасс и твою персонализацию"
                 ).buttons(
-                    Button("§bПоиск игры §l§eNEW!").actions(Action.command("/start")),
+                    Button("§bПоиск игры §l§eNEW!").actions(Action.command("/play")),
                     Button("§bBattlePass §l§eNEW!").actions(Action.command("/battlepass")),
                     Button("§bПерсонализация").actions(Action.command("/menu")),
                 )
@@ -72,7 +72,7 @@ object LoadNpc : Listener {
                     "Привет, сейчас у меня нет списка",
                     "достижений для тебя, как только они",
                     "появятся - я дам знать!",
-                ).buttons(Button("Пока").actions(Action(Actions.CLOSE)),)
+                ).buttons(Button("Пока").actions(Action(Actions.CLOSE)))
             )
         )
 

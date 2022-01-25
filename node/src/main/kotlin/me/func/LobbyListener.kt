@@ -1,12 +1,8 @@
 package me.func
 
 import com.destroystokyo.paper.event.player.PlayerInitialSpawnEvent
-import com.google.gson.Gson
 import dev.implario.bukkit.item.item
 import dev.implario.games5e.packets.PacketQueueLeave
-import dev.implario.games5e.packets.PacketQueueState
-import io.netty.buffer.ByteBuf
-import io.netty.buffer.Unpooled
 import me.func.Games5e.client
 import me.func.mod.Anime
 import me.func.mod.Banners
@@ -17,10 +13,13 @@ import me.func.mod.conversation.ModTransfer
 import me.func.protocol.GlowColor
 import me.func.protocol.GlowingPlace
 import me.func.protocol.Indicators
+import net.md_5.bungee.api.chat.ClickEvent
+import net.md_5.bungee.api.chat.ComponentBuilder
 import net.minecraft.server.v1_12_R1.MinecraftServer
 import org.bukkit.GameMode
 import org.bukkit.Material
 import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack
+import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
@@ -31,7 +30,6 @@ import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.player.*
 import org.bukkit.inventory.ItemStack
 import java.util.*
-import java.util.stream.Collectors
 
 object LobbyListener : Listener {
 
@@ -64,6 +62,15 @@ object LobbyListener : Listener {
             height = 0
             location(center.clone().add(-0.5, 4.0, 0.5))
         }
+
+        Anime.createReader("queue:leave") { player, _ ->
+            leave(player)
+            Anime.sendEmptyBuffer("queue:hide", player)
+        }
+    }
+
+    fun leave(player: Player) {
+        client.client.send(PacketQueueLeave(Collections.singletonList(player.uniqueId)))
     }
 
     @EventHandler
@@ -72,32 +79,37 @@ object LobbyListener : Listener {
     }
 
     @EventHandler
-    fun PlayerQuitEvent.handle() {
-        client.client.send(PacketQueueLeave(Collections.singletonList(player.uniqueId)))
-    }
+    fun PlayerQuitEvent.handle()  = leave(player)
 
     private val compass = item {
         type = Material.COMPASS
         text("§bАркады")
         nbt("click", "play")
     }.build()
-    private var cosmeticItem: ItemStack = item {
+    private val cosmeticItem: ItemStack = item {
         type = Material.CLAY_BALL
         text("§aПерсонаж")
         nbt("other", "clothes")
         nbt("click", "menu")
     }.build()
-    private var backItem: ItemStack = item {
+    private val backItem: ItemStack = item {
         type = Material.CLAY_BALL
         text("§cВыйти")
         nbt("other", "cancel")
         nbt("click", "leave")
+    }.build()
+    private val battlepassItem: ItemStack = item {
+        type = Material.CLAY_BALL
+        text("§6BattlePass")
+        nbt("other", "quest_day_booster")
+        nbt("click", "battlepass")
     }.build()
 
     @EventHandler(priority = EventPriority.LOWEST)
     fun PlayerJoinEvent.handle() {
         player.inventory.apply {
             setItem(0, compass)
+            setItem(2, battlepassItem)
             setItem(4, cosmeticItem)
             setItem(8, backItem)
         }
@@ -112,6 +124,12 @@ object LobbyListener : Listener {
             ModTransfer()
                 .json(client.allQueues.map { it.properties })
                 .send("queues:data", player)
+
+            player!!.spigot().sendMessage(
+                *ComponentBuilder("\n§7Новая аркада - §bSkyControl§7, нажми §e§lСЮДА§7 чтобы играть!\n")
+                    .event(ClickEvent(ClickEvent.Action.RUN_COMMAND, "/queue ${Arcades.SKY.queue}"))
+                    .create()
+            )
         }
     }
 

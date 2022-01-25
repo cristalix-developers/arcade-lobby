@@ -1,19 +1,18 @@
 import dev.xdark.clientapi.event.lifecycle.GameLoop
+import dev.xdark.clientapi.resource.ResourceLocation
 import dev.xdark.feder.NetUtil
 import io.netty.buffer.Unpooled
-import ru.cristalix.clientapi.mod
 import ru.cristalix.clientapi.registerHandler
 import ru.cristalix.uiengine.UIEngine
 import ru.cristalix.uiengine.element.RectangleElement
 import ru.cristalix.uiengine.element.TextElement
 import ru.cristalix.uiengine.eventloop.animate
 import ru.cristalix.uiengine.utility.*
-import sun.security.jgss.GSSToken.readInt
-
-const val MARGIN = 5
-const val WIDTH = 140.0
 
 object QueueStatus {
+
+    private const val margin = 3
+    private const val width = 140.0
 
     private var counter = 0
     private var total = 0
@@ -21,8 +20,8 @@ object QueueStatus {
 
     private lateinit var icon: RectangleElement
     private lateinit var title: TextElement
+    private lateinit var online: TextElement
     private lateinit var time: TextElement
-    private lateinit var timer: RectangleElement
     private lateinit var background: RectangleElement
     private lateinit var cancel: RectangleElement
 
@@ -32,44 +31,48 @@ object QueueStatus {
 
         align = TOP
         origin = TOP
-        offset.y += -WIDTH + 15
+        offset.y += -width + 15
 
-        size = V3(WIDTH, WIDTH / 4.0)
+        size = V3(width, width / 4.0 * 1.2857142857)
 
         icon = +rectangle {
-            size = V3(WIDTH / 4.0, WIDTH / 4.0)
+            size = V3(width / 4.0, width / 4.0 * 1.2857142857)
             color = WHITE
             align = TOP_LEFT
             origin = TOP_LEFT
-        }
-
-        timer = +rectangle {
-            size = V3(WIDTH / 4.0, WIDTH / 24.0)
-            align = BOTTOM_LEFT
-            origin = BOTTOM_LEFT
-            color = Color(0, 0, 0, 0.62)
 
             time = +text {
-                align = CENTER
-                origin = CENTER
+                align = TOP
+                origin = TOP
                 color = WHITE
                 shadow = true
-                scale = V3(0.5, 0.5)
+                scale = V3(0.9, 0.9)
+                offset.y += margin
             }
         }
 
         background = +rectangle {
-            size = V3(WIDTH - WIDTH / 4.0, WIDTH / 4.0)
-            color = Color(43, 116, 223, 0.86)
+            size = V3(width - width / 4.0, width / 4.0)
+            color = Color(0, 0, 0, 0.62)
             align = TOP_RIGHT
             origin = TOP_RIGHT
             title = +text {
                 align = TOP_LEFT
                 origin = TOP_LEFT
-                offset.x += MARGIN
-                offset.y += MARGIN + 2
+                offset.x += margin
+                offset.y += margin
                 scale = V3(0.9, 0.9)
-                content = "Игра в кальмара\n§b0 из $need"
+                content = "Загрузка..."
+                color = WHITE
+                shadow = true
+            }
+            online = +text {
+                align = TOP_LEFT
+                origin = TOP_LEFT
+                offset.x += margin
+                offset.y += margin + 13
+                scale = V3(0.9, 0.9)
+                content = "§b0 из $need"
                 color = WHITE
                 shadow = true
             }
@@ -78,17 +81,26 @@ object QueueStatus {
         cancel = +rectangle {
             align = BOTTOM_RIGHT
             origin = BOTTOM_RIGHT
-            size = V3(WIDTH / 4 * 3, WIDTH / 24)
+            size = V3(width / 4 * 3, width / 4.0 * 1.2857142857 - width / 4)
             color = Color(255, 0, 0, 0.62)
+            offset.y -= 1
 
             +text {
                 align = LEFT
                 origin = LEFT
                 color = WHITE
-                offset.x += MARGIN
-                shadow = true
-                scale = V3(0.5, 0.5)
+                scale = V3(0.9, 0.9)
+                offset.x += margin
                 content = "Покинуть очередь"
+            }
+
+            +text {
+                align = RIGHT
+                origin = RIGHT
+                color = WHITE
+                scale = V3(0.9, 0.9)
+                offset.x -= margin
+                content = ">"
             }
 
             onClick {
@@ -111,46 +123,54 @@ object QueueStatus {
                 before = now
                 counter++
                 time.content = "⏰ ${counter / 60}:${(counter % 60).toString().padStart(2, '0')}"
-                title.content = title.content.split("\n")[0] + "\n§b$total из $need"
+                online.content = "§7$total из $need"
             }
         }
 
-  /*      App::class.mod.registerChannel("queue:show") {
-            if (box.enabled)
-                return@registerChannel
-            box.enabled = true
-            box.animate(0.4, Easings.BACK_OUT) {
-                offset.y = 15.0
+        mod.registerChannel("queue:show") {
+            if (!box.enabled) {
+                box.animate(0.4, Easings.BACK_OUT) {
+                    offset.y = 15.0
+                }
             }
 
             before = System.currentTimeMillis()
 
+            val address = NetUtil.readUtf8(this)
             val name = NetUtil.readUtf8(this)
-            val realIcon = load("$name.png", name.hashCode().toString())
             need = readInt()
 
-            title.content = title.content.split("\n")[0] + "\n§b$total из $need"
+            icon.textureLocation = ResourceLocation.of("games5e", address)
+            title.content = name
+            online.content = "§7$total из $need"
 
-            loadTextures(realIcon).thenAccept { icon.textureLocation = realIcon.location }
+            box.enabled = true
         }
 
-        App::class.mod.registerChannel("queue:online") {
-            total = readInt()
+        mod.registerChannel("queue:online") {
+            val address = NetUtil.readUtf8(this)
+            val currentTotal = readInt()
 
-            if (counter > 120) {
+            println("resolve online $address")
+
+            if (address == icon.textureLocation?.path) {
+                total = currentTotal
+                println("update online")
+            }
+
+            if (counter >= 300) {
                 UIEngine.clientApi.clientConnection().sendPayload("queue:leave", Unpooled.buffer())
             }
         }
 
-        App::class.mod.registerChannel("queue:hide") {
+        mod.registerChannel("queue:hide") {
             box.animate(0.25, Easings.QUART_IN) {
-                offset.y = -WIDTH + 15
+                offset.y = -width + 15
             }
             UIEngine.schedule(0.26) {
                 counter = 0
                 box.enabled = false
             }
         }
-    }*/
     }
 }

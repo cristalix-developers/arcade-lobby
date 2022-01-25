@@ -163,12 +163,15 @@ object LootBoxManager : Listener {
         Bukkit.getScheduler().runTaskTimer(app, {
             lootbox.forEach { lootbox ->
                 Bukkit.getOnlinePlayers().minByOrNull { it.location.distanceSquared(lootbox.origin) }?.let {
-                    lootbox.stand.headPose =
-                        lootbox.stand.headPose.setX(Math.toRadians(it.location.pitch.toDouble() - 15))
-                            .setY(Math.toRadians(it.location.yaw.toDouble() + 180))
+                    val pose = lootbox.stand.headPose
+
+                    pose.x = Math.toRadians(it.location.pitch.toDouble() - 15)
+                    pose.y = Math.toRadians(it.location.yaw.toDouble() + 180)
+
+                    lootbox.stand.headPose = pose
                 }
             }
-        }, 10, 1)
+        }, 10, 3)
     }
 
     @EventHandler

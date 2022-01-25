@@ -22,6 +22,8 @@ class Games5eMod : KotlinMod() {
         val queuesScreen = QueuesScreen()
         val gson = Gson()
 
+        QueueStatus
+
         registerChannel("queues:data") {
             queuesScreen.init(gson.fromJson(readUtf8(), Array<QueueProperties>::class.java))
         }

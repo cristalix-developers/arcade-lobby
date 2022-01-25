@@ -1,5 +1,6 @@
 package me.func
 
+import com.mojang.brigadier.arguments.IntegerArgumentType.integer
 import dev.implario.bukkit.platform.Platforms
 import dev.implario.bukkit.world.Label
 import dev.implario.games5e.QueueProperties
@@ -8,11 +9,11 @@ import dev.implario.games5e.node.NoopGameNode
 import dev.implario.games5e.packets.PacketOk
 import dev.implario.games5e.packets.PacketQueueEnter
 import dev.implario.games5e.packets.PacketQueueState
-import dev.implario.games5e.sdk.cristalix.Cristalix
 import dev.implario.games5e.sdk.cristalix.MapLoader
 import dev.implario.games5e.sdk.cristalix.WorldMeta
 import dev.implario.platform.impl.darkpaper.PlatformDarkPaper
 import dev.xdark.feder.NetUtil
+import dev.xdark.feder.collection.DiscardingCollections.queue
 import io.netty.buffer.ByteBuf
 import io.netty.buffer.Unpooled
 import me.func.misc.PersonalizationMenu
@@ -26,13 +27,13 @@ import me.func.protocol.npc.NpcBehaviour
 import net.minecraft.server.v1_12_R1.PacketDataSerializer
 import net.minecraft.server.v1_12_R1.PacketPlayOutCustomPayload
 import org.bukkit.Bukkit
-import org.bukkit.WorldCreator.name
 import org.bukkit.command.CommandExecutor
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer
 import org.bukkit.entity.Player
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.plugin.java.JavaPlugin
 import ru.cristalix.core.CoreApi
+import ru.cristalix.core.formatting.Formatting
 import ru.cristalix.core.inventory.IInventoryService
 import ru.cristalix.core.inventory.InventoryService
 import ru.cristalix.core.lib.Futures
@@ -72,17 +73,18 @@ class App : JavaPlugin() {
         realm.status = RealmStatus.WAITING_FOR_PLAYERS
         realm.isLobbyServer = true
         realm.readableName = "Аркадное Лобби"
+        realm.groupName = "Аркады"
         realm.servicedServers = arrayOf("MURP", *Arcades.values().map { it.name }.toTypedArray())
 
         Platforms.set(PlatformDarkPaper())
-        Arcade.start()
+        Arcade.start(realm.realmId.realmName)
 
         Bukkit.getScheduler().runTaskTimer(app, {
-            arcades.forEach { arcade ->
-                if (arcade.type.queue.isEmpty())
-                    return@forEach
-
-                Bukkit.getOnlinePlayers().forEach { arcade.update(it) }
+            Bukkit.getOnlinePlayers().forEach { player ->
+                Arcades.values().filter { it.queue.isNotEmpty() }.forEach {
+                    val count = Games5e.client.queueOnline[UUID.fromString(it.queue)] ?: -1
+                    ModTransfer().string(it.address).integer(count).send("queue:online", player)
+                }
             }
         }, 5, 10)
 
@@ -107,6 +109,12 @@ class App : JavaPlugin() {
         getCommand("play").setExecutor(CommandExecutor { sender, _, _, _ ->
             if (sender is Player)
                 Anime.sendEmptyBuffer("g5e:open", sender)
+            return@CommandExecutor true
+        })
+
+        getCommand("battlepass").setExecutor(CommandExecutor { sender, _, _, _ ->
+            if (sender is Player)
+                BattlePassManager.show(sender)
             return@CommandExecutor true
         })
 
@@ -135,9 +143,7 @@ class App : JavaPlugin() {
                             party.get().members.toMutableList()
                         else Collections.singletonList(sender.uniqueId)
                         val opt: Optional<PacketQueueState> = Games5e.client.allQueues.stream()
-                            .filter { q: PacketQueueState ->
-                                q.properties.queueId == queueId
-                            }.findFirst()
+                            .filter { it.properties.queueId == queueId }.findFirst()
                         if (!opt.isPresent) return@whenComplete
                         val properties: QueueProperties = opt.get().properties
                         if (properties.strategy == "noop") {
@@ -164,11 +170,22 @@ class App : JavaPlugin() {
                                     )
                                 ).awaitFuture(PacketOk::class.java), 1, TimeUnit.SECONDS
                             ).whenComplete { _, err1 ->
-                                    if (err1 != null) {
-                                        err1.printStackTrace()
-                                        sender.sendMessage("§cОшибка: " + err1::class.java.simpleName)
+                                if (err1 != null) {
+                                    err1.printStackTrace()
+                                    sender.sendMessage("§cОшибка: " + err1::class.java.simpleName)
+                                } else {
+                                    players.mapNotNull { Bukkit.getPlayer(it) }.forEach { player ->
+                                        Anime.killboardMessage(player, Formatting.fine("Вы добавлены в очередь!"))
+                                        Arcades.values().find { it.queue == queueId.toString() }?.let {
+                                            ModTransfer()
+                                                .string(it.address)
+                                                .string(it.title)
+                                                .integer(it.slots)
+                                                .send("queue:show", player)
+                                        }
                                     }
                                 }
+                            }
                         }
                     }
             }
@@ -248,10 +265,6 @@ class App : JavaPlugin() {
                         "Сломался AmongUs? Пиши мне!",
                         "§bvk.com/kostyan_konovalov"
                     ).buttons(
-                        Button("Написать").actions(
-                            Action.command("/msg fiwka1338 Among Us не работает!"),
-                            Action(Actions.CLOSE)
-                        ),
                         Button("Пока").actions(Action(Actions.CLOSE)),
                     )
                 )
@@ -590,7 +603,15 @@ class App : JavaPlugin() {
 
     }
 
-    fun lobbyNpc(blockPos: Triple<Double, Double, Double>, view: Float, name: String?, uuid: UUID, dialog: Dialog?, sitting: Boolean = true, sleeping: Boolean = false) {
+    fun lobbyNpc(
+        blockPos: Triple<Double, Double, Double>,
+        view: Float,
+        name: String?,
+        uuid: UUID,
+        dialog: Dialog?,
+        sitting: Boolean = true,
+        sleeping: Boolean = false
+    ) {
         Npc.npc {
             this.x = blockPos.first
             this.y = blockPos.second
