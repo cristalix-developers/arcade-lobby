@@ -33,7 +33,7 @@ class Games5eMod : KotlinMod() {
         }
 
         registerChannel("g5e:q") {
-            for (i in 0..readVarInt()) {
+            repeat(readVarInt()) {
                 val id = readId()
                 val online = readVarInt()
                 val queue = readVarInt()
