@@ -79,10 +79,11 @@ object BattlePassManager {
 
     fun show(player: Player) {
         BattlePass.send(player, battlepass)
-        BattlePass.show(
-            player,
-            battlepass,
-            Arcade.getArcadeData(player).progress
-        )
+        var progress = Arcade.getArcadeData(player).progress
+
+        if (progress == null)
+            progress = BattlePassUserData(5, false)
+
+        BattlePass.show(player, battlepass, progress)
     }
 }

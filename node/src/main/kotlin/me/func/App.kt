@@ -17,7 +17,9 @@ import dev.xdark.feder.collection.DiscardingCollections.queue
 import io.netty.buffer.ByteBuf
 import io.netty.buffer.Unpooled
 import io.netty.channel.unix.NativeInetAddress.address
+import me.func.battlepass.BattlePassUtil
 import me.func.battlepass.quest.ArcadeType
+import me.func.battlepass.quest.QuestGenerator
 import me.func.misc.PersonalizationMenu
 import me.func.mod.Anime
 import me.func.mod.Anime.title
@@ -118,6 +120,13 @@ class App : JavaPlugin() {
         getCommand("battlepass").setExecutor(CommandExecutor { sender, _, _, _ ->
             if (sender is Player)
                 BattlePassManager.show(sender)
+            return@CommandExecutor true
+        })
+
+
+        getCommand("reroll").setExecutor(CommandExecutor { sender, _, _, _ ->
+            if (sender is Player && sender.isOp)
+                Arcade.getArcadeData(sender).data = QuestGenerator.generate()
             return@CommandExecutor true
         })
 
