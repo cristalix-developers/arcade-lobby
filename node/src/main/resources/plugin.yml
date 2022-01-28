@@ -22,3 +22,6 @@ commands:
   queue:
     description: Игра!!!
     usage: /<queue>
+  reroll:
+    description: Сбросить задания BattlePass
+    usage: /<reroll>
