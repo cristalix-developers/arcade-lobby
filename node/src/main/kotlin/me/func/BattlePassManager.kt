@@ -1,14 +1,13 @@
 package me.func
 
-import me.func.donate.DonatePosition
+import me.func.battlepass.BattlePassUtil
 import me.func.donate.impl.*
 import me.func.mod.battlepass.BattlePass
 import me.func.mod.battlepass.BattlePass.sale
 import me.func.mod.battlepass.BattlePassPageAdvanced
 import me.func.protocol.battlepass.BattlePassUserData
-import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack
 import org.bukkit.entity.Player
-import org.bukkit.inventory.ItemStack
+import java.util.function.Function
 
 object BattlePassManager {
 
@@ -70,13 +69,20 @@ object BattlePassManager {
                 ),
             )
         )
-        sale(50.0)
+        sale(20.0)
         facade.tags.add("Выполняйте квесты - получайте призы!")
         facade.tags.add("BattlePass завершится в 01.04.2022")
+        questStatusUpdater = Function { player ->
+            BattlePassUtil.getQuestLore(player)
+        }
     }
 
     fun show(player: Player) {
         BattlePass.send(player, battlepass)
-        BattlePass.show(player, battlepass, BattlePassUserData(100, false))
+        BattlePass.show(
+            player,
+            battlepass,
+            Arcade.getArcadeData(player).progress
+        )
     }
 }

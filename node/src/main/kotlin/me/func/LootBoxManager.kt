@@ -88,7 +88,7 @@ object LootBoxManager : Listener {
         .provider(object : InventoryProvider {
             override fun init(player: Player, contents: InventoryContents) {
                 Arcade.get(player)?.let {
-                    val donate = Arcade.getDonate(player)
+                    val donate = Arcade.getArcadeData(player)
 
                     contents.setLayout(
                         "XOOOOOOOX",

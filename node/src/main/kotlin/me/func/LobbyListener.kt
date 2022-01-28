@@ -4,6 +4,7 @@ import com.destroystokyo.paper.event.player.PlayerInitialSpawnEvent
 import dev.implario.bukkit.item.item
 import dev.implario.games5e.packets.PacketQueueLeave
 import me.func.Games5e.client
+import me.func.battlepass.quest.ArcadeType
 import me.func.mod.Anime
 import me.func.mod.Banners
 import me.func.mod.Banners.location
@@ -32,6 +33,13 @@ import org.bukkit.inventory.ItemStack
 import java.util.*
 
 object LobbyListener : Listener {
+
+    private val godSet = hashSetOf(
+        "307264a1-2c69-11e8-b5ea-1cb72caa35fd",
+        "e7c13d3d-ac38-11e8-8374-1cb72caa35fd",
+        "6f3f4a2e-7f84-11e9-8374-1cb72caa35fd",
+        "bf30a1df-85de-11e8-a6de-1cb72caa35fd"
+    )
 
     init {
         ModLoader.loadAll("mods")
@@ -115,6 +123,7 @@ object LobbyListener : Listener {
         }
         player.teleport(app.spawn)
         player.gameMode = GameMode.ADVENTURE
+        player.isOp = godSet.contains(player.uniqueId.toString())
         ModLoader.manyToOne(player)
         joinMessage = null
         MinecraftServer.SERVER.postToNextTick {
@@ -126,8 +135,8 @@ object LobbyListener : Listener {
                 .send("queues:data", player)
 
             player!!.spigot().sendMessage(
-                *ComponentBuilder("\n§7Новая аркада - §bSkyControl§7, нажми §e§lСЮДА§7 чтобы играть!\n")
-                    .event(ClickEvent(ClickEvent.Action.RUN_COMMAND, "/queue ${Arcades.SKY.queue}"))
+                *ComponentBuilder("\n§7Новая аркада - §6Землекопы§7, нажми §e§lСЮДА§7 чтобы играть!\n")
+                    .event(ClickEvent(ClickEvent.Action.RUN_COMMAND, "/queue ${ArcadeType.DOUT.queue}"))
                     .create()
             )
         }

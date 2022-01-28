@@ -16,8 +16,11 @@ import dev.xdark.feder.NetUtil
 import dev.xdark.feder.collection.DiscardingCollections.queue
 import io.netty.buffer.ByteBuf
 import io.netty.buffer.Unpooled
+import io.netty.channel.unix.NativeInetAddress.address
+import me.func.battlepass.quest.ArcadeType
 import me.func.misc.PersonalizationMenu
 import me.func.mod.Anime
+import me.func.mod.Anime.title
 import me.func.mod.Npc
 import me.func.mod.Npc.npc
 import me.func.mod.Npc.onClick
@@ -28,6 +31,7 @@ import net.minecraft.server.v1_12_R1.PacketDataSerializer
 import net.minecraft.server.v1_12_R1.PacketPlayOutCustomPayload
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandExecutor
+import org.bukkit.craftbukkit.v1_12_R1.CraftEquipmentSlot.slots
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer
 import org.bukkit.entity.Player
 import org.bukkit.inventory.EquipmentSlot
@@ -55,7 +59,6 @@ class App : JavaPlugin() {
 
     val map = WorldMeta(MapLoader.load("func", "basic"))
     val client = CoordinatorClient(NoopGameNode())
-    private var arcades: List<ArcadeNode> = mutableListOf()
     val spawn: Label = map.getLabel("spawn").apply {
         x += 0.5
         z += 0.5
@@ -74,14 +77,14 @@ class App : JavaPlugin() {
         realm.isLobbyServer = true
         realm.readableName = "Аркадное Лобби"
         realm.groupName = "Аркады"
-        realm.servicedServers = arrayOf("MURP", *Arcades.values().map { it.name }.toTypedArray())
+        realm.servicedServers = arrayOf("MURP", *ArcadeType.values().map { it.name }.toTypedArray())
 
         Platforms.set(PlatformDarkPaper())
         Arcade.start(realm.realmId.realmName)
 
         Bukkit.getScheduler().runTaskTimer(app, {
             Bukkit.getOnlinePlayers().forEach { player ->
-                Arcades.values().filter { it.queue.isNotEmpty() }.forEach {
+                ArcadeType.values().filter { it.queue.isNotEmpty() }.forEach {
                     val count = Games5e.client.queueOnline[UUID.fromString(it.queue)] ?: -1
                     ModTransfer().string(it.address).integer(count).send("queue:online", player)
                 }
@@ -176,7 +179,7 @@ class App : JavaPlugin() {
                                 } else {
                                     players.mapNotNull { Bukkit.getPlayer(it) }.forEach { player ->
                                         Anime.killboardMessage(player, Formatting.fine("Вы добавлены в очередь!"))
-                                        Arcades.values().find { it.queue == queueId.toString() }?.let {
+                                        ArcadeType.values().find { it.queue == queueId.toString() }?.let {
                                             ModTransfer()
                                                 .string(it.address)
                                                 .string(it.title)
