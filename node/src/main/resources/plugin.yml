@@ -25,3 +25,15 @@ commands:
   reroll:
     description: Сбросить задания BattlePass
     usage: /<reroll>
+  lootbox:
+    description: Выдать себе лутбокс
+    usage: /<lootbox>
+  money:
+    description: Выдать себе денег
+    usage: /<money> <value>
+  exp:
+    description: Дает вам опыт BattlePass
+    usage: /<exp> <player> <value>
+  pers:
+    description: Дает вам персу
+    usage: /<pers> <player> <uuid>

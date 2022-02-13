@@ -32,6 +32,7 @@ import ru.cristalix.core.inventory.ClickableItem
 import ru.cristalix.core.inventory.ControlledInventory
 import ru.cristalix.core.inventory.InventoryContents
 import ru.cristalix.core.inventory.InventoryProvider
+import sun.audio.AudioPlayer.player
 
 object LootBoxManager : Listener {
 
@@ -154,13 +155,16 @@ object LootBoxManager : Listener {
                         text("§bКак их получить?\n\n§7Побеждайте в игре,\n§7и с шансом §a10%\n§7вы получите §bлутбокс§7.")
                     }.build()))
                     contents.fillMask('X', ClickableItem.empty(ItemStack(Material.AIR)))
-
                 }
             }
         }).build()
 
     init {
+        var counter = 0
+
         Bukkit.getScheduler().runTaskTimer(app, {
+            counter++
+
             lootbox.forEach { lootbox ->
                 Bukkit.getOnlinePlayers().minByOrNull { it.location.distanceSquared(lootbox.origin) }?.let {
                     val pose = lootbox.stand.headPose
@@ -169,6 +173,24 @@ object LootBoxManager : Listener {
                     pose.y = Math.toRadians(it.location.yaw.toDouble() + 180)
 
                     lootbox.stand.headPose = pose
+                }
+
+                if (counter % 30 == 0) {
+                    Bukkit.getOnlinePlayers().forEach { player ->
+                        Arcade.get(player)?.let { data ->
+                            lootbox.banner.content = "§bЛутбокс\n§fДоступно ${data.crates} ${
+                                Humanize.plurals(
+                                    "штука",
+                                    "штуки",
+                                    "штук",
+                                    data.crates
+                                )
+                            }\n"
+                            Banners.content(player, lootbox.banner.uuid, lootbox.banner.content)
+
+                            ModTransfer().integer(data.money.toInt()).send("arcade:money", player)
+                        }
+                    }
                 }
             }
         }, 10, 3)
@@ -181,7 +203,7 @@ object LootBoxManager : Listener {
 
     @EventHandler
     fun PlayerInteractAtEntityEvent.handle() {
-        if (clickedEntity.type == EntityType.ARMOR_STAND)
+        if (clickedEntity.type == EntityType.ARMOR_STAND && (clickedEntity as ArmorStand).helmet.getType() == Material.ENDER_CHEST)
             lootboxMenu.open(player)
     }
 

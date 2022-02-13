@@ -151,8 +151,6 @@ object QueueStatus {
             val address = NetUtil.readUtf8(this)
             val currentTotal = readInt()
 
-            println("resolve online $address")
-
             if (address == icon.textureLocation?.path) {
                 total = currentTotal
                 println("update online")

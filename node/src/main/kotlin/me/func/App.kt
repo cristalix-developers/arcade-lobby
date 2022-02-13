@@ -1,6 +1,6 @@
 package me.func
 
-import com.mojang.brigadier.arguments.IntegerArgumentType.integer
+import dev.implario.bukkit.entity.StandHelper
 import dev.implario.bukkit.platform.Platforms
 import dev.implario.bukkit.world.Label
 import dev.implario.games5e.QueueProperties
@@ -13,16 +13,12 @@ import dev.implario.games5e.sdk.cristalix.MapLoader
 import dev.implario.games5e.sdk.cristalix.WorldMeta
 import dev.implario.platform.impl.darkpaper.PlatformDarkPaper
 import dev.xdark.feder.NetUtil
-import dev.xdark.feder.collection.DiscardingCollections.queue
 import io.netty.buffer.ByteBuf
 import io.netty.buffer.Unpooled
-import io.netty.channel.unix.NativeInetAddress.address
-import me.func.battlepass.BattlePassUtil
 import me.func.battlepass.quest.ArcadeType
 import me.func.battlepass.quest.QuestGenerator
 import me.func.misc.PersonalizationMenu
 import me.func.mod.Anime
-import me.func.mod.Anime.title
 import me.func.mod.Npc
 import me.func.mod.Npc.npc
 import me.func.mod.Npc.onClick
@@ -32,12 +28,13 @@ import me.func.protocol.npc.NpcBehaviour
 import net.minecraft.server.v1_12_R1.PacketDataSerializer
 import net.minecraft.server.v1_12_R1.PacketPlayOutCustomPayload
 import org.bukkit.Bukkit
+import org.bukkit.Location
 import org.bukkit.command.CommandExecutor
-import org.bukkit.craftbukkit.v1_12_R1.CraftEquipmentSlot.slots
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer
 import org.bukkit.entity.Player
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.plugin.java.JavaPlugin
+import pw.lach.p13n.network.tower.GiveModelToUserPackage
 import ru.cristalix.core.CoreApi
 import ru.cristalix.core.formatting.Formatting
 import ru.cristalix.core.inventory.IInventoryService
@@ -54,6 +51,8 @@ import ru.cristalix.core.transfer.ITransferService
 import ru.cristalix.core.transfer.TransferService
 import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.math.cos
+import kotlin.math.sin
 
 lateinit var app: App
 
@@ -117,7 +116,7 @@ class App : JavaPlugin() {
             return@CommandExecutor true
         })
 
-        getCommand("battlepass").setExecutor(CommandExecutor { sender, _, _, _ ->
+        getCommand("battlepass").setExecutor(CommandExecutor { sender, _, _, args ->
             if (sender is Player)
                 BattlePassManager.show(sender)
             return@CommandExecutor true
@@ -127,6 +126,36 @@ class App : JavaPlugin() {
         getCommand("reroll").setExecutor(CommandExecutor { sender, _, _, _ ->
             if (sender is Player && sender.isOp)
                 Arcade.getArcadeData(sender).data = QuestGenerator.generate()
+            return@CommandExecutor true
+        })
+
+        getCommand("lootbox").setExecutor(CommandExecutor { sender, _, _, _ ->
+            if (sender is Player && sender.isOp)
+                Arcade.giveLootbox(sender.uniqueId)
+            return@CommandExecutor true
+        })
+
+        getCommand("exp").setExecutor(CommandExecutor { sender, _, _, args ->
+            if (sender is Player && sender.isOp) {
+                Arcade.getArcadeData(Bukkit.getPlayer(args[0])).progress!!.exp += args[1].toInt()
+            }
+            return@CommandExecutor true
+        })
+
+        getCommand("money").setExecutor(CommandExecutor { sender, _, _, args ->
+            if (sender is Player && sender.isOp)
+                Arcade.deposit(sender, args.first().toInt())
+            return@CommandExecutor true
+        })
+
+        getCommand("pers").setExecutor(CommandExecutor { sender, _, _, args ->
+            if (sender is Player && sender.isOp) {
+                CoreApi.get().socketClient.write(
+                    GiveModelToUserPackage(
+                        Bukkit.getPlayer(args[0]).uniqueId, UUID.fromString(args[1])
+                    )
+                )
+            }
             return@CommandExecutor true
         })
 
@@ -204,7 +233,7 @@ class App : JavaPlugin() {
             return@CommandExecutor true
         })
 
-        lobbyNpc(
+        /*lobbyNpc(
             Triple(-17.5, 88.0, -13.5),
             -115.0f,
             "func",
@@ -218,13 +247,13 @@ class App : JavaPlugin() {
                         "дифференциальных форм на гладком",
                         "многообразии."
                     ).buttons(
-                        Button("Нинавижу когомологии").actions(Action(Actions.CLOSE)),
+                        Button("Ненавижу когомологии").actions(Action(Actions.CLOSE)),
                         Button("Сложно...").actions(Action(Actions.CLOSE)),
                         Button("Ок").actions(Action(Actions.CLOSE)),
                     )
                 )
             ),
-        )
+        )*/
 
         lobbyNpc(
             Triple(-17.5, 88.0, -14.5),
@@ -580,15 +609,20 @@ class App : JavaPlugin() {
         val dialog = Dialog(
             Entrypoint(
                 "cristalix",
-                "Команда Cristalix",
+                "Новости",
                 Screen(
-                    "Привет. Это будущее.",
-                    "2022 обещает быть волшебным.",
-                    "Это место является экспериментальным и активно дорабатывается.",
-                    "Спасибо вам, игроки <3"
+                    "Привет. Мы открыли новый режим - Мосты!",
+                    "Сейчас дорабатываем Игры разума и запускаем",
+                    "BattlePass с кучей ценных наград: персонализация",
+                    "на мини-играх, лутбоксы, монеты, коробки с граффити.",
+                    "А скоро мы покажем вам абсолютно новый режим!"
                 ).buttons(
-                    Button("Пока").actions(Action(Actions.CLOSE)),
-                    Button("Спасибо!").actions(Action(Actions.CLOSE)),
+                    Button("Ок").actions(Action(Actions.CLOSE)),
+                    Button("Попробовать мосты").actions(
+                        Action.command("/queue ${ArcadeType.TBR.queue}"),
+                        Action(Actions.CLOSE)
+                    ),
+                    Button("BattlePass").actions(Action.command("/battlepass"), Action(Actions.CLOSE)),
                 )
             )
         )
@@ -603,8 +637,8 @@ class App : JavaPlugin() {
 
             name = "Команда Cristalix"
 
-            skinUrl = "https://implario.dev/Builder.png"
-            skinDigest = "JHIhuhgyushgsufsghoyufsgfsussf"
+            skinUrl = "https://webdata.c7x.dev/textures/skin/307264a1-2c69-11e8-b5ea-1cb72caa35fd"
+            skinDigest = "JHIhuhgyusgfsufsghoyufsgfsussf"
 
             onClick {
                 if (it.hand == EquipmentSlot.OFF_HAND)
@@ -612,6 +646,29 @@ class App : JavaPlugin() {
                 Anime.dialog(it.player, dialog, "cristalix")
             }
         }
+
+        var angle = 0.0
+        val radius = 10
+        val speed = 0.5
+        val stands = MutableList(20) {
+            StandHelper(Location(spawn.world, 0.0, 40.0, 0.0)).gravity(false).build()
+        }
+        val alpha = 2 * Math.PI / stands.size
+
+        Bukkit.getScheduler().runTaskTimer(this, {
+            angle += Math.PI / 32.0
+
+            stands.forEachIndexed { index, stand ->
+                stand.teleport(
+                    Location(
+                        spawn.world,
+                        cos(index * alpha + angle * speed) * radius,
+                        40 + sin(index * alpha + angle * speed) * radius,
+                        sin(angle + index * alpha)
+                    )
+                )
+            }
+        }, 0, 1)
 
     }
 
@@ -648,5 +705,4 @@ class App : JavaPlugin() {
             }
         }
     }
-
 }

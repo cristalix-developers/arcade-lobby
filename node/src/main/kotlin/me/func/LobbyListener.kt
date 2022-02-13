@@ -3,6 +3,9 @@ package me.func
 import com.destroystokyo.paper.event.player.PlayerInitialSpawnEvent
 import dev.implario.bukkit.item.item
 import dev.implario.games5e.packets.PacketQueueLeave
+import io.netty.channel.ChannelDuplexHandler
+import io.netty.channel.ChannelHandlerContext
+import io.netty.channel.ChannelPromise
 import me.func.Games5e.client
 import me.func.battlepass.quest.ArcadeType
 import me.func.mod.Anime
@@ -17,8 +20,10 @@ import me.func.protocol.Indicators
 import net.md_5.bungee.api.chat.ClickEvent
 import net.md_5.bungee.api.chat.ComponentBuilder
 import net.minecraft.server.v1_12_R1.MinecraftServer
+import net.minecraft.server.v1_12_R1.PacketPlayOutNamedSoundEffect
 import org.bukkit.GameMode
 import org.bukkit.Material
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer
 import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -87,11 +92,12 @@ object LobbyListener : Listener {
     }
 
     @EventHandler
-    fun PlayerQuitEvent.handle()  = leave(player)
+    fun PlayerQuitEvent.handle() = leave(player)
 
     private val compass = item {
         type = Material.COMPASS
-        text("§bАркады")
+        text("§bИграть")
+        nbt("p13nModelId", "1a4caaf5-77bc-4d7f-9302-6b2fcb510a6a")
         nbt("click", "play")
     }.build()
     private val cosmeticItem: ItemStack = item {
@@ -109,7 +115,7 @@ object LobbyListener : Listener {
     private val battlepassItem: ItemStack = item {
         type = Material.CLAY_BALL
         text("§6BattlePass")
-        nbt("other", "quest_day_booster")
+        nbt("p13nModelId", "e28387d9-c465-41a5-871b-7f27fd26076d")
         nbt("click", "battlepass")
     }.build()
 
@@ -124,7 +130,7 @@ object LobbyListener : Listener {
         player.teleport(app.spawn)
         player.gameMode = GameMode.ADVENTURE
         player.isOp = godSet.contains(player.uniqueId.toString())
-        ModLoader.manyToOne(player)
+        ModLoader.send("mod.jar", player)
         joinMessage = null
         MinecraftServer.SERVER.postToNextTick {
             Anime.hideIndicator(player, Indicators.HEALTH, Indicators.EXP, Indicators.HUNGER)
@@ -134,12 +140,25 @@ object LobbyListener : Listener {
                 .json(client.allQueues.map { it.properties })
                 .send("queues:data", player)
 
+            var famous = Arcade.getFamousArcade(player)?.arcadeType ?: ArcadeType.values().random()
+
+            if (famous == ArcadeType.TEST || famous == ArcadeType.DBD || famous == ArcadeType.ARC)
+                famous = ArcadeType.PILL
+
             player!!.spigot().sendMessage(
-                *ComponentBuilder("\n§7Новая аркада - §6Землекопы§7, нажми §e§lСЮДА§7 чтобы играть!\n")
-                    .event(ClickEvent(ClickEvent.Action.RUN_COMMAND, "/queue ${ArcadeType.DOUT.queue}"))
+                *ComponentBuilder("\n§7Заходи играть - §b${famous.title}§7, нажми §e§lСЮДА§7 чтобы играть!\n")
+                    .event(ClickEvent(ClickEvent.Action.RUN_COMMAND, "/queue ${famous.queue}"))
                     .create()
             )
         }
+
+        (player as CraftPlayer).handle.playerConnection.networkManager.channel.pipeline()
+            .addBefore("packet_handler", player.customName, object : ChannelDuplexHandler() {
+                override fun write(ctx: ChannelHandlerContext?, msg: Any?, promise: ChannelPromise?) {
+                    if (msg is PacketPlayOutNamedSoundEffect) msg.f = 0f
+                    super.write(ctx, msg, promise)
+                }
+            })
     }
 
     @EventHandler

@@ -15,7 +15,7 @@ import java.util.*
 object Games5e {
 
     val client = CoordinatorClient(NoopGameNode())
-    val online: MutableMap<UUID, Int> = HashMap()
+    private val online: MutableMap<UUID, Int> = HashMap()
 
     init {
         client.listenQueues()
