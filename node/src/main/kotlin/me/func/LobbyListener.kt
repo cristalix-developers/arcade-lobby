@@ -22,6 +22,7 @@ import net.md_5.bungee.api.chat.ComponentBuilder
 import net.minecraft.server.v1_12_R1.MinecraftServer
 import net.minecraft.server.v1_12_R1.PacketPlayOutNamedSoundEffect
 import org.bukkit.GameMode
+import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer
 import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack
@@ -43,7 +44,8 @@ object LobbyListener : Listener {
         "307264a1-2c69-11e8-b5ea-1cb72caa35fd",
         "e7c13d3d-ac38-11e8-8374-1cb72caa35fd",
         "6f3f4a2e-7f84-11e9-8374-1cb72caa35fd",
-        "bf30a1df-85de-11e8-a6de-1cb72caa35fd"
+        "bf30a1df-85de-11e8-a6de-1cb72caa35fd",
+        "303dc644-2c69-11e8-b5ea-1cb72caa35fd"
     )
 
     init {
@@ -121,6 +123,8 @@ object LobbyListener : Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     fun PlayerJoinEvent.handle() {
+        player.setResourcePack("", "")
+
         player.inventory.apply {
             setItem(0, compass)
             setItem(2, battlepassItem)
@@ -132,6 +136,7 @@ object LobbyListener : Listener {
         player.isOp = godSet.contains(player.uniqueId.toString())
         ModLoader.send("mod.jar", player)
         joinMessage = null
+
         MinecraftServer.SERVER.postToNextTick {
             Anime.hideIndicator(player, Indicators.HEALTH, Indicators.EXP, Indicators.HUNGER)
             Anime.topMessage(player, "Загрузка аркадного профиля ${player.playerListName}")
@@ -150,6 +155,8 @@ object LobbyListener : Listener {
                     .event(ClickEvent(ClickEvent.Action.RUN_COMMAND, "/queue ${famous.queue}"))
                     .create()
             )
+
+            Arcade.getArcadeData(player).mask.setMask(player)
         }
 
         (player as CraftPlayer).handle.playerConnection.networkManager.channel.pipeline()

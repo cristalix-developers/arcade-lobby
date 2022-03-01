@@ -59,7 +59,7 @@ object QueueStatus {
             title = +text {
                 align = TOP_LEFT
                 origin = TOP_LEFT
-                offset.x += margin
+                offset.x += margin + 0.2
                 offset.y += margin
                 scale = V3(0.9, 0.9)
                 content = "Загрузка..."
@@ -69,7 +69,7 @@ object QueueStatus {
             online = +text {
                 align = TOP_LEFT
                 origin = TOP_LEFT
-                offset.x += margin
+                offset.x += margin + 0.2
                 offset.y += margin + 13
                 scale = V3(0.9, 0.9)
                 content = "§b0 из $need"
@@ -90,7 +90,7 @@ object QueueStatus {
                 origin = LEFT
                 color = WHITE
                 scale = V3(0.9, 0.9)
-                offset.x += margin
+                offset.x += margin + 0.2
                 content = "Покинуть очередь"
             }
 

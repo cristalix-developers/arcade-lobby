@@ -37,3 +37,6 @@ commands:
   pers:
     description: Дает вам персу
     usage: /<pers> <player> <uuid>
+  discord:
+    description: Показывает вам ссылку на дискорд в чат
+    usage: /<discord>

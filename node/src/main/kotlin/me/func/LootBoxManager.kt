@@ -32,7 +32,6 @@ import ru.cristalix.core.inventory.ClickableItem
 import ru.cristalix.core.inventory.ControlledInventory
 import ru.cristalix.core.inventory.InventoryContents
 import ru.cristalix.core.inventory.InventoryProvider
-import sun.audio.AudioPlayer.player
 
 object LootBoxManager : Listener {
 
