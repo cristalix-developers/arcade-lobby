@@ -25,7 +25,7 @@ object AdminCommands {
         register("reroll") { sender, _ -> Arcade.getArcadeData(sender).data = QuestGenerator.generate() }
         register("lootbox") { sender, _ -> Arcade.giveLootbox(sender.uniqueId) }
         register("exp") { _, args -> Arcade.getArcadeData(Bukkit.getPlayer(args[0])).progress!!.exp += args[1].toInt() }
-        register("money") { sender, args -> Arcade.deposit(sender, args.first().toInt()) }
+        register("money") { _, args -> Arcade.deposit(Bukkit.getPlayer(args[0]), args[1].toInt()) }
         register("pers") { _, args ->
             CoreApi.get().socketClient.write(
                 GiveModelToUserPackage(
@@ -35,5 +35,4 @@ object AdminCommands {
             )
         }
     }
-
 }
