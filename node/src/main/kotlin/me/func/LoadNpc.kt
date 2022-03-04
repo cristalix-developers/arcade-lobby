@@ -485,7 +485,7 @@ object LoadNpc : Listener {
                     "можете напрямую нам писать их через",
                     "/bug или в Discord."
                 ).buttons(
-                    Button("Ок").actions(Action(Actions.CLOSE)),
+                    Button("Закрыть").actions(Action(Actions.CLOSE)),
                     Button("Случайная игра").actions(
                         Action.command("/queue ${ArcadeType.values().random().queue}"),
                         Action(Actions.CLOSE)
