@@ -103,7 +103,7 @@ object LootBoxManager : Listener {
                             player.closeInventory()
                             val balance = Arcade.getMoney(player)
                             if (balance < lootboxPrice) {
-                                Anime.killboardMessage(player, Formatting.error("Не хватает монет :("))
+                                Anime.killboardMessage(player, Formatting.error("Не хватает жетонов :("))
                                 return@of
                             }
                             Arcade.setMoney(player, balance - lootboxPrice)
@@ -117,19 +117,21 @@ object LootBoxManager : Listener {
                                 counter++
                             }
 
-                            val moneyDrop = (Math.random() * 20 + 10).toInt()
+                            val moneyDrop = (Math.random() * 50 + 20).toInt() * (drop.getRare().ordinal + 1)
 
                             ModTransfer()
-                                .integer(1)
+                                .integer(2)
                                 .item(CraftItemStack.asNMSCopy(drop.getIcon()))
                                 .string(drop.getTitle())
                                 .string(drop.getRare().name)
-                                .string("")
+                                .item(MoneyKit.BIG.getIcon())
+                                .string("§d$moneyDrop ${Humanize.plurals("жетон", "жетона", "жетонов", moneyDrop)}")
+                                .string(DropRare.EPIC.name)
                                 .send("lootbox", player)
 
                             if (donate.donate.contains(drop)) {
                                 val giveBack = (drop.getRare().ordinal + 1) * 48
-                                player.sendMessage(Formatting.fine("§aДубликат! §fЗаменен на §e$giveBack монет§f."))
+                                player.sendMessage(Formatting.fine("§aДубликат! §fЗаменен на §d$giveBack жетонов§f."))
                                 Arcade.deposit(player, giveBack)
                             } else {
                                 donate.donate.add(drop)

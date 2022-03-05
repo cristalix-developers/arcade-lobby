@@ -65,6 +65,7 @@ class Games5eMod : KotlinMod() {
         money = UIEngine.overlayContext + text {
             align = BOTTOM
             origin = BOTTOM
+            shadow = true
             color = Color(238, 130, 238)
             offset.y -= 30
         }

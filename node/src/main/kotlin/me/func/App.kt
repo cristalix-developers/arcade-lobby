@@ -8,10 +8,7 @@ import dev.implario.games5e.sdk.cristalix.MapLoader
 import dev.implario.games5e.sdk.cristalix.WorldMeta
 import dev.implario.platform.impl.darkpaper.PlatformDarkPaper
 import me.func.battlepass.quest.ArcadeType
-import me.func.mod.Anime
-import me.func.mod.Kit
 import org.bukkit.Bukkit
-import org.bukkit.WorldCreator.name
 import org.bukkit.plugin.java.JavaPlugin
 import ru.cristalix.core.CoreApi
 import ru.cristalix.core.inventory.IInventoryService
