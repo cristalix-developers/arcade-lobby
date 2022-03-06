@@ -22,6 +22,14 @@ object AdminCommands {
             })
         }
 
+        register("bpgive") { _, args ->
+            Arcade.getArcadeData(Bukkit.getPlayer(args[1])).let {
+                if (args[0] == "advanced")
+                    it.progress?.advanced = true
+                if (args[1] == "exp")
+                    it.progress?.exp = args[2].toInt()
+            }
+        }
         register("reroll") { sender, _ -> Arcade.getArcadeData(sender).data = QuestGenerator.generate() }
         register("lootbox") { sender, _ -> Arcade.giveLootbox(sender.uniqueId) }
         register("exp") { _, args -> Arcade.getArcadeData(Bukkit.getPlayer(args[0])).progress!!.exp += args[1].toInt() }

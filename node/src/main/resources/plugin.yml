@@ -40,3 +40,6 @@ commands:
   discord:
     description: Показывает вам ссылку на дискорд в чат
     usage: /<discord>
+  bpgive:
+    description: Выдать баттлпасс игроку
+    usage: /<bpgive> <exp/advanced> <nick>
