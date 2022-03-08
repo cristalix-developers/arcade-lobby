@@ -486,12 +486,12 @@ object LoadNpc : Listener {
                     "/bug или в Discord."
                 ).buttons(
                     Button("Закрыть").actions(Action(Actions.CLOSE)),
-                    Button("Случайная игра").actions(
-                        Action.command("/queue ${ArcadeType.values().random().queue}"),
+                    Button("Быстрая игра").actions(
+                        Action.command("/random"),
                         Action(Actions.CLOSE)
                     ),
                     Button("BattlePass").actions(Action.command("/battlepass"), Action(Actions.CLOSE)),
-                    Button("Хочу в Discord").actions(Action.command("/discord"), Action(Actions.CLOSE))
+                    Button("Открыть Discord").actions(Action.command("/discord"), Action(Actions.CLOSE))
                 )
             )
         )
@@ -504,7 +504,7 @@ object LoadNpc : Listener {
             yaw = 115f
             behaviour = NpcBehaviour.STARE_AT_PLAYER
 
-            name = "Команда Cristalix"
+            name = "Аркадный Бот"
 
             skinUrl = "https://webdata.c7x.dev/textures/skin/d074b53b-929a-11eb-acca-1cb72caa35fd"
             skinDigest = "JHIhuhgyusgfsudgdgfgdgdgussf"

@@ -124,6 +124,7 @@ object LobbyListener : Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     fun PlayerJoinEvent.handle() {
+        player.setResourcePack("", "")
         player.inventory.apply {
             setItem(0, compass)
             setItem(2, battlepassItem)

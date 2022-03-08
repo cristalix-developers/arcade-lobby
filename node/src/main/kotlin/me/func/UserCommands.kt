@@ -1,5 +1,6 @@
 package me.func
 
+import me.func.battlepass.quest.ArcadeType
 import me.func.misc.PersonalizationMenu
 import me.func.mod.Anime
 import net.md_5.bungee.api.chat.ClickEvent
@@ -8,6 +9,7 @@ import org.bukkit.command.CommandExecutor
 import org.bukkit.entity.Player
 import ru.cristalix.core.realm.RealmId
 import ru.cristalix.core.transfer.ITransferService
+import java.util.*
 
 object UserCommands {
 
@@ -30,6 +32,15 @@ object UserCommands {
                 *ComponentBuilder("\n§7Бесят баги? Пиши сюда - §bhttps://discord.gg/ra2uwWv9QV§7, помоги нам стать лучше!\n")
                     .event(ClickEvent(ClickEvent.Action.OPEN_URL, "https://discord.gg/ra2uwWv9QV§7"))
                     .create()
+            )
+        }
+        register("random") { sender, _ ->
+            sender.performCommand(
+                "queue ${
+                    Games5e.client.queueOnline.maxByOrNull { it.value }?.key ?: UUID.fromString(
+                        ArcadeType.values().random().queue
+                    )
+                }"
             )
         }
     }

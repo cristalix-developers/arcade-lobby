@@ -19,6 +19,9 @@ commands:
   play:
     description: Открывает компасс
     usage: /<play>
+  random:
+    description: Запускает случайную очередь
+    usage: /<random>
   queue:
     description: Игра!!!
     usage: /<queue>
