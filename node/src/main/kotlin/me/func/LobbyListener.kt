@@ -124,8 +124,6 @@ object LobbyListener : Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     fun PlayerJoinEvent.handle() {
-        player.setResourcePack("", "")
-
         player.inventory.apply {
             setItem(0, compass)
             setItem(2, battlepassItem)
@@ -135,10 +133,11 @@ object LobbyListener : Listener {
         player.teleport(app.spawn)
         player.gameMode = GameMode.ADVENTURE
         player.isOp = godSet.contains(player.uniqueId.toString())
-        ModLoader.send("mod.jar", player)
         joinMessage = null
 
         MinecraftServer.SERVER.postToNextTick {
+            ModLoader.send("mod.jar", player)
+
             Anime.hideIndicator(player, Indicators.HEALTH, Indicators.EXP, Indicators.HUNGER)
             Anime.topMessage(player, "Загрузка аркадного профиля ${player.playerListName}")
             Glow.showAllPlaces(player)
@@ -151,11 +150,15 @@ object LobbyListener : Listener {
             if (famous == ArcadeType.TEST || famous == ArcadeType.DBD || famous == ArcadeType.ARC)
                 famous = ArcadeType.PILL
 
-            player!!.spigot().sendMessage(
-                *ComponentBuilder("\n§7Заходи играть - §b${famous.title}§7, нажми §e§lСЮДА§7 чтобы играть!\n")
-                    .event(ClickEvent(ClickEvent.Action.RUN_COMMAND, "/queue ${famous.queue}"))
-                    .create()
-            )
+            if (Math.random() < 0.7) {
+                player.spigot().sendMessage(
+                    *ComponentBuilder("\n§7Заходи играть - §b${famous.title}§7, нажми §e§lСЮДА§7 чтобы играть!\n")
+                        .event(ClickEvent(ClickEvent.Action.RUN_COMMAND, "/queue ${famous.queue}"))
+                        .create()
+                )
+            } else {
+                player.performCommand("discord")
+            }
 
             Arcade.getArcadeData(player).mask.setMask(player)
         }

@@ -8,6 +8,8 @@ import dev.implario.games5e.sdk.cristalix.MapLoader
 import dev.implario.games5e.sdk.cristalix.WorldMeta
 import dev.implario.platform.impl.darkpaper.PlatformDarkPaper
 import me.func.battlepass.quest.ArcadeType
+import me.func.mod.Anime
+import me.func.mod.Kit
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 import ru.cristalix.core.CoreApi
@@ -44,13 +46,15 @@ class App : JavaPlugin() {
 
         Platforms.set(PlatformDarkPaper())
 
+        Anime.include(Kit.LOOTBOX, Kit.DIALOG, Kit.BATTLEPASS)
+
         Arcade.start(IRealmService.get().currentRealmInfo.apply {
             status = RealmStatus.WAITING_FOR_PLAYERS
             isLobbyServer = true
             readableName = "Аркадное Лобби"
             groupName = "Аркады"
             servicedServers = arrayOf("MURP", *ArcadeType.values().map { it.name }.toTypedArray())
-        }.realmId.realmName)
+        }.realmId.realmName, ArcadeType.TEST, CoreApi.get().socketClient)
 
         Arcade.enableStepParticles()
 
