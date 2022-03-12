@@ -48,14 +48,15 @@ class App : JavaPlugin() {
 
         Anime.include(Kit.LOOTBOX, Kit.DIALOG, Kit.BATTLEPASS)
 
-        Arcade.start(IRealmService.get().currentRealmInfo.apply {
+        IRealmService.get().currentRealmInfo.apply {
             status = RealmStatus.WAITING_FOR_PLAYERS
             isLobbyServer = true
             readableName = "Аркадное Лобби"
             groupName = "Аркады"
             servicedServers = arrayOf("MURP", *ArcadeType.values().map { it.name }.toTypedArray())
-        }.realmId.realmName, ArcadeType.TEST, CoreApi.get().socketClient)
+        }
 
+        Arcade.start(ArcadeType.TEST)
         Arcade.enableStepParticles()
 
         Bukkit.getPluginManager().apply {

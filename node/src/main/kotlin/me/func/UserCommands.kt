@@ -10,6 +10,7 @@ import org.bukkit.entity.Player
 import ru.cristalix.core.realm.RealmId
 import ru.cristalix.core.transfer.ITransferService
 import java.util.*
+import kotlin.math.abs
 
 object UserCommands {
 
@@ -34,10 +35,16 @@ object UserCommands {
                     .create()
             )
         }
+        // Найти очередь, в которой разница СЛОТОВ и ЛЮДЕЙ В ОЧЕРЕДИ минимальная и не меньше единицы
         register("random") { sender, _ ->
             sender.performCommand(
                 "queue ${
-                    Games5e.client.queueOnline.maxByOrNull { it.value }?.key ?: UUID.fromString(
+                    Games5e.client.queueOnline.minByOrNull { queue ->
+                        abs(
+                            (ArcadeType.values()
+                                .firstOrNull { queue.key.toString() == it.queue }?.slots ?: 0) - queue.value + 1
+                        )
+                    }?.key ?: UUID.fromString(
                         ArcadeType.values().random().queue
                     )
                 }"

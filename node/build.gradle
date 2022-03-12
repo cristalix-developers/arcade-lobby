@@ -39,6 +39,6 @@ dependencies {
     implementation 'dev.implario.bukkit:bukkit-tools:4.4.12'
     implementation 'ru.cristalix:games5e-integration:1.3.23'
 
-    implementation 'me.func:arcade-api:live-SNAPSHOT'
+    implementation 'me.func:arcade-api:last-SNAPSHOT'
     implementation 'ru.cristalix:boards-bukkit-api:3.0.0'
 }
