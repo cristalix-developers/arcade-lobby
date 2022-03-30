@@ -46,7 +46,8 @@ object LobbyListener : Listener {
         "6f3f4a2e-7f84-11e9-8374-1cb72caa35fd",
         "bf30a1df-85de-11e8-a6de-1cb72caa35fd",
         "303dc644-2c69-11e8-b5ea-1cb72caa35fd",
-        "a45d2a88-7efe-11e9-8374-1cb72caa35fd"
+        "a45d2a88-7efe-11e9-8374-1cb72caa35fd",
+        "845e92f3-7006-11ea-acca-1cb72caa35fd"
     )
 
     init {
