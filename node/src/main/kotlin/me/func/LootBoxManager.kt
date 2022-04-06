@@ -215,7 +215,7 @@ object LootBoxManager : Listener {
 
     @EventHandler
     fun PlayerJoinEvent.handle() {
-        MinecraftServer.SERVER.postToNextTick {
+        Bukkit.getScheduler().runTaskLater(app, {
             Arcade.get(player)?.let { data ->
                 lootbox.forEach {
                     it.banner.content = "§bЛутбокс\n§fДоступно ${data.crates} ${
@@ -229,6 +229,6 @@ object LootBoxManager : Listener {
                     Banners.show(player, it.banner)
                 }
             }
-        }
+        }, 5)
     }
 }

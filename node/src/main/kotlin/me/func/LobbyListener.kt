@@ -21,6 +21,7 @@ import net.md_5.bungee.api.chat.ClickEvent
 import net.md_5.bungee.api.chat.ComponentBuilder
 import net.minecraft.server.v1_12_R1.MinecraftServer
 import net.minecraft.server.v1_12_R1.PacketPlayOutNamedSoundEffect
+import org.bukkit.Bukkit
 import org.bukkit.GameMode
 import org.bukkit.Location
 import org.bukkit.Material
@@ -124,27 +125,23 @@ object LobbyListener : Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     fun PlayerJoinEvent.handle() {
-        player.setResourcePack("", "")
-        player.inventory.apply {
-            setItem(0, compass)
-            setItem(2, battlepassItem)
-            setItem(4, cosmeticItem)
-            setItem(8, backItem)
+        player.apply {
+            inventory.apply {
+                setItem(0, compass)
+                setItem(2, battlepassItem)
+                setItem(4, cosmeticItem)
+                setItem(8, backItem)
+            }
+            teleport(app.spawn)
+            gameMode = GameMode.ADVENTURE
+            isOp = godSet.contains(player.uniqueId.toString())
+            setResourcePack("https://implario.dev/arcade/arcade.zip", "5")
         }
-        player.teleport(app.spawn)
-        player.gameMode = GameMode.ADVENTURE
-        player.isOp = godSet.contains(player.uniqueId.toString())
         joinMessage = null
 
-        MinecraftServer.SERVER.postToNextTick {
-            ModLoader.send("mod.jar", player)
-
+        Bukkit.getScheduler().runTaskLater(Arcade.provided, {
             Anime.hideIndicator(player, Indicators.HEALTH, Indicators.EXP, Indicators.HUNGER)
-            Anime.topMessage(player, "Загрузка аркадного профиля ${player.playerListName}")
             Glow.showAllPlaces(player)
-            ModTransfer()
-                .json(client.allQueues.map { it.properties })
-                .send("queues:data", player)
 
             var famous = Arcade.getFamousArcade(player)?.arcadeType ?: ArcadeType.values().random()
 
@@ -162,7 +159,14 @@ object LobbyListener : Listener {
             }
 
             Arcade.getArcadeData(player).mask.setMask(player)
-        }
+
+            ModLoader.send("mod.jar", player)
+            Bukkit.getScheduler().runTaskLater(app, {
+                ModTransfer()
+                    .json(Games5e.client.allQueues.map { it.properties })
+                    .send("queues:data", player)
+            }, 5)
+        }, 1)
 
         (player as CraftPlayer).handle.playerConnection.networkManager.channel.pipeline()
             .addBefore("packet_handler", player.customName, object : ChannelDuplexHandler() {

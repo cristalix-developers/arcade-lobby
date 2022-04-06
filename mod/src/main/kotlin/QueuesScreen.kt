@@ -12,6 +12,9 @@ class QueuesScreen: ContextGui() {
 
         align = CENTER
         origin = CENTER
+
+        scale = V3(0.7, 0.7, 0.7)
+
         overflowWrap = true
         beforeTransform {
             var p = ((this@QueuesScreen.size.x - 40.0 - 72.0) / (flexSpacing + 72.0)).toInt() + 1

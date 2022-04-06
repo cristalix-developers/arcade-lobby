@@ -10,7 +10,9 @@ import dev.implario.platform.impl.darkpaper.PlatformDarkPaper
 import me.func.battlepass.quest.ArcadeType
 import me.func.mod.Anime
 import me.func.mod.Kit
+import me.func.util.Music
 import org.bukkit.Bukkit
+import org.bukkit.WorldCreator.name
 import org.bukkit.plugin.java.JavaPlugin
 import ru.cristalix.core.CoreApi
 import ru.cristalix.core.inventory.IInventoryService
@@ -46,14 +48,14 @@ class App : JavaPlugin() {
 
         Platforms.set(PlatformDarkPaper())
 
-        Anime.include(Kit.LOOTBOX, Kit.DIALOG, Kit.BATTLEPASS)
+        Anime.include(Kit.LOOTBOX, Kit.DIALOG, Kit.BATTLEPASS, Kit.GRAFFITI)
 
         IRealmService.get().currentRealmInfo.apply {
             status = RealmStatus.WAITING_FOR_PLAYERS
             isLobbyServer = true
             readableName = "Аркадное Лобби"
             groupName = "Аркады"
-            servicedServers = arrayOf("MURP", *ArcadeType.values().map { it.name }.toTypedArray())
+            servicedServers = arrayOf("MURP", *ArcadeType.values().map { it.name }.minus("BP").toTypedArray())
         }
 
         Arcade.start(ArcadeType.TEST)

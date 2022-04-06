@@ -3,14 +3,6 @@ apply plugin: 'kotlin'
 group = 'me.func'
 version = '1.0-SNAPSHOT'
 
-afterEvaluate {
-    jar {
-        archiveBaseName.set 'arcade-lobby'
-        from configurations.runtimeClasspath.collect { it.directory ? it : zipTree(it) }
-        duplicatesStrategy DuplicatesStrategy.EXCLUDE
-    }
-}
-
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
 
@@ -25,7 +17,7 @@ compileKotlin {
 }
 
 dependencies {
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.5.0'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.6.0'
 
     compileOnly 'cristalix:bukkit-core:21.01.30'
     compileOnly 'cristalix:dark-paper:21.02.03'
@@ -41,4 +33,12 @@ dependencies {
 
     implementation 'me.func:arcade-api:last-SNAPSHOT'
     implementation 'ru.cristalix:boards-bukkit-api:3.0.0'
+}
+
+afterEvaluate {
+    jar {
+        archiveBaseName.set 'arcade-lobby'
+        from configurations.runtimeClasspath.collect { it.directory ? it : zipTree(it) }
+        duplicatesStrategy DuplicatesStrategy.EXCLUDE
+    }
 }
