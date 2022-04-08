@@ -29,7 +29,7 @@ object LoadNpc : Listener {
     fun PlayerJoinEvent.handle() {
         Bukkit.getScheduler().runTaskLater(app, {
             Anime.markers(player, markerHelp, newAchievement)
-        }, 5)
+        }, 40)
     }
 
     init {

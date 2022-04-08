@@ -1,40 +1,44 @@
 import com.google.gson.Gson
 import dev.implario.games5e.QueueProperties
 import dev.xdark.clientapi.event.lifecycle.GameLoop
-import dev.xdark.feder.NetUtil.*
 import implario.humanize.Humanize
 import io.netty.buffer.Unpooled
 import org.lwjgl.input.Keyboard
 import org.lwjgl.opengl.GL11.*
-import ru.cristalix.clientapi.*
-import ru.cristalix.clientapi.JavaMod.clientApi
-import ru.cristalix.clientapi.JavaMod.loadTextureFromJar
+import ru.cristalix.clientapi.KotlinMod
+import ru.cristalix.clientapi.readId
+import ru.cristalix.clientapi.readUtf8
+import ru.cristalix.clientapi.readVarInt
 import ru.cristalix.uiengine.UIEngine
 import ru.cristalix.uiengine.element.TextElement
 import ru.cristalix.uiengine.element.debug
 import ru.cristalix.uiengine.eventloop.animate
 import ru.cristalix.uiengine.utility.*
-import sun.security.jgss.GSSToken.readInt
 
-object Games5eMod {
+lateinit var mod: Games5eMod
 
-    var money: TextElement
+class Games5eMod : KotlinMod() {
+
+    lateinit var money: TextElement
     
-    init {
+    override fun onEnable() {
+        mod = this
+        UIEngine.initialize(this)
+
         val queuesScreen = QueuesScreen()
         val gson = Gson()
 
         QueueStatus
 
-        mod.registerChannel("queues:data") {
+        registerChannel("queues:data") {
             queuesScreen.init(gson.fromJson(readUtf8(), Array<QueueProperties>::class.java))
         }
 
-        mod.registerChannel("g5e:open") {
+        registerChannel("g5e:open") {
             queuesScreen.open()
         }
 
-        mod.registerChannel("g5e:q") {
+        registerChannel("g5e:q") {
             repeat(readVarInt()) {
                 val id = readId()
                 val online = readVarInt()
@@ -51,10 +55,10 @@ object Games5eMod {
 
         registerHandler<GameLoop> { debug = Keyboard.isKeyDown(Keyboard.KEY_F12) }
 
-        mod.loadTextureFromJar("games5e", "clock", "clock.png")
-        mod.loadTextureFromJar("games5e", "face", "face.png")
-        mod.loadTextureFromJar("games5e", "clockthin", "clockthin.png")
-        mod.loadTextureFromJar("games5e", "facethin", "facethin.png")
+        loadTextureFromJar("games5e", "clock", "clock.png")
+        loadTextureFromJar("games5e", "face", "face.png")
+        loadTextureFromJar("games5e", "clockthin", "clockthin.png")
+        loadTextureFromJar("games5e", "facethin", "facethin.png")
 
         clientApi.clientConnection().sendPayload("g5e:loaded", Unpooled.EMPTY_BUFFER)
 
@@ -66,7 +70,7 @@ object Games5eMod {
             offset.y -= 30
         }
 
-        mod.registerChannel("arcade:money") {
+        registerChannel("arcade:money") {
             val value = readInt()
             val new = "$value ${
                 Humanize.plurals(

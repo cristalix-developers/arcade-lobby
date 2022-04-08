@@ -48,8 +48,6 @@ class App : JavaPlugin() {
 
         Platforms.set(PlatformDarkPaper())
 
-        Anime.include(Kit.LOOTBOX, Kit.DIALOG, Kit.BATTLEPASS, Kit.GRAFFITI)
-
         IRealmService.get().currentRealmInfo.apply {
             status = RealmStatus.WAITING_FOR_PLAYERS
             isLobbyServer = true
@@ -70,5 +68,6 @@ class App : JavaPlugin() {
         UserCommands
         Games5e
         AdminCommands
+        Anime
     }
 }

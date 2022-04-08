@@ -1,4 +1,5 @@
 rootProject.name = 'arcade-lobby'
-include 'mod'
+include 'compass'
 include 'node'
+include 'mod'
 

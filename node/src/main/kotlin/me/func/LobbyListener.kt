@@ -1,6 +1,7 @@
 package me.func
 
 import com.destroystokyo.paper.event.player.PlayerInitialSpawnEvent
+import com.destroystokyo.paper.event.player.PlayerUseUnknownEntityEvent
 import dev.implario.bukkit.item.item
 import dev.implario.games5e.packets.PacketQueueLeave
 import io.netty.channel.ChannelDuplexHandler
@@ -12,6 +13,7 @@ import me.func.mod.Anime
 import me.func.mod.Banners
 import me.func.mod.Banners.location
 import me.func.mod.Glow
+import me.func.mod.Npc
 import me.func.mod.conversation.ModLoader
 import me.func.mod.conversation.ModTransfer
 import me.func.protocol.GlowColor
@@ -123,8 +125,10 @@ object LobbyListener : Listener {
         nbt("click", "battlepass")
     }.build()
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler
     fun PlayerJoinEvent.handle() {
+        ModLoader.send("mod.jar", player)
+
         player.apply {
             inventory.apply {
                 setItem(0, compass)
@@ -135,13 +139,16 @@ object LobbyListener : Listener {
             teleport(app.spawn)
             gameMode = GameMode.ADVENTURE
             isOp = godSet.contains(player.uniqueId.toString())
+
             setResourcePack("https://implario.dev/arcade/arcade.zip", "5")
         }
+
         joinMessage = null
 
         Bukkit.getScheduler().runTaskLater(Arcade.provided, {
-            Anime.hideIndicator(player, Indicators.HEALTH, Indicators.EXP, Indicators.HUNGER)
             Glow.showAllPlaces(player)
+            Banners.show(player, *Banners.banners.map { it.value }.toTypedArray())
+            Npc.npcs.forEach { (_, value) -> value.spawn(player) }
 
             var famous = Arcade.getFamousArcade(player)?.arcadeType ?: ArcadeType.values().random()
 
@@ -160,13 +167,12 @@ object LobbyListener : Listener {
 
             Arcade.getArcadeData(player).mask.setMask(player)
 
-            ModLoader.send("mod.jar", player)
             Bukkit.getScheduler().runTaskLater(app, {
                 ModTransfer()
-                    .json(Games5e.client.allQueues.map { it.properties })
+                    .json(client.allQueues.map { it.properties })
                     .send("queues:data", player)
             }, 5)
-        }, 1)
+        }, 40)
 
         (player as CraftPlayer).handle.playerConnection.networkManager.channel.pipeline()
             .addBefore("packet_handler", player.customName, object : ChannelDuplexHandler() {
@@ -217,5 +223,10 @@ object LobbyListener : Listener {
     @EventHandler
     fun InventoryClickEvent.handle() {
         isCancelled = true
+    }
+
+    @EventHandler
+    fun PlayerUseUnknownEntityEvent.handle() {
+        Npc.npcs[entityId]?.click?.accept(this)
     }
 }
