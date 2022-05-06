@@ -4,12 +4,12 @@ import dev.xdark.clientapi.entity.AbstractClientPlayer
 import dev.xdark.clientapi.entity.PlayerModelPart.*
 import dev.xdark.clientapi.math.BlockPos
 import dev.xdark.clientapi.util.EnumFacing
-import ru.cristalix.clientapi.JavaMod.clientApi
+import ru.cristalix.clientapi.KotlinMod
 import java.util.*
 
 
-object NpcManager {
-
+context(KotlinMod)
+class NpcManager {
     private val storage = mutableMapOf<UUID, NpcEntity>()
     private val wearing = arrayOf(CAPE, HAT, JACKET, LEFT_PANTS_LEG, LEFT_SLEEVE, RIGHT_PANTS_LEG, RIGHT_SLEEVE)
 

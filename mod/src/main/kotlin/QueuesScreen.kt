@@ -1,5 +1,6 @@
 import dev.implario.games5e.QueueProperties
 import ru.cristalix.clientapi.JavaMod
+import ru.cristalix.uiengine.UIEngine.clientApi
 import ru.cristalix.uiengine.element.ContextGui
 import ru.cristalix.uiengine.element.RectangleElement
 import ru.cristalix.uiengine.eventloop.animate
@@ -26,7 +27,7 @@ class QueuesScreen: ContextGui() {
     init {
         color.alpha = 0.86
         beforeTransform {
-            val factor = JavaMod.clientApi.resolution().scaleFactor
+            val factor = clientApi.resolution().scaleFactor
             queuesContainer.offset.y = -(size.y % factor) / factor
         }
     }

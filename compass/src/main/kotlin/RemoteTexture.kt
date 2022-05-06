@@ -25,35 +25,23 @@ fun loadTextures(vararg info: RemoteTexture): CompletableFuture<Nothing> {
                 val path = cacheDir.resolve(photo.sha1)
 
                 val image = try {
-                    println("trying use cached")
                     Files.newInputStream(path).use {
-                        println("success cached")
                         ImageIO.read(it)
                     }
                 } catch (ex: IOException) {
-                    println("error")
                     ex.printStackTrace()
-                    println("downloading")
                     val url = URL(photo.url)
-                    println("url parsed")
                     val bytes = url.openStream().readBytes()
-                    println("bytes read")
                     Files.write(path, bytes, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)
-                    println("file written")
                     val i = ImageIO.read(ByteArrayInputStream(bytes))
-                    println("image read")
                     i
                 }
                 val api = UIEngine.clientApi
                 val mc = api.minecraft()
                 val renderEngine = api.renderEngine()
-                println("mc execute call")
                 mc.execute {
-                    println("mc execute body")
                     renderEngine.loadTexture(photo.location, renderEngine.newImageTexture(image, false, false))
-                    println("texture loaded")
                     future.complete(null)
-                    println("future completed")
                 }
             } catch (e: Exception) {
                 future.completeExceptionally(e)

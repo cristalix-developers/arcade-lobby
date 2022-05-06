@@ -5,6 +5,7 @@ import dev.xdark.clientapi.resource.ResourceLocation
 import io.netty.buffer.Unpooled
 import org.lwjgl.input.Mouse
 import ru.cristalix.clientapi.JavaMod
+import ru.cristalix.clientapi.KotlinMod
 import ru.cristalix.clientapi.registerHandler
 import ru.cristalix.clientapi.writeUtf8
 import ru.cristalix.uiengine.UIEngine
@@ -16,6 +17,7 @@ import java.util.*
 import kotlin.math.PI
 import kotlin.math.roundToInt
 
+context(KotlinMod)
 class BattlePassGui(
     var uuid: UUID,
     private val buyBlockText: String,
@@ -50,7 +52,7 @@ class BattlePassGui(
 
         afterRender {
             val hoveredItem = hoveredReward ?: return@afterRender
-            JavaMod.clientApi.resolution().run {
+            clientApi.resolution().run {
                 val wholeDescription = hoveredItem.displayName
                 screen.drawHoveringText(
                     wholeDescription, Mouse.getX() / scaleFactor,
@@ -117,7 +119,7 @@ class BattlePassGui(
                                 lock = true
                                 UIEngine.schedule(0.2) { lock = false }
                             } else {
-                                JavaMod.clientApi.clientConnection()
+                                clientApi.clientConnection()
                                     .sendPayload("bp:buy-upgrade", Unpooled.buffer().apply {
                                         writeUtf8(uuid.toString())
                                     })
@@ -194,7 +196,7 @@ class BattlePassGui(
                                 lock = true
                                 UIEngine.schedule(0.2) { lock = false }
                             } else {
-                                JavaMod.clientApi.clientConnection()
+                                clientApi.clientConnection()
                                     .sendPayload("bp:buy-page", Unpooled.buffer().apply {
                                         writeUtf8(uuid.toString())
                                         writeInt((skipPrice - skipPrice * sale / 100.0).toInt())
@@ -452,7 +454,7 @@ class BattlePassGui(
 
                     color = Color(235, 66, 66, 0.28)
 
-                    JavaMod.clientApi.clientConnection().sendPayload("bp:reward", Unpooled.buffer().apply {
+                    clientApi.clientConnection().sendPayload("bp:reward", Unpooled.buffer().apply {
                         writeBoolean(advanced)
                         writeInt(page)
                         writeInt(index)

@@ -1,6 +1,7 @@
 import dev.xdark.clientapi.event.render.RenderTickPre
 import dev.xdark.clientapi.opengl.GlStateManager
 import dev.xdark.feder.NetUtil
+import ru.cristalix.clientapi.KotlinMod
 import ru.cristalix.clientapi.registerHandler
 import ru.cristalix.uiengine.UIEngine
 import ru.cristalix.uiengine.element.Context3D
@@ -9,7 +10,8 @@ import ru.cristalix.uiengine.eventloop.animate
 import ru.cristalix.uiengine.utility.*
 import java.util.*
 
-object Banners {
+context(KotlinMod)
+class Banners {
 
     private val banners = mutableMapOf<UUID, Pair<Banner, Context3D>>()
     private val sizes = mutableMapOf<Pair<UUID, Int>, Double>()

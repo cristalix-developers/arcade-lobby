@@ -7,6 +7,7 @@ import dev.xdark.feder.NetUtil
 import me.func.lootbox.*
 import org.lwjgl.input.Mouse
 import org.lwjgl.opengl.Display
+import ru.cristalix.clientapi.KotlinMod
 import ru.cristalix.clientapi.registerHandler
 import ru.cristalix.uiengine.UIEngine
 import ru.cristalix.uiengine.UIEngine.clientApi
@@ -14,7 +15,8 @@ import ru.cristalix.uiengine.eventloop.animate
 import ru.cristalix.uiengine.utility.Easings
 import ru.cristalix.uiengine.utility.V3
 
-object Lootbox {
+context(KotlinMod)
+class Lootbox {
 
     init {
         val crateScreen = CrateScreen()

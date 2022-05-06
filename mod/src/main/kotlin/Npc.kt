@@ -5,6 +5,7 @@ import dev.xdark.clientapi.math.BlockPos
 import dev.xdark.clientapi.util.EnumFacing
 import dev.xdark.clientapi.util.EnumHand
 import dev.xdark.feder.NetUtil
+import ru.cristalix.clientapi.KotlinMod
 import ru.cristalix.clientapi.registerHandler
 import ru.cristalix.uiengine.UIEngine.clientApi
 import java.util.*
@@ -12,11 +13,12 @@ import kotlin.math.atan
 import kotlin.math.atan2
 import kotlin.math.sqrt
 
-object Npc {
+context(KotlinMod)
+class Npc {
 
     init {
         // Утилита для работы с NPC
-        NpcManager
+        val npcManager = NpcManager()
 
         // Чтение NPC
         mod.registerChannel("npc:spawn") {
@@ -38,19 +40,19 @@ object Npc {
                 readBoolean(),
                 readBoolean()
             )
-            NpcManager.spawn(data)
-            NpcManager.show(data.uuid)
+            npcManager.spawn(data)
+            npcManager.show(data.uuid)
         }
 
         // Показать NPC
         mod.registerChannel("npc:show") {
-            NpcManager.show(UUID.fromString(NetUtil.readUtf8(this)))
+            npcManager.show(UUID.fromString(NetUtil.readUtf8(this)))
         }
 
         registerHandler<GameLoop> {
             val player = clientApi.minecraft().player
 
-            NpcManager.each { _, data ->
+            npcManager.each { _, data ->
                 data.entity?.let { entity ->
                     if (data.data.behaviour == NpcBehaviour.NONE)
                         return@let

@@ -1,39 +1,19 @@
 plugins {
-    id 'java'
-    id 'org.jetbrains.kotlin.jvm'
-    id 'dev.implario.bundler' version '3.0.3' apply false
+    id("anime.mod-bundler")
 }
 
-apply plugin: 'dev.implario.bundler'
-
 dependencies {
-    compileOnly 'ru.cristalix:client-api:latest-SNAPSHOT'
-    implementation 'ru.cristalix:uiengine:live-SNAPSHOT'
-    implementation 'ru.cristalix:client-sdk:live-SNAPSHOT'
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.5.0'
+    compileOnly 'ru.cristalix:client-api:4.0-SNAPSHOT'
+    implementation 'ru.cristalix:uiengine:4.0-SNAPSHOT'
+    implementation 'ru.cristalix:client-sdk:4.0-SNAPSHOT'
+
     implementation 'implario:humanize:1.1.3'
     implementation 'dev.implario.games5e:commons:2.1.4'
 }
 
-tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
+mod {
+    name = 'Arcade Lobby'
+    main = 'App'
+    version = '1.0'
+    author = 'func'
 }
-
-jar {
-    archiveBaseName.set 'lobby-mod'
-    duplicatesStrategy DuplicatesStrategy.EXCLUDE
-    from {
-        configurations.runtimeClasspath.collect { it.directory ? it : zipTree(it) }
-    }
-}
-
-bundler {
-    name 'Arcade Lobby'
-    mainClass 'App'
-    version '1.0'
-    author 'func'
-}
-
-if (file('upload.gradle').file) apply from: 'upload.gradle'

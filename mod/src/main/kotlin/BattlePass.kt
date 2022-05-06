@@ -6,7 +6,8 @@ import ru.cristalix.uiengine.UIEngine
 import sun.security.jgss.GSSToken.readInt
 import java.util.*
 
-object BattlePass {
+context(KotlinMod)
+class BattlePass {
 
     private val map = mutableMapOf<UUID, BattlePassGui>()
 

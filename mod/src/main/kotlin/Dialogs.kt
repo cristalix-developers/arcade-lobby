@@ -8,6 +8,7 @@ import dev.xdark.clientapi.event.window.WindowResize
 import dev.xdark.feder.NetUtil.readUtf8
 import org.lwjgl.input.Keyboard
 import org.lwjgl.input.Mouse
+import ru.cristalix.clientapi.KotlinMod
 import ru.cristalix.clientapi.readUtf8
 import ru.cristalix.clientapi.registerHandler
 import ru.cristalix.uiengine.UIEngine
@@ -19,19 +20,20 @@ import ru.cristalix.uiengine.eventloop.animate
 import ru.cristalix.uiengine.utility.*
 import kotlin.math.sign
 
-object Dialogs {
+context(KotlinMod)
+class Dialogs {
 
-    lateinit var buttons: RectangleElement
-    lateinit var buttonCursor: RectangleElement
-    lateinit var buttonsBG: RectangleElement
+    private var buttons: RectangleElement = rectangle { }
+    private var buttonCursor: RectangleElement
+    private var buttonsBG: RectangleElement
 
-    lateinit var buttonPart: RectangleElement
-    lateinit var npcTitle: TextElement
-    lateinit var npcSubtitle: TextElement
-    lateinit var npcDialog: RectangleElement
+    private var buttonPart: RectangleElement
+    private var npcTitle: TextElement
+    private var npcSubtitle: TextElement
+    private var npcDialog: RectangleElement
 
-    lateinit var npcPart: RectangleElement
-    lateinit var dialogBG: RectangleElement
+    private var npcPart: RectangleElement
+    private var dialogBG: RectangleElement
 
     private var pickedItem = -1
     private var entrypoints: ArrayList<Entrypoint> = arrayListOf()
@@ -51,7 +53,6 @@ object Dialogs {
     private val buttonHotkeys: Array<Int> = arrayOf(Keyboard.KEY_G, Keyboard.KEY_Y, Keyboard.KEY_Z, Keyboard.KEY_X)
 
     init {
-        buttons = rectangle { }
         buttonCursor = rectangle {
             offset = V3(x = 1.0)
             size = V3(y = 15.0)

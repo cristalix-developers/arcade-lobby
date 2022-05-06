@@ -1,6 +1,7 @@
 import dev.xdark.clientapi.event.render.RenderTickPre
 import dev.xdark.clientapi.opengl.GlStateManager
 import dev.xdark.feder.NetUtil
+import ru.cristalix.clientapi.KotlinMod
 import ru.cristalix.clientapi.registerHandler
 import ru.cristalix.uiengine.UIEngine
 import ru.cristalix.uiengine.UIEngine.clientApi
@@ -9,7 +10,8 @@ import ru.cristalix.uiengine.eventloop.animate
 import ru.cristalix.uiengine.utility.*
 import kotlin.collections.HashMap
 
-object MarkerManager {
+context(KotlinMod)
+class MarkerManager {
 
     private var holos: MutableMap<String, Context3D> = HashMap()
 

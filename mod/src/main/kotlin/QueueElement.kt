@@ -3,6 +3,7 @@ import dev.xdark.clientapi.opengl.GlStateManager
 import dev.xdark.clientapi.resource.ResourceLocation
 import org.lwjgl.opengl.GL11
 import ru.cristalix.clientapi.JavaMod
+import ru.cristalix.uiengine.UIEngine.clientApi
 import ru.cristalix.uiengine.element.RectangleElement
 import ru.cristalix.uiengine.eventloop.animate
 import ru.cristalix.uiengine.onMouseDown
@@ -65,13 +66,13 @@ class QueueElement(val info: QueueProperties) : RectangleElement() {
                 align = CENTER
                 origin = CENTER
                 beforeTransform {
-                    val factor = if (JavaMod.clientApi.fontRenderer().unicodeFlag) 2.0 else 1.5
+                    val factor = if (clientApi.fontRenderer().unicodeFlag) 2.0 else 1.5
                     scale.x = factor
                     scale.y = factor
                 }
             }
             onMouseDown {
-                JavaMod.clientApi.chat().sendChatMessage("/queue " + info.queueId)
+                clientApi.chat().sendChatMessage("/queue " + info.queueId)
             }
         }
 
@@ -140,7 +141,7 @@ class QueueElement(val info: QueueProperties) : RectangleElement() {
         origin.x = 0.5
         offset.x = 72.0 / 4
         beforeTransform {
-            val unicode = JavaMod.clientApi.fontRenderer().unicodeFlag
+            val unicode = clientApi.fontRenderer().unicodeFlag
             scale.x = if (unicode) 2.0 else 1.5
             scale.y = if (unicode) 2.0 else 1.5
         }
