@@ -1,17 +1,14 @@
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.6.0'
+    id 'org.jetbrains.kotlin.jvm' version '1.6.21'
 }
 
 allprojects {
     repositories {
         maven {
-            url 'https://repo.implario.dev/public/'
-        }
-        maven {
-            url 'https://repo.implario.dev/cristalix/'
+            url = "https://repo.c7x.ru/repository/maven-public/"
             credentials {
-                username = project.properties["IMPLARIO_REPO_USER"] ?: System.getenv("IMPLARIO_REPO_USER")
-                password = project.properties["IMPLARIO_REPO_PASSWORD"] ?: System.getenv("IMPLARIO_REPO_PASSWORD")
+                username = System.getenv("CRI_REPO_LOGIN") ?: System.getenv("CRISTALIX_REPO_USERNAME")
+                password = System.getenv("CRI_REPO_PASSWORD") ?: System.getenv("CRISTALIX_REPO_PASSWORD")
             }
         }
         mavenCentral()
