@@ -4,12 +4,14 @@ import dev.xdark.clientapi.render.DefaultVertexFormats
 import dev.xdark.feder.NetUtil
 import org.lwjgl.opengl.GL11
 import ru.cristalix.clientapi.JavaMod
+import ru.cristalix.clientapi.KotlinMod
 import ru.cristalix.uiengine.UIEngine
 import java.util.*
 import kotlin.math.cos
 import kotlin.math.sin
 
-object GlowPlaces {
+context(KotlinMod)
+class GlowPlaces {
 
     private val places = arrayListOf<GlowingPlace>()
 
@@ -53,7 +55,7 @@ object GlowPlaces {
             GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE)
 
             places.forEach { place ->
-                val tessellator = JavaMod.clientApi.tessellator()
+                val tessellator = clientApi.tessellator()
                 val bufferBuilder = tessellator.bufferBuilder
 
                 bufferBuilder.begin(GL11.GL_TRIANGLE_STRIP, DefaultVertexFormats.POSITION_COLOR)

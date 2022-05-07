@@ -1,6 +1,6 @@
 import dev.xdark.clientapi.item.ItemStack
 
-data class BattlePage(
+class BattlePage(
     val index: Int,
     val items: List<ItemStack?> = listOf(),
     val advancedItems: List<ItemStack?> = listOf(),

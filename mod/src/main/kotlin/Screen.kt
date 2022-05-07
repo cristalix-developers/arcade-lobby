@@ -1,5 +1,5 @@
 
-data class Screen(val text: List<String>) {
+class Screen(val text: List<String>) {
 
     var buttons: List<Button>? = null
 

@@ -1,5 +1,4 @@
-data class Action(var type: String) {
-
+class Action(var type: String) {
     constructor(actions: Actions) : this(actions.name.lowercase())
 
     var screen: Screen? = null

@@ -1,4 +1,4 @@
-data class Button(var text: String) {
+class Button(var text: String) {
 
     var actions: List<Action>? = null
 

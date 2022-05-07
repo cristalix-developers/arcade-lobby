@@ -1,5 +1,0 @@
-rootProject.name = 'arcade-lobby'
-include 'compass'
-include 'node'
-include 'mod'
-

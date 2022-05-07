@@ -1,7 +1,9 @@
 import dev.xdark.clientapi.event.render.*
+import ru.cristalix.clientapi.KotlinMod
 import ru.cristalix.clientapi.registerHandler
 
-object IndicatorsManager {
+context(KotlinMod)
+class IndicatorsManager {
 
     init {
         registerHandler<HealthRender> { isCancelled = true }

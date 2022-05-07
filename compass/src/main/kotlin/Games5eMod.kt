@@ -28,7 +28,7 @@ class Games5eMod : KotlinMod() {
         val queuesScreen = QueuesScreen()
         val gson = Gson()
 
-        QueueStatus
+        QueueStatus()
 
         registerChannel("queues:data") {
             queuesScreen.init(gson.fromJson(readUtf8(), Array<QueueProperties>::class.java))
@@ -81,8 +81,7 @@ class Games5eMod : KotlinMod() {
                 )
             } 㥘"
 
-            if (new == money.content)
-                return@registerChannel
+            if (new == money.content) return@registerChannel
 
             money.content = new
             money.animate(0.2) {
@@ -97,5 +96,4 @@ class Games5eMod : KotlinMod() {
             }
         }
     }
-
 }

@@ -1,15 +1,14 @@
 import dev.xdark.clientapi.event.lifecycle.GameLoop
 import dev.xdark.feder.NetUtil
-import ru.cristalix.clientapi.mod
-import ru.cristalix.clientapi.registerHandler
+import ru.cristalix.clientapi.KotlinMod
 import ru.cristalix.uiengine.UIEngine
 import ru.cristalix.uiengine.eventloop.animate
 import ru.cristalix.uiengine.utility.Relative
 import ru.cristalix.uiengine.utility.V3
 import ru.cristalix.uiengine.utility.rectangle
-import sun.security.jgss.GSSToken.readInt
 
-object KillBoardManager {
+context(KotlinMod)
+class KillBoardManager {
 
     private var board = UIEngine.overlayContext + rectangle {
         size = V3(-12.0, 30.0)

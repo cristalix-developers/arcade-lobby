@@ -2,14 +2,23 @@ import dev.implario.games5e.QueueProperties
 import dev.xdark.clientapi.opengl.GlStateManager
 import dev.xdark.clientapi.resource.ResourceLocation
 import org.lwjgl.opengl.GL11
-import ru.cristalix.clientapi.JavaMod
+import ru.cristalix.uiengine.UIEngine.clientApi
 import ru.cristalix.uiengine.element.RectangleElement
 import ru.cristalix.uiengine.eventloop.animate
 import ru.cristalix.uiengine.onMouseDown
-import ru.cristalix.uiengine.utility.*
+import ru.cristalix.uiengine.utility.BLACK
+import ru.cristalix.uiengine.utility.BOTTOM
+import ru.cristalix.uiengine.utility.CENTER
+import ru.cristalix.uiengine.utility.Easings
+import ru.cristalix.uiengine.utility.TOP
+import ru.cristalix.uiengine.utility.TOP_RIGHT
+import ru.cristalix.uiengine.utility.V3
+import ru.cristalix.uiengine.utility.WHITE
+import ru.cristalix.uiengine.utility.rectangle
+import ru.cristalix.uiengine.utility.text
 
 inline fun queue(info: QueueProperties, builder: QueueElement.() -> Unit) =
-    QueueElement(info).also(builder)
+    QueueElement(info).apply(builder)
 
 val namePattern = Regex("^[a-z0-9A-Z_-]+$")
 
@@ -65,13 +74,13 @@ class QueueElement(val info: QueueProperties) : RectangleElement() {
                 align = CENTER
                 origin = CENTER
                 beforeTransform {
-                    val factor = if (JavaMod.clientApi.fontRenderer().unicodeFlag) 2.0 else 1.5
+                    val factor = if (clientApi.fontRenderer().unicodeFlag) 2.0 else 1.5
                     scale.x = factor
                     scale.y = factor
                 }
             }
             onMouseDown {
-                JavaMod.clientApi.chat().sendChatMessage("/queue " + info.queueId)
+                clientApi.chat().sendChatMessage("/queue " + info.queueId)
             }
         }
 
@@ -109,30 +118,29 @@ class QueueElement(val info: QueueProperties) : RectangleElement() {
     var queueShining = false
 
     var queued: Int = -1
-    set(value) {
-        val prev = field
-        field = value
-        if (value < 0) {
-            queueText.enabled = false
-        } else {
-            queueText.enabled = true
-            // ToDo: Better missing info
-            val required = (info.globalMapDefinition?.amount?.min ?: 0) * (info.globalMapDefinition?.size?.min ?: 0)
+        set(value) {
+            field = value
+            if (value < 0) {
+                queueText.enabled = false
+            } else {
+                queueText.enabled = true
+                // ToDo: Better missing info
+                val required = (info.globalMapDefinition?.amount?.min ?: 0) * (info.globalMapDefinition?.size?.min ?: 0)
 
-            // ToDo: Short form for values beyond 1k
-            if (value == 0) queueText.content = "§8$value/$required"
-            else queueText.content = "$value§7/§f$required"
+                // ToDo: Short form for values beyond 1k
+                if (value == 0) queueText.content = "§8$value/$required"
+                else queueText.content = "$value§7/§f$required"
 
 
-            val queueHasPlayers = value != 0
-            if (queueHasPlayers != this.queueShining) {
-                this.queueShining = queueHasPlayers
-                queueText.animate(0.2) {
-                    color.alpha = if (queueHasPlayers) 1.0 else 0.7
+                val queueHasPlayers = value != 0
+                if (queueHasPlayers != this.queueShining) {
+                    this.queueShining = queueHasPlayers
+                    queueText.animate(0.2) {
+                        color.alpha = if (queueHasPlayers) 1.0 else 0.7
+                    }
                 }
             }
         }
-    }
 
     private val onlineText = icon + text {
         offset.y = 2.5
@@ -140,7 +148,7 @@ class QueueElement(val info: QueueProperties) : RectangleElement() {
         origin.x = 0.5
         offset.x = 72.0 / 4
         beforeTransform {
-            val unicode = JavaMod.clientApi.fontRenderer().unicodeFlag
+            val unicode = clientApi.fontRenderer().unicodeFlag
             scale.x = if (unicode) 2.0 else 1.5
             scale.y = if (unicode) 2.0 else 1.5
         }
@@ -173,6 +181,4 @@ class QueueElement(val info: QueueProperties) : RectangleElement() {
         offset.y = 3.0
         content = info.tags?.get("name_ru") ?: info.imageId ?: "???"
     }
-
-
 }

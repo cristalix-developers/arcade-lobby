@@ -7,8 +7,6 @@ import io.netty.buffer.Unpooled
 import org.lwjgl.input.Keyboard
 import org.lwjgl.opengl.GL11.*
 import ru.cristalix.clientapi.*
-import ru.cristalix.clientapi.JavaMod.clientApi
-import ru.cristalix.clientapi.JavaMod.loadTextureFromJar
 import ru.cristalix.uiengine.UIEngine
 import ru.cristalix.uiengine.element.TextElement
 import ru.cristalix.uiengine.element.debug
@@ -16,7 +14,8 @@ import ru.cristalix.uiengine.eventloop.animate
 import ru.cristalix.uiengine.utility.*
 import sun.security.jgss.GSSToken.readInt
 
-object Games5eMod {
+context(KotlinMod)
+class Games5eMod {
 
     var money: TextElement
     
@@ -24,7 +23,7 @@ object Games5eMod {
         val queuesScreen = QueuesScreen()
         val gson = Gson()
 
-        QueueStatus
+        QueueStatus()
 
         mod.registerChannel("queues:data") {
             queuesScreen.init(gson.fromJson(readUtf8(), Array<QueueProperties>::class.java))
