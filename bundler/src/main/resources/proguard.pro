@@ -1,4 +1,8 @@
 -dontnote
+-dontwarn kotlin.internal.jdk7.**
+-dontwarn kotlin.internal.jdk8.**
+-dontwarn kotlin.streams.jdk8.**
+-dontwarn kotlin.random.jdk8.**
 -target 1.8
 #-keepattributes *Annotation*
 -mergeinterfacesaggressively
