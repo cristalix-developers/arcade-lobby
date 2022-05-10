@@ -16,22 +16,18 @@ import me.func.mod.Glow
 import me.func.mod.Npc
 import me.func.mod.conversation.ModLoader
 import me.func.mod.conversation.ModTransfer
+import me.func.mod.util.after
 import me.func.protocol.GlowColor
 import me.func.protocol.GlowingPlace
-import me.func.protocol.Indicators
 import net.md_5.bungee.api.chat.ClickEvent
 import net.md_5.bungee.api.chat.ComponentBuilder
-import net.minecraft.server.v1_12_R1.MinecraftServer
 import net.minecraft.server.v1_12_R1.PacketPlayOutNamedSoundEffect
-import org.bukkit.Bukkit
 import org.bukkit.GameMode
-import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer
 import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
-import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockPhysicsEvent
 import org.bukkit.event.entity.EntityDamageEvent
@@ -139,13 +135,13 @@ object LobbyListener : Listener {
             teleport(app.spawn)
             gameMode = GameMode.ADVENTURE
             isOp = godSet.contains(player.uniqueId.toString())
-
-            setResourcePack("https://implario.dev/arcade/arcade.zip", "5")
         }
 
         joinMessage = null
 
-        Bukkit.getScheduler().runTaskLater(Arcade.provided, {
+        after(30) {
+            player.setResourcePack("https://implario.dev/arcade/arcade.zip", "5")
+
             Glow.showAllPlaces(player)
             Banners.show(player, *Banners.banners.map { it.value }.toTypedArray())
             Npc.npcs.forEach { (_, value) -> value.spawn(player) }
@@ -167,12 +163,10 @@ object LobbyListener : Listener {
 
             Arcade.getArcadeData(player).mask.setMask(player)
 
-            Bukkit.getScheduler().runTaskLater(app, {
-                ModTransfer()
-                    .json(client.allQueues.map { it.properties })
-                    .send("queues:data", player)
-            }, 5)
-        }, 40)
+            ModTransfer()
+                .json(client.allQueues.map { it.properties })
+                .send("queues:data", player)
+        }
 
         (player as CraftPlayer).handle.playerConnection.networkManager.channel.pipeline()
             .addBefore("packet_handler", player.customName, object : ChannelDuplexHandler() {
