@@ -15,7 +15,7 @@ subprojects {
     apply(plugin = "org.jetbrains.kotlin.jvm")
 
     dependencies {
-        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.21")
+        implementation("org.jetbrains.kotlin:kotlin-stdlib:1.6.21")
     }
 
     java {
