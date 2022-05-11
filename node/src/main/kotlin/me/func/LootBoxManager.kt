@@ -8,6 +8,9 @@ import me.func.donate.impl.*
 import me.func.mod.Anime
 import me.func.mod.Banners
 import me.func.mod.conversation.ModTransfer
+import me.func.mod.selection.button
+import me.func.mod.selection.selection
+import me.func.mod.util.after
 import me.func.protocol.DropRare
 import me.func.protocol.element.Banner
 import net.minecraft.server.v1_12_R1.EnumItemSlot
@@ -81,6 +84,13 @@ object LootBoxManager : Listener {
         .plus(Mask.values())
         .filter { it != KillMessage.NONE && it != Corpse.NONE && it != NameTag.NONE && it != StepParticle.NONE && it != ArrowParticle.NONE && it != Mask.NONE }
 
+    private val menu = selection {
+        title = "Ваши лутбоксы"
+        rows = 4
+        columns = 5
+        hint = "Открыть"
+    }
+
     private val lootboxMenu = ControlledInventory.builder()
         .title("Ваши лутбоксы")
         .rows(5)
@@ -101,53 +111,7 @@ object LootBoxManager : Listener {
                     repeat(minOf(it.crates, contents.size('O'))) {
                         contents.add('O', ClickableItem.of(lootboxItem) {
                             player.closeInventory()
-                            val balance = Arcade.getMoney(player)
-                            if (balance < lootboxPrice) {
-                                Anime.killboardMessage(player, Formatting.error("Не хватает жетонов :("))
-                                return@of
-                            }
-                            Arcade.setMoney(player, balance - lootboxPrice)
-                            Arcade.openLootbox(player.uniqueId)
 
-                            var drop = dropList.random() as DonatePosition
-                            var counter = 0
-
-                            while (counter < 3 && drop.getRare() == DropRare.LEGENDARY) {
-                                drop = dropList.random() as DonatePosition
-                                counter++
-                            }
-
-                            val moneyDrop = (Math.random() * 50 + 20).toInt() * (drop.getRare().ordinal + 1)
-
-                            ModTransfer()
-                                .integer(2)
-                                .item(CraftItemStack.asNMSCopy(drop.getIcon()))
-                                .string(drop.getTitle())
-                                .string(drop.getRare().name)
-                                .item(MoneyKit.BIG.getIcon())
-                                .string("§d$moneyDrop ${Humanize.plurals("жетон", "жетона", "жетонов", moneyDrop)}")
-                                .string(DropRare.EPIC.name)
-                                .send("lootbox", player)
-
-                            if (donate.donate.contains(drop)) {
-                                val giveBack = (drop.getRare().ordinal + 1) * 48
-                                player.sendMessage(Formatting.fine("§aДубликат! §fЗаменен на §d$giveBack жетонов§f."))
-                                Arcade.deposit(player, giveBack)
-                            } else {
-                                donate.donate.add(drop)
-                            }
-                            Arcade.deposit(player, moneyDrop)
-
-                            Bukkit.getOnlinePlayers().forEach {
-                                Anime.topMessage(
-                                    it,
-                                    Formatting.fine(
-                                        "§e${player.name} §fполучил §b${
-                                            drop.getRare().with(drop.getTitle())
-                                        }."
-                                    )
-                                )
-                            }
                         })
                     }
                     contents.add('P', ClickableItem.empty(item {
@@ -204,8 +168,73 @@ object LootBoxManager : Listener {
 
     @EventHandler
     fun PlayerInteractAtEntityEvent.handle() {
-        if (clickedEntity.type == EntityType.ARMOR_STAND && (clickedEntity as ArmorStand).helmet.getType() == Material.ENDER_CHEST)
-            lootboxMenu.open(player)
+        if (clickedEntity.type == EntityType.ARMOR_STAND && (clickedEntity as ArmorStand).helmet.getType() == Material.ENDER_CHEST) {
+            Arcade.get(player)?.let {
+                menu.money = "У вас ${it.money}"
+                menu.storage = MutableList(it.crates) {
+                    button {
+                        item = lootboxItem
+                        title = "Лутбокс"
+                        description = "#${it+1}"
+                        onClick { player, index, _ ->
+                            Anime.close(player)
+
+                            val donate = Arcade.getArcadeData(player)
+                            val balance = Arcade.getMoney(player)
+                            if (balance < lootboxPrice) {
+                                Anime.killboardMessage(player, Formatting.error("Не хватает жетонов :("))
+                                return@onClick
+                            }
+                            Arcade.setMoney(player, balance - lootboxPrice)
+                            Arcade.openLootbox(player.uniqueId)
+
+                            var drop = dropList.random() as DonatePosition
+                            var counter = 0
+
+                            while (counter < 3 && drop.getRare() == DropRare.LEGENDARY) {
+                                drop = dropList.random() as DonatePosition
+                                counter++
+                            }
+
+                            val moneyDrop = (Math.random() * 50 + 20).toInt() * (drop.getRare().ordinal + 1)
+
+                            after {
+                                ModTransfer()
+                                    .integer(2)
+                                    .item(CraftItemStack.asNMSCopy(drop.getIcon()))
+                                    .string(drop.getTitle())
+                                    .string(drop.getRare().name)
+                                    .item(MoneyKit.BIG.getIcon())
+                                    .string("§d$moneyDrop ${Humanize.plurals("жетон", "жетона", "жетонов", moneyDrop)}")
+                                    .string(DropRare.EPIC.name)
+                                    .send("lootbox", player)
+                            }
+
+                            if (donate.donate.contains(drop)) {
+                                val giveBack = (drop.getRare().ordinal + 1) * 48
+                                player.sendMessage(Formatting.fine("§aДубликат! §fЗаменен на §d$giveBack жетонов§f."))
+                                Arcade.deposit(player, giveBack)
+                            } else {
+                                donate.donate.add(drop)
+                            }
+                            Arcade.deposit(player, moneyDrop)
+
+                            Bukkit.getOnlinePlayers().forEach {
+                                Anime.topMessage(
+                                    it,
+                                    Formatting.fine(
+                                        "§e${player.name} §fполучил §b${
+                                            drop.getRare().with(drop.getTitle())
+                                        }."
+                                    )
+                                )
+                            }
+                        }
+                    }
+                }
+                menu.open(player)
+            }
+        }
     }
 
     @EventHandler
