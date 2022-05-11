@@ -123,6 +123,21 @@ class QueueStatus {
                 }
             }
 
+            var before = System.currentTimeMillis()
+
+            registerHandler<GameLoop> {
+                if (!box.enabled)
+                    return@registerHandler
+                val now = System.currentTimeMillis()
+
+                if (now - before > 1000) {
+                    before = now
+                    counter++
+                    time.content = "⏰ ${counter / 60}:${(counter % 60).toString().padStart(2, '0')}"
+                    online.content = "§7$total из $need"
+                }
+            }
+
             before = System.currentTimeMillis()
 
             val address = NetUtil.readUtf8(this)
@@ -157,21 +172,6 @@ class QueueStatus {
             UIEngine.schedule(0.26) {
                 counter = 0
                 box.enabled = false
-            }
-        }
-
-        var before = System.currentTimeMillis()
-
-        registerHandler<GameLoop> {
-            if (!box.enabled)
-                return@registerHandler
-            val now = System.currentTimeMillis()
-
-            if (now - before > 1000) {
-                before = now
-                counter++
-                time.content = "⏰ ${counter / 60}:${(counter % 60).toString().padStart(2, '0')}"
-                online.content = "§7$total из $need"
             }
         }
     }
