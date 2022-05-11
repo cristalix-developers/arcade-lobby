@@ -86,43 +86,10 @@ object LootBoxManager : Listener {
 
     private val menu = selection {
         title = "Ваши лутбоксы"
-        rows = 4
+        rows = 5
         columns = 5
         hint = "Открыть"
     }
-
-    private val lootboxMenu = ControlledInventory.builder()
-        .title("Ваши лутбоксы")
-        .rows(5)
-        .columns(9)
-        .provider(object : InventoryProvider {
-            override fun init(player: Player, contents: InventoryContents) {
-                Arcade.get(player)?.let {
-                    val donate = Arcade.getArcadeData(player)
-
-                    contents.setLayout(
-                        "XOOOOOOOX",
-                        "XOOOOOOOX",
-                        "XOOOPOOOX",
-                        "XOOOOOOOX",
-                        "XOOOOOOOX",
-                    )
-
-                    repeat(minOf(it.crates, contents.size('O'))) {
-                        contents.add('O', ClickableItem.of(lootboxItem) {
-                            player.closeInventory()
-
-                        })
-                    }
-                    contents.add('P', ClickableItem.empty(item {
-                        type = Material.CLAY_BALL
-                        nbt("other", "anvil")
-                        text("§bКак их получить?\n\n§7Побеждайте в игре,\n§7и с шансом §a10%\n§7вы получите §bлутбокс§7.")
-                    }.build()))
-                    contents.fillMask('X', ClickableItem.empty(ItemStack(Material.AIR)))
-                }
-            }
-        }).build()
 
     init {
         var counter = 0
