@@ -116,21 +116,6 @@ class QueueStatus {
     init {
         UIEngine.overlayContext + box
 
-        var before = System.currentTimeMillis()
-
-        registerHandler<GameLoop> {
-            if (!box.enabled)
-                return@registerHandler
-            val now = System.currentTimeMillis()
-
-            if (now - before > 1000) {
-                before = now
-                counter++
-                time.content = "⏰ ${counter / 60}:${(counter % 60).toString().padStart(2, '0')}"
-                online.content = "§7$total из $need"
-            }
-        }
-
         registerChannel("queue:show") {
             if (!box.enabled) {
                 box.animate(0.4, Easings.BACK_OUT) {
@@ -172,6 +157,21 @@ class QueueStatus {
             UIEngine.schedule(0.26) {
                 counter = 0
                 box.enabled = false
+            }
+        }
+
+        var before = System.currentTimeMillis()
+
+        registerHandler<GameLoop> {
+            if (!box.enabled)
+                return@registerHandler
+            val now = System.currentTimeMillis()
+
+            if (now - before > 1000) {
+                before = now
+                counter++
+                time.content = "⏰ ${counter / 60}:${(counter % 60).toString().padStart(2, '0')}"
+                online.content = "§7$total из $need"
             }
         }
     }

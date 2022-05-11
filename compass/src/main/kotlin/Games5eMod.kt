@@ -11,13 +11,10 @@ import ru.cristalix.clientapi.readId
 import ru.cristalix.clientapi.readUtf8
 import ru.cristalix.clientapi.readVarInt
 import ru.cristalix.uiengine.UIEngine
-import ru.cristalix.uiengine.element.TextElement
 import ru.cristalix.uiengine.eventloop.animate
 import ru.cristalix.uiengine.utility.*
 
 class Games5eMod : KotlinMod() {
-    lateinit var money: TextElement
-
     override fun onEnable() {
         UIEngine.initialize(this)
 
@@ -56,7 +53,7 @@ class Games5eMod : KotlinMod() {
 
         clientApi.clientConnection().sendPayload("g5e:loaded", Unpooled.EMPTY_BUFFER)
 
-        money = UIEngine.overlayContext + text {
+        val money = UIEngine.overlayContext + text {
             align = BOTTOM
             origin = BOTTOM
             shadow = true
