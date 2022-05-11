@@ -1,3 +1,5 @@
+package mod
+
 import dev.xdark.clientapi.resource.ResourceLocation
 import ru.cristalix.uiengine.UIEngine.clientApi
 import java.io.ByteArrayInputStream

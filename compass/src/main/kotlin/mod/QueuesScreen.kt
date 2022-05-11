@@ -1,3 +1,5 @@
+package mod
+
 import dev.implario.games5e.QueueProperties
 import ru.cristalix.clientapi.JavaMod
 import ru.cristalix.uiengine.UIEngine.clientApi

@@ -2,6 +2,9 @@ import com.google.gson.Gson
 import dev.implario.games5e.QueueProperties
 import implario.humanize.Humanize
 import io.netty.buffer.Unpooled
+import mod.QueueElement
+import mod.QueueStatus
+import mod.QueuesScreen
 import org.lwjgl.opengl.GL11.*
 import ru.cristalix.clientapi.KotlinMod
 import ru.cristalix.clientapi.readId
