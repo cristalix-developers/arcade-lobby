@@ -15,14 +15,11 @@ import ru.cristalix.uiengine.element.debug
 import ru.cristalix.uiengine.eventloop.animate
 import ru.cristalix.uiengine.utility.*
 
-lateinit var mod: Games5eMod
-
 class Games5eMod : KotlinMod() {
 
     lateinit var money: TextElement
     
     override fun onEnable() {
-        mod = this
         UIEngine.initialize(this)
 
         val queuesScreen = QueuesScreen()
@@ -52,8 +49,6 @@ class Games5eMod : KotlinMod() {
                 }
             }
         }
-
-        registerHandler<GameLoop> { debug = Keyboard.isKeyDown(Keyboard.KEY_F12) }
 
         loadTextureFromJar("games5e", "clock", "clock.png")
         loadTextureFromJar("games5e", "face", "face.png")

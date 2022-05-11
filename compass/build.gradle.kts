@@ -11,6 +11,12 @@ dependencies {
     implementation("dev.implario.games5e:commons:2.1.4")
 }
 
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    kotlinOptions {
+        freeCompilerArgs = freeCompilerArgs.plus("-Xcontext-receivers")
+    }
+}
+
 mod {
     name = "Compass"
     main = "Games5eMod"

@@ -39,5 +39,4 @@ rootProject.name = "arcade-lobby"
 include(
     "compass",
     "node",
-    "mod"
 )

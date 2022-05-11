@@ -10,6 +10,7 @@ import dev.implario.platform.impl.darkpaper.PlatformDarkPaper
 import me.func.battlepass.quest.ArcadeType
 import me.func.mod.Anime
 import me.func.mod.Kit
+import me.func.mod.conversation.ModLoader
 import me.func.util.Music
 import org.bukkit.Bukkit
 import org.bukkit.WorldCreator.name
@@ -64,6 +65,9 @@ class App : JavaPlugin() {
             registerEvents(LoadNpc, this@App)
             registerEvents(LootBoxManager, this@App)
         }
+
+        ModLoader.loadAll("mods")
+        ModLoader.onJoining("mod.jar")
 
         UserCommands
         Games5e

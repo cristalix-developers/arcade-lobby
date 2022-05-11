@@ -17,9 +17,6 @@ import ru.cristalix.uiengine.utility.WHITE
 import ru.cristalix.uiengine.utility.rectangle
 import ru.cristalix.uiengine.utility.text
 
-inline fun queue(info: QueueProperties, builder: QueueElement.() -> Unit) =
-    QueueElement(info).apply(builder)
-
 val namePattern = Regex("^[a-z0-9A-Z_-]+$")
 
 class QueueElement(val info: QueueProperties) : RectangleElement() {

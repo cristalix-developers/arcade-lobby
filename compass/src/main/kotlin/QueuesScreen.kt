@@ -33,6 +33,9 @@ class QueuesScreen: ContextGui() {
     }
 
     fun init(queues: Array<QueueProperties>) {
+        fun queue(info: QueueProperties, builder: QueueElement.() -> Unit) =
+            QueueElement(info).apply(builder)
+
         queuesContainer.children.clear()
         for (queue in queues) {
             queuesContainer + queue(queue) {}

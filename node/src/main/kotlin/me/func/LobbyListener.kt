@@ -19,6 +19,7 @@ import me.func.mod.conversation.ModTransfer
 import me.func.mod.util.after
 import me.func.protocol.GlowColor
 import me.func.protocol.GlowingPlace
+import me.func.protocol.Indicators
 import net.md_5.bungee.api.chat.ClickEvent
 import net.md_5.bungee.api.chat.ComponentBuilder
 import net.minecraft.server.v1_12_R1.PacketPlayOutNamedSoundEffect
@@ -49,7 +50,6 @@ object LobbyListener : Listener {
     )
 
     init {
-        ModLoader.loadAll("mods")
         val center = app.map.getLabel("center")
 
         Glow.addPlace(
@@ -123,8 +123,6 @@ object LobbyListener : Listener {
 
     @EventHandler
     fun PlayerJoinEvent.handle() {
-        ModLoader.send("mod.jar", player)
-
         player.apply {
             inventory.apply {
                 setItem(0, compass)
@@ -139,9 +137,8 @@ object LobbyListener : Listener {
 
         joinMessage = null
 
-        after(30) {
-            player.setResourcePack("https://implario.dev/arcade/arcade.zip", "5")
-
+        after(3) {
+            Anime.hideIndicator(player, Indicators.HEALTH, Indicators.EXP, Indicators.ARMOR, Indicators.HUNGER)
             Glow.showAllPlaces(player)
             Banners.show(player, *Banners.banners.map { it.value }.toTypedArray())
             Npc.npcs.forEach { (_, value) -> value.spawn(player) }

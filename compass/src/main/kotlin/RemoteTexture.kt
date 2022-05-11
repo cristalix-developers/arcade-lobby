@@ -1,5 +1,5 @@
 import dev.xdark.clientapi.resource.ResourceLocation
-import ru.cristalix.uiengine.UIEngine
+import ru.cristalix.uiengine.UIEngine.clientApi
 import java.io.ByteArrayInputStream
 import java.io.IOException
 import java.net.URL
@@ -36,9 +36,8 @@ fun loadTextures(vararg info: RemoteTexture): CompletableFuture<Nothing> {
                     val i = ImageIO.read(ByteArrayInputStream(bytes))
                     i
                 }
-                val api = UIEngine.clientApi
-                val mc = api.minecraft()
-                val renderEngine = api.renderEngine()
+                val mc = clientApi.minecraft()
+                val renderEngine = clientApi.renderEngine()
                 mc.execute {
                     renderEngine.loadTexture(photo.location, renderEngine.newImageTexture(image, false, false))
                     future.complete(null)

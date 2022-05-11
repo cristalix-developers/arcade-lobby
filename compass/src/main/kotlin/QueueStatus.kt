@@ -9,6 +9,7 @@ import ru.cristalix.uiengine.element.RectangleElement
 import ru.cristalix.uiengine.element.TextElement
 import ru.cristalix.uiengine.eventloop.animate
 import ru.cristalix.uiengine.utility.*
+import sun.security.jgss.GSSToken.readInt
 
 private const val margin = 3
 private const val width = 140.0
@@ -128,7 +129,7 @@ class QueueStatus {
             }
         }
 
-        mod.registerChannel("queue:show") {
+        registerChannel("queue:show") {
             if (!box.enabled) {
                 box.animate(0.4, Easings.BACK_OUT) {
                     offset.y = 15.0
@@ -148,7 +149,7 @@ class QueueStatus {
             box.enabled = true
         }
 
-        mod.registerChannel("queue:online") {
+        registerChannel("queue:online") {
             val address = NetUtil.readUtf8(this)
             val currentTotal = readInt()
 
@@ -162,7 +163,7 @@ class QueueStatus {
             }
         }
 
-        mod.registerChannel("queue:hide") {
+        registerChannel("queue:hide") {
             box.animate(0.25, Easings.QUART_IN) {
                 offset.y = -width + 15
             }
