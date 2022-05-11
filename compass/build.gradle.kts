@@ -2,19 +2,13 @@ plugins {
     id("anime.mod-bundler")
 }
 
-dependencies {
+dependencies {	
     compileOnly("ru.cristalix:client-api:4.0-SNAPSHOT")
     implementation("ru.cristalix:uiengine:4.0-SNAPSHOT")
     implementation("ru.cristalix:client-sdk:4.0-SNAPSHOT")
 
     implementation("implario:humanize:1.1.3")
     implementation("dev.implario.games5e:commons:2.1.4")
-}
-
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-    kotlinOptions {
-        freeCompilerArgs = freeCompilerArgs.plus("-Xcontext-receivers")
-    }
 }
 
 mod {

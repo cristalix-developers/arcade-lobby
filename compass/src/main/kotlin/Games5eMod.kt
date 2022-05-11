@@ -1,9 +1,7 @@
 import com.google.gson.Gson
 import dev.implario.games5e.QueueProperties
-import dev.xdark.clientapi.event.lifecycle.GameLoop
 import implario.humanize.Humanize
 import io.netty.buffer.Unpooled
-import org.lwjgl.input.Keyboard
 import org.lwjgl.opengl.GL11.*
 import ru.cristalix.clientapi.KotlinMod
 import ru.cristalix.clientapi.readId
@@ -11,14 +9,12 @@ import ru.cristalix.clientapi.readUtf8
 import ru.cristalix.clientapi.readVarInt
 import ru.cristalix.uiengine.UIEngine
 import ru.cristalix.uiengine.element.TextElement
-import ru.cristalix.uiengine.element.debug
 import ru.cristalix.uiengine.eventloop.animate
 import ru.cristalix.uiengine.utility.*
 
 class Games5eMod : KotlinMod() {
-
     lateinit var money: TextElement
-    
+
     override fun onEnable() {
         UIEngine.initialize(this)
 

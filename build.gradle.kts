@@ -15,7 +15,7 @@ subprojects {
     apply(plugin = "org.jetbrains.kotlin.jvm")
 
     dependencies {
-        implementation("org.jetbrains.kotlin:kotlin-stdlib:1.6.21")
+        implementation(kotlin("stdlib-jdk8"))
     }
 
     java {
@@ -23,7 +23,7 @@ subprojects {
     }
 
     tasks {
-        withType<Jar> { duplicatesStrategy = DuplicatesStrategy.FAIL }
+        withType<Jar> { duplicatesStrategy = DuplicatesStrategy.INCLUDE }
         withType<JavaCompile> { options.encoding = "UTF-8" }
         withType<KotlinCompile> {
             kotlinOptions {
