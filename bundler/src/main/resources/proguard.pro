@@ -1,8 +1,4 @@
 -dontnote
--dontwarn kotlin.internal.jdk7.**
--dontwarn kotlin.internal.jdk8.**
--dontwarn kotlin.streams.jdk8.**
--dontwarn kotlin.random.jdk8.**
 -target 1.8
 #-keepattributes *Annotation*
 -mergeinterfacesaggressively
@@ -11,6 +7,7 @@
 -allowaccessmodification
 -optimizationpasses 10
 -overloadaggressively
+
 -dontobfuscate
 
 -assumenosideeffects class kotlin.jvm.internal.Intrinsics {
@@ -24,7 +21,6 @@
 }
 
 -flattenpackagehierarchy _
--repackageclasses _
 
 -keep, allowoptimization class MAINCLASS
 -keep, allowoptimization class MAINCLASS$**
@@ -48,3 +44,5 @@
 -assumenosideeffects class ru.cristalix.clientapi.JavaMod {
     public static boolean isClientMod();
 }
+
+-keep class dev.implario.games5e.QueueProperties** { *; }

@@ -1,3 +1,5 @@
+package me.func.compass
+
 import dev.xdark.clientapi.event.lifecycle.GameLoop
 import dev.xdark.clientapi.resource.ResourceLocation
 import dev.xdark.feder.NetUtil

@@ -1,5 +1,5 @@
 plugins {
-    id("anime.mod-bundler")
+    id("dev.implario.bundler")
 }
 
 dependencies {
@@ -11,15 +11,25 @@ dependencies {
     implementation("dev.implario.games5e:commons:2.1.4")
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-    kotlinOptions {
-        freeCompilerArgs = freeCompilerArgs.plus("-Xcontext-receivers")
+tasks {
+    jar {
+        from(configurations.getByName("runtimeClasspath").map { if (it.isDirectory) it else zipTree(it) })
+
+        include("**/*.class", "*.class", "mod.properties", "*.png", "**/*.png")
+    }
+    bundle {
+        dontobfuscate()
+        optimizationpasses(5)
+        mergeinterfacesaggressively()
+        allowaccessmodification()
     }
 }
 
-mod {
+bundler {
     name = "Compass"
-    main = "Games5eMod"
+    mainClass = "me.func.compass.Games5eMod"
     version = "1.0"
     author = "func"
+
+    isObfuscate = true
 }

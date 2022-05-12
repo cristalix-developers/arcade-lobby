@@ -1,3 +1,5 @@
+package me.func.compass
+
 import dev.xdark.clientapi.resource.ResourceLocation
 import ru.cristalix.uiengine.UIEngine.clientApi
 import java.io.ByteArrayInputStream
