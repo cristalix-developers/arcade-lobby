@@ -18,10 +18,7 @@ tasks {
         include("**/*.class", "*.class", "mod.properties", "*.png", "**/*.png")
     }
     bundle {
-        dontobfuscate()
         optimizationpasses(5)
-        mergeinterfacesaggressively()
-        allowaccessmodification()
     }
 }
 
@@ -30,6 +27,4 @@ bundler {
     mainClass = "me.func.compass.Games5eMod"
     version = "1.0"
     author = "func"
-
-    isObfuscate = true
 }
