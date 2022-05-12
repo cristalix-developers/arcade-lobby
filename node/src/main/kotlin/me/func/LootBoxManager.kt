@@ -86,7 +86,7 @@ object LootBoxManager : Listener {
 
     private val menu = selection {
         title = "Ваши лутбоксы"
-        rows = 5
+        rows = 4
         columns = 5
         hint = "Открыть"
     }
@@ -142,7 +142,8 @@ object LootBoxManager : Listener {
                     button {
                         item = lootboxItem
                         title = "Лутбокс"
-                        description = "#${it+1}"
+                        description = "§7#${it+1}"
+                        price = lootboxPrice * 1L
                         onClick { player, index, _ ->
                             Anime.close(player)
 

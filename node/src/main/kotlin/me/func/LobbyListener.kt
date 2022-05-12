@@ -137,7 +137,7 @@ object LobbyListener : Listener {
 
         joinMessage = null
 
-        after(2) {
+        after(5) {
             Anime.hideIndicator(player, Indicators.HEALTH, Indicators.EXP, Indicators.ARMOR, Indicators.HUNGER)
             Glow.showAllPlaces(player)
             Banners.show(player, *Banners.banners.map { it.value }.toTypedArray())
