@@ -1,3 +1,5 @@
+package me.func.compass
+
 import dev.implario.games5e.QueueProperties
 import dev.xdark.clientapi.opengl.GlStateManager
 import dev.xdark.clientapi.resource.ResourceLocation

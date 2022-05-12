@@ -13,10 +13,9 @@ pluginManagement {
         gradlePluginPortal()
     }
 
-    includeBuild("bundler")
-
     plugins {
         kotlin("jvm") version "1.6.21"
+        id("dev.implario.bundler") version "9999-SNAPSHOT"
     }
 }
 
@@ -38,5 +37,5 @@ dependencyResolutionManagement {
 rootProject.name = "arcade-lobby"
 include(
     "compass",
-    "node",
+    "node"
 )
