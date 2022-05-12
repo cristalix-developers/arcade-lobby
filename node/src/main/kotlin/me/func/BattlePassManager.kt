@@ -424,7 +424,6 @@ object BattlePassManager {
                 player.closeInventory()
 
                 if (data.advanced) {
-                    Anime.itemTitle(player, PersonalizationMenu.backItem, "Ошибка!", "У вас уже Премиум!", 2.5)
                     return@onBuyAdvanced
                 }
 
@@ -536,7 +535,7 @@ object BattlePassManager {
                 successfully.accept(player)
                 Arcade.save(player.uniqueId)
             } else {
-                Anime.itemTitle(player, PersonalizationMenu.backItem, "Ошибка!", it.errorMessage, 2.5)
+                Anime.killboardMessage(player, "Ошибка! " + it.errorMessage)
             }
         }
     }
