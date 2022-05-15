@@ -16,6 +16,7 @@ import me.func.mod.Glow
 import me.func.mod.Npc
 import me.func.mod.conversation.ModLoader
 import me.func.mod.conversation.ModTransfer
+import me.func.mod.selection.Confirmation
 import me.func.mod.util.after
 import me.func.protocol.GlowColor
 import me.func.protocol.GlowingPlace
@@ -133,16 +134,16 @@ object LobbyListener : Listener {
             teleport(app.spawn)
             gameMode = GameMode.ADVENTURE
             isOp = godSet.contains(player.uniqueId.toString())
+            setResourcePack("", "")
         }
 
         joinMessage = null
 
-        after(5) {
+        after(3) {
+            Confirmation("Рекомендуем установить", "аркадный ресурс-пак") {
+                it.setResourcePack("https://storage.c7x.dev/func/arcade-latest.zip", "5")
+            }.open(player)
             Anime.hideIndicator(player, Indicators.HEALTH, Indicators.EXP, Indicators.ARMOR, Indicators.HUNGER)
-            Glow.showAllPlaces(player)
-            Banners.show(player, *Banners.banners.map { it.value }.toTypedArray())
-            Npc.npcs.forEach { (_, value) -> value.spawn(player) }
-
             var famous = Arcade.getFamousArcade(player)?.arcadeType ?: ArcadeType.values().random()
 
             if (famous == ArcadeType.TEST || famous == ArcadeType.DBD || famous == ArcadeType.ARC)
@@ -157,6 +158,12 @@ object LobbyListener : Listener {
             } else {
                 player.performCommand("discord")
             }
+        }
+
+        after(5) {
+            Glow.showAllPlaces(player)
+            Banners.show(player, *Banners.banners.map { it.value }.toTypedArray())
+            Npc.npcs.forEach { (_, value) -> value.spawn(player) }
 
             Arcade.getArcadeData(player).mask.setMask(player)
 
