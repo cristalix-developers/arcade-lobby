@@ -14,12 +14,15 @@ import ru.cristalix.uiengine.element.TextElement
 import ru.cristalix.uiengine.eventloop.animate
 import ru.cristalix.uiengine.utility.*
 
+lateinit var mod: Games5eMod
+
 class Games5eMod : KotlinMod() {
 
     lateinit var money: TextElement
     
     override fun onEnable() {
         UIEngine.initialize(this)
+        mod = this
 
         val queuesScreen = QueuesScreen()
         val gson = Gson()

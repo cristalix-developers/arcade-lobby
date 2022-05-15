@@ -18,13 +18,13 @@ tasks {
         include("**/*.class", "*.class", "mod.properties", "*.png", "**/*.png")
     }
     bundle {
-        optimizationpasses(5)
+        optimizationpasses(10)
     }
 }
 
 bundler {
     name = "Compass"
     mainClass = "me.func.compass.Games5eMod"
-    version = "1.0"
+    version = "1.2"
     author = "func"
 }

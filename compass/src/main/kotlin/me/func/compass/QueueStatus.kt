@@ -4,19 +4,17 @@ import dev.xdark.clientapi.event.lifecycle.GameLoop
 import dev.xdark.clientapi.resource.ResourceLocation
 import dev.xdark.feder.NetUtil
 import io.netty.buffer.Unpooled
-import ru.cristalix.clientapi.KotlinMod
-import ru.cristalix.clientapi.registerHandler
 import ru.cristalix.uiengine.UIEngine
+import ru.cristalix.uiengine.UIEngine.clientApi
 import ru.cristalix.uiengine.element.RectangleElement
 import ru.cristalix.uiengine.element.TextElement
 import ru.cristalix.uiengine.eventloop.animate
+import ru.cristalix.uiengine.onMouseUp
 import ru.cristalix.uiengine.utility.*
-import sun.security.jgss.GSSToken.readInt
 
 private const val margin = 3
 private const val width = 140.0
 
-context(KotlinMod)
 class QueueStatus {
     private var counter = 0
     private var total = 0
@@ -30,14 +28,14 @@ class QueueStatus {
     private lateinit var cancel: RectangleElement
 
     private val box = rectangle {
-        scale = V3(1.5, 1.5)
+        scale = V3(1.5, 1.5, 1.0)
         enabled = false
 
         align = TOP
         origin = TOP
         offset.y += -width + 15
 
-        size = V3(width, width / 4.0 * 1.2857142857)
+        size = V3(width, width / 4.0 * 1.2857142857, 1.0)
 
         icon = +rectangle {
             size = V3(width / 4.0, width / 4.0 * 1.2857142857)
@@ -56,7 +54,7 @@ class QueueStatus {
         }
 
         background = +rectangle {
-            size = V3(width - width / 4.0, width / 4.0)
+            size = V3(width - width / 4.0, width / 4.0, 1.0)
             color = Color(0, 0, 0, 0.62)
             align = TOP_RIGHT
             origin = TOP_RIGHT
@@ -85,9 +83,13 @@ class QueueStatus {
         cancel = +rectangle {
             align = BOTTOM_RIGHT
             origin = BOTTOM_RIGHT
-            size = V3(width / 4 * 3, width / 4.0 * 1.2857142857 - width / 4)
+            size = V3(width / 4 * 3, width / 4.0 * 1.2857142857 - width / 4, 1.0)
             color = Color(255, 0, 0, 0.62)
             offset.y -= 1
+
+            onClick {
+                clientApi.clientConnection().sendPayload("queue:leave", Unpooled.EMPTY_BUFFER)
+            }
 
             +text {
                 align = LEFT
@@ -95,7 +97,7 @@ class QueueStatus {
                 color = WHITE
                 scale = V3(0.9, 0.9)
                 offset.x += margin + 0.2
-                content = "Покинуть очередь"
+                content = "Покинуть очередь1"
             }
 
             +text {
@@ -106,10 +108,6 @@ class QueueStatus {
                 offset.x -= margin
                 content = ">"
             }
-
-            onClick {
-                UIEngine.clientApi.clientConnection().sendPayload("queue:leave", Unpooled.buffer())
-            }
         }
     }
 
@@ -118,7 +116,7 @@ class QueueStatus {
 
         var before = System.currentTimeMillis()
 
-        registerHandler<GameLoop> {
+        mod.registerHandler<GameLoop> {
             if (!box.enabled)
                 return@registerHandler
             val now = System.currentTimeMillis()
@@ -131,7 +129,7 @@ class QueueStatus {
             }
         }
 
-        registerChannel("queue:show") {
+        mod.registerChannel("queue:show") {
             if (!box.enabled) {
                 box.animate(0.4, Easings.BACK_OUT) {
                     offset.y = 15.0
@@ -151,21 +149,20 @@ class QueueStatus {
             box.enabled = true
         }
 
-        registerChannel("queue:online") {
+        mod.registerChannel("queue:online") {
             val address = NetUtil.readUtf8(this)
             val currentTotal = readInt()
 
             if (address == icon.textureLocation?.path) {
                 total = currentTotal
-                println("update online")
             }
 
             if (counter >= 300) {
-                UIEngine.clientApi.clientConnection().sendPayload("queue:leave", Unpooled.buffer())
+                clientApi.clientConnection().sendPayload("queue:leave", Unpooled.EMPTY_BUFFER)
             }
         }
 
-        registerChannel("queue:hide") {
+        mod.registerChannel("queue:hide") {
             box.animate(0.25, Easings.QUART_IN) {
                 offset.y = -width + 15
             }
