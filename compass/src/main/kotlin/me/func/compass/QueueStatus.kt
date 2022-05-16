@@ -97,7 +97,7 @@ class QueueStatus {
                 color = WHITE
                 scale = V3(0.9, 0.9)
                 offset.x += margin + 0.2
-                content = "Покинуть очередь1"
+                content = "Покинуть очередь"
             }
 
             +text {
