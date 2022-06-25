@@ -21,6 +21,7 @@ import me.func.mod.util.after
 import me.func.protocol.GlowColor
 import me.func.protocol.GlowingPlace
 import me.func.protocol.Indicators
+import me.func.protocol.Tricolor
 import net.md_5.bungee.api.chat.ClickEvent
 import net.md_5.bungee.api.chat.ComponentBuilder
 import net.minecraft.server.v1_12_R1.PacketPlayOutNamedSoundEffect
@@ -56,9 +57,7 @@ object LobbyListener : Listener {
         Glow.addPlace(
             GlowingPlace(
                 UUID.randomUUID(),
-                128,
-                0,
-                128,
+                Tricolor(128, 0, 128),
                 center.x + 0.5,
                 center.y,
                 center.z + 0.5,
@@ -139,7 +138,7 @@ object LobbyListener : Listener {
 
         joinMessage = null
 
-        after(3) {
+        after(5) {
             Confirmation("Рекомендуем установить", "аркадный ресурс-пак") {
                 it.setResourcePack("https://storage.c7x.dev/func/arcade-latest.zip", "5")
             }.open(player)
@@ -160,7 +159,7 @@ object LobbyListener : Listener {
             }
         }
 
-        after(5) {
+        after(10) {
             Glow.showAllPlaces(player)
             Banners.show(player, *Banners.banners.map { it.value }.toTypedArray())
             Npc.npcs.forEach { (_, value) -> value.spawn(player) }

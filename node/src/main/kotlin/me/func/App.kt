@@ -54,7 +54,7 @@ class App : JavaPlugin() {
             isLobbyServer = true
             readableName = "Аркадное Лобби"
             groupName = "Аркады"
-            servicedServers = arrayOf("MURP", *ArcadeType.values().map { it.name }.minus("BP").toTypedArray())
+            servicedServers = arrayOf("MURP", *ArcadeType.values().map { it.name }.minus("BP").minus("TEST").toTypedArray())
         }
 
         Arcade.start(ArcadeType.TEST)

@@ -9,7 +9,6 @@ import ru.cristalix.uiengine.UIEngine.clientApi
 import ru.cristalix.uiengine.element.RectangleElement
 import ru.cristalix.uiengine.element.TextElement
 import ru.cristalix.uiengine.eventloop.animate
-import ru.cristalix.uiengine.onMouseUp
 import ru.cristalix.uiengine.utility.*
 
 private const val margin = 3
