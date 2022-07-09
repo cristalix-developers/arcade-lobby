@@ -39,6 +39,7 @@ import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.player.*
 import org.bukkit.inventory.ItemStack
 import java.util.*
+import kotlin.math.abs
 
 object LobbyListener : Listener {
 
@@ -169,6 +170,13 @@ object LobbyListener : Listener {
             ModTransfer()
                 .json(client.allQueues.map { it.properties })
                 .send("queues:data", player)
+
+            val targetServer = player.playerProfile.gameProfile.getProperties()["hc:targetServer"]
+            if (targetServer != null && targetServer.isNotEmpty()) {
+                val queueId = targetServer.first().value
+
+                player.performCommand("queue $queueId")
+            }
         }
 
         (player as CraftPlayer).handle.playerConnection.networkManager.channel.pipeline()
