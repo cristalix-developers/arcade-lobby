@@ -35,6 +35,7 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "arcade-lobby"
+
 include(
     "compass",
     "node"
