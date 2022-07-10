@@ -162,7 +162,6 @@ object LobbyListener : Listener {
 
         after(10) {
             Glow.showAllPlaces(player)
-            Banners.show(player, *Banners.banners.map { it.value }.toTypedArray())
             Npc.npcs.forEach { (_, value) -> value.spawn(player) }
 
             Arcade.getArcadeData(player).mask.setMask(player)

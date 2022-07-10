@@ -28,7 +28,7 @@ dependencies {
     implementation 'implario:bukkit-tools:4.4.12'
     implementation 'implario:games5e-integration:1.3.23'
 
-    implementation 'me.func:arcade-api:0.0.2-SNAPSHOT'
+    implementation 'me.func:arcade-api:0.0.3-SNAPSHOT'
     implementation 'ru.cristalix:boards-bukkit-api:3.0.15'
 }
 

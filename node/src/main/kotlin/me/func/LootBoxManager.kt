@@ -14,7 +14,6 @@ import me.func.mod.util.after
 import me.func.protocol.DropRare
 import me.func.protocol.element.Banner
 import net.minecraft.server.v1_12_R1.EnumItemSlot
-import net.minecraft.server.v1_12_R1.MinecraftServer
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material
@@ -22,19 +21,13 @@ import org.bukkit.craftbukkit.v1_12_R1.entity.CraftArmorStand
 import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack
 import org.bukkit.entity.ArmorStand
 import org.bukkit.entity.EntityType
-import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent
 import org.bukkit.event.player.PlayerInteractAtEntityEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.server.TabCompleteEvent
-import org.bukkit.inventory.ItemStack
 import ru.cristalix.core.formatting.Formatting
-import ru.cristalix.core.inventory.ClickableItem
-import ru.cristalix.core.inventory.ControlledInventory
-import ru.cristalix.core.inventory.InventoryContents
-import ru.cristalix.core.inventory.InventoryProvider
 
 object LootBoxManager : Listener {
 
@@ -52,7 +45,7 @@ object LootBoxManager : Listener {
         val banner: Banner = Banner.Builder()
             .x(origin.x)
             .y(origin.y + 3.6)
-            .z(origin.z + 2.0)
+            .z(origin.z)
             .yaw(-90f)
             .pitch(10f)
             .weight(65)
