@@ -14,7 +14,6 @@ import me.func.mod.Banners
 import me.func.mod.Banners.location
 import me.func.mod.Glow
 import me.func.mod.Npc
-import me.func.mod.conversation.ModLoader
 import me.func.mod.conversation.ModTransfer
 import me.func.mod.selection.Confirmation
 import me.func.mod.util.after
@@ -39,9 +38,10 @@ import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.player.*
 import org.bukkit.inventory.ItemStack
 import java.util.*
-import kotlin.math.abs
 
 object LobbyListener : Listener {
+
+    private val arcadeTypesByAddress = ArcadeType.values().associateBy { it.address }
 
     private val godSet = hashSetOf(
         "307264a1-2c69-11e8-b5ea-1cb72caa35fd",
@@ -172,8 +172,8 @@ object LobbyListener : Listener {
 
             val targetServer = player.playerProfile.gameProfile.getProperties()["hc:targetServer"]
             if (targetServer != null && targetServer.isNotEmpty()) {
-                val queueId = targetServer.first().value
-
+                val address = targetServer.first().value
+                val queueId = arcadeTypesByAddress[address]?.queue ?: error("arcade $address not found")
                 player.performCommand("queue $queueId")
             }
         }
