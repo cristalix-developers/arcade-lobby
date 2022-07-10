@@ -35,9 +35,14 @@ import org.bukkit.event.block.BlockPhysicsEvent
 import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.entity.FoodLevelChangeEvent
 import org.bukkit.event.inventory.InventoryClickEvent
-import org.bukkit.event.player.*
+import org.bukkit.event.player.PlayerDropItemEvent
+import org.bukkit.event.player.PlayerInteractEvent
+import org.bukkit.event.player.PlayerJoinEvent
+import org.bukkit.event.player.PlayerMoveEvent
+import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.inventory.ItemStack
-import java.util.*
+import java.util.Collections
+import java.util.UUID
 
 object LobbyListener : Listener {
 
@@ -173,8 +178,9 @@ object LobbyListener : Listener {
             val targetServer = player.playerProfile.gameProfile.getProperties()["hc:targetServer"]
             if (targetServer != null && targetServer.isNotEmpty()) {
                 val address = targetServer.first().value
-                val queueId = arcadeTypesByAddress[address]?.queue ?: error("arcade $address not found")
-                player.performCommand("queue $queueId")
+                arcadeTypesByAddress[address]?.queue?.let { queueId ->
+                    player.performCommand("queue $queueId")
+                }
             }
         }
 
