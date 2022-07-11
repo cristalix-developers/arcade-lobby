@@ -70,6 +70,7 @@ class App : JavaPlugin() {
 
         kensuke = BukkitKensuke.setup(this).apply {
             addGlobalUserManager(userManager)
+            globalRealm = "MURP-0"
         }
 
         Arcade.start(ArcadeType.TEST)

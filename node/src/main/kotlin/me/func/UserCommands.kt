@@ -32,6 +32,7 @@ object UserCommands {
         register("rp") { sender, _ ->
             val stat = app.userManager.getUser(sender.uniqueId).stat
             stat.enabledResourcePack = Tristate.FALSE
+
             Confirmation("Рекомендуем установить", "аркадный ресурс-пак") {
                 it.setResourcePack("https://storage.c7x.dev/func/arcade-latest.zip", it.resourcePackHash)
                 stat.enabledResourcePack = Tristate.TRUE
