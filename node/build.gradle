@@ -28,7 +28,10 @@ dependencies {
     implementation 'implario:bukkit-tools:4.4.12'
     implementation 'implario:games5e-integration:1.3.23'
 
-    implementation 'me.func:arcade-api:0.0.5-SNAPSHOT'
+    implementation('me.func:arcade-api:0.0.5-SNAPSHOT') {
+        exclude module: 'animation-api'
+    }
+    implementation 'me.func:animation-api:0.0.33'
     implementation 'ru.cristalix:boards-bukkit-api:3.0.15'
     implementation 'dev.implario:kensuke-client-bukkit:2.1.10'
 }
