@@ -145,7 +145,7 @@ object LobbyListener : Listener {
         joinMessage = null
 
         after(5) {
-            if (app.userManager.getUser(player.uniqueId).stat.enabledResourcePack == Tristate.UNKNOWN) {
+            if (app.userManager.getUser(player.uniqueId)?.stat?.enabledResourcePack == Tristate.UNKNOWN) {
                 player.performCommand("rp")
             }
 
