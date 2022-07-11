@@ -46,3 +46,6 @@ commands:
   bpgive:
     description: Выдать баттлпасс игроку
     usage: /<bpgive> <exp/advanced> <nick>
+  rp:
+    description: Сменить статус ресурспака
+    usage: /<rp>
