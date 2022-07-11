@@ -145,9 +145,10 @@ object LobbyListener : Listener {
         joinMessage = null
 
         after(5) {
-            Confirmation("Рекомендуем установить", "аркадный ресурс-пак") {
-                it.setResourcePack("https://storage.c7x.dev/func/arcade-latest.zip", it.resourcePackHash)
-            }.open(player)
+            if (app.userManager.getUser(player.uniqueId).stat.enabledResourcePack == Tristate.UNKNOWN) {
+                player.performCommand("rp")
+            }
+
             Anime.hideIndicator(player, Indicators.HEALTH, Indicators.EXP, Indicators.ARMOR, Indicators.HUNGER)
             var famous = Arcade.getFamousArcade(player)?.arcadeType ?: ArcadeType.values().random()
 

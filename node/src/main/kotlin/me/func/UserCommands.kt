@@ -5,6 +5,7 @@ import me.func.misc.PersonalizationMenu
 import me.func.mod.Anime
 import me.func.mod.conversation.ModLoader
 import me.func.mod.conversation.ModTransfer
+import me.func.mod.selection.Confirmation
 import net.md_5.bungee.api.chat.ClickEvent
 import net.md_5.bungee.api.chat.ComponentBuilder
 import org.bukkit.Bukkit
@@ -13,7 +14,6 @@ import org.bukkit.entity.Player
 import org.bukkit.metadata.FixedMetadataValue
 import ru.cristalix.core.realm.RealmId
 import ru.cristalix.core.transfer.ITransferService
-import sun.audio.AudioPlayer.player
 import java.util.*
 import kotlin.math.abs
 
@@ -29,6 +29,14 @@ object UserCommands {
 
         val hub = RealmId.of("HUB")
 
+        register("rp") { sender, _ ->
+            val stat = app.userManager.getUser(sender.uniqueId).stat
+            stat.enabledResourcePack = Tristate.FALSE
+            Confirmation("Рекомендуем установить", "аркадный ресурс-пак") {
+                it.setResourcePack("https://storage.c7x.dev/func/arcade-latest.zip", it.resourcePackHash)
+                stat.enabledResourcePack = Tristate.TRUE
+            }.open(sender)
+        }
         register("menu") { sender, _ -> PersonalizationMenu.open(sender) }
         register("leave") { sender, _ -> ITransferService.get().transfer(sender.uniqueId, hub) }
         register("play") { sender, _ -> Anime.sendEmptyBuffer("g5e:open", sender) }
