@@ -15,7 +15,6 @@ import me.func.mod.Banners.location
 import me.func.mod.Glow
 import me.func.mod.Npc
 import me.func.mod.conversation.ModTransfer
-import me.func.mod.selection.Confirmation
 import me.func.mod.util.after
 import me.func.protocol.GlowColor
 import me.func.protocol.GlowingPlace
@@ -35,18 +34,11 @@ import org.bukkit.event.block.BlockPhysicsEvent
 import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.entity.FoodLevelChangeEvent
 import org.bukkit.event.inventory.InventoryClickEvent
-import org.bukkit.event.player.PlayerDropItemEvent
-import org.bukkit.event.player.PlayerInteractEvent
-import org.bukkit.event.player.PlayerJoinEvent
-import org.bukkit.event.player.PlayerMoveEvent
-import org.bukkit.event.player.PlayerQuitEvent
+import org.bukkit.event.player.*
 import org.bukkit.inventory.ItemStack
-import java.util.Collections
-import java.util.UUID
+import java.util.*
 
 object LobbyListener : Listener {
-
-    private val arcadeTypesByAddress = ArcadeType.values().associateBy { it.address }
 
     private val godSet = hashSetOf(
         "307264a1-2c69-11e8-b5ea-1cb72caa35fd",
@@ -177,11 +169,12 @@ object LobbyListener : Listener {
                 .send("queues:data", player)
 
             val targetServer = player.playerProfile.gameProfile.getProperties()["hc:targetServer"]
-            if (targetServer != null && targetServer.isNotEmpty()) {
+
+            println("Joined ${player.displayName}, target ${targetServer?.firstOrNull()?.value ?: "null"}")
+
+            if (!targetServer.isNullOrEmpty()) {
                 val address = targetServer.first().value
-                arcadeTypesByAddress[address]?.queue?.let { queueId ->
-                    player.performCommand("queue $queueId")
-                }
+                player.performCommand("queue ${ArcadeType.valueOf(address.uppercase()).queue}")
             }
         }
 
