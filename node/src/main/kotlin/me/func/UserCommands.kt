@@ -3,19 +3,16 @@ package me.func
 import me.func.battlepass.quest.ArcadeType
 import me.func.misc.PersonalizationMenu
 import me.func.mod.Anime
-import me.func.mod.conversation.ModLoader
-import me.func.mod.conversation.ModTransfer
 import me.func.mod.selection.Confirmation
 import me.func.mod.selection.MenuManager
 import net.md_5.bungee.api.chat.ClickEvent
 import net.md_5.bungee.api.chat.ComponentBuilder
-import org.bukkit.Bukkit
 import org.bukkit.command.CommandExecutor
 import org.bukkit.entity.Player
-import org.bukkit.metadata.FixedMetadataValue
 import ru.cristalix.core.realm.RealmId
 import ru.cristalix.core.transfer.ITransferService
-import java.util.*
+import java.util.UUID
+import java.util.function.Consumer
 import kotlin.math.abs
 
 object UserCommands {
@@ -32,12 +29,17 @@ object UserCommands {
 
         register("rp") { sender, _ ->
             val stat = app.userManager.getUser(sender.uniqueId).stat
-            stat.enabledResourcePack = Tristate.FALSE
-
             Confirmation("Рекомендуем установить", "аркадный ресурс-пак") {
                 it.setResourcePack("https://storage.c7x.dev/func/arcade-latest.zip", it.resourcePackHash)
                 stat.enabledResourcePack = Tristate.TRUE
-            }.open(sender)
+            }.run {
+                onDeny = Consumer {
+                    it.setResourcePack("", "")
+                    stat.enabledResourcePack = Tristate.FALSE
+                }
+
+                open(sender)
+            }
         }
         register("menu") { sender, _ -> PersonalizationMenu.open(sender) }
         register("leave") { sender, _ -> ITransferService.get().transfer(sender.uniqueId, hub) }
