@@ -65,7 +65,7 @@ class App : JavaPlugin() {
             readableName = "Аркадное Лобби"
             groupName = "Аркады"
             servicedServers =
-                arrayOf("MURP", *ArcadeType.values().map { it.name }.minus("BP").minus("TEST").toTypedArray())
+                arrayOf(*ArcadeType.values().map { it.name }.minus("BP").minus("TEST").toTypedArray())
         }
 
         kensuke = BukkitKensuke.setup(this).apply {

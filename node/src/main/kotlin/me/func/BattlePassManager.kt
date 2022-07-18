@@ -29,7 +29,7 @@ import java.util.function.Consumer
 import java.util.function.Function
 
 const val BATTLEPASS_PRICE = 399
-const val BATTLEPASS_SALE_PERCENT = 30
+const val BATTLEPASS_SALE_PERCENT = 35
 
 object BattlePassManager {
 
@@ -469,7 +469,7 @@ object BattlePassManager {
         }
 
         facade.tags.add("Выполняйте квесты - получайте призы!")
-        facade.tags.add("BattlePass завершится в 01.06.2022")
+        facade.tags.add("BattlePass завершится в 01.09.2022")
         questStatusUpdater = Function<Player, List<String>> { player ->
             BattlePassUtil.getQuestLore(player)
         }

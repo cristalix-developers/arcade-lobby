@@ -31,7 +31,7 @@ dependencies {
     implementation('me.func:arcade-api:0.0.5-SNAPSHOT') {
         exclude module: 'animation-api'
     }
-    implementation 'me.func:animation-api:0.0.33'
+    implementation 'me.func:animation-api:0.1.02'
     implementation 'ru.cristalix:boards-bukkit-api:3.0.15'
     implementation 'dev.implario:kensuke-client-bukkit:2.1.10'
 }

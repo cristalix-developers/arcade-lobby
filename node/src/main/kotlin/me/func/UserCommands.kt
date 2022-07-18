@@ -30,7 +30,7 @@ object UserCommands {
         register("rp") { sender, _ ->
             val stat = app.userManager.getUser(sender.uniqueId).stat
             Confirmation("Рекомендуем установить", "аркадный ресурс-пак") {
-                it.setResourcePack("https://storage.c7x.dev/func/arcade-latest.zip", it.resourcePackHash)
+                it.setResourcePack("https://storage.c7x.dev/func/arcade-latest.zip", "5")
                 stat.enabledResourcePack = Tristate.TRUE
             }.run {
                 onDeny = Consumer {

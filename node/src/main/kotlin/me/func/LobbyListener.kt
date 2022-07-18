@@ -167,13 +167,15 @@ object LobbyListener : Listener {
             ModTransfer()
                 .json(client.allQueues.map { it.properties })
                 .send("queues:data", player)
+        }
 
+        after(40) {
             val targetServer = player.playerProfile.gameProfile.getProperties()["hc:targetServer"]
 
-            println("Joined ${player.displayName}, target ${targetServer?.firstOrNull()?.value ?: "null"}")
+            println("Joined ${player.displayName}, target ${targetServer?.lastOrNull()?.value ?: "null"}")
 
             if (!targetServer.isNullOrEmpty()) {
-                val address = targetServer.first().value
+                val address = targetServer.last().value
                 player.performCommand("queue ${ArcadeType.valueOf(address.uppercase()).queue}")
             }
         }
