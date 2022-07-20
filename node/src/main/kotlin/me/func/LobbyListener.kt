@@ -36,6 +36,7 @@ import org.bukkit.event.entity.FoodLevelChangeEvent
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.player.*
 import org.bukkit.inventory.ItemStack
+import ru.cristalix.core.formatting.Formatting
 import java.util.*
 
 object LobbyListener : Listener {
@@ -139,6 +140,8 @@ object LobbyListener : Listener {
         after(5) {
             if (app.userManager.getUser(player.uniqueId)?.stat?.enabledResourcePack == Tristate.UNKNOWN) {
                 player.performCommand("rp")
+            } else {
+                player.sendMessage(Formatting.fine("Чтобы включить или выключить в лобби ресурс-пак пишите /rp"))
             }
 
             Anime.hideIndicator(player, Indicators.HEALTH, Indicators.EXP, Indicators.ARMOR, Indicators.HUNGER)

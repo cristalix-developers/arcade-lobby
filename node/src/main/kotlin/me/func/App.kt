@@ -57,6 +57,11 @@ class App : JavaPlugin() {
             registerService(IPartyService::class.java, PartyService(ISocketClient.get()))
         }
 
+        Nightingale
+            .subscribe("arcade-lobby")
+            .useP2p()
+            .start()
+
         Platforms.set(PlatformDarkPaper())
 
         IRealmService.get().currentRealmInfo.apply {
