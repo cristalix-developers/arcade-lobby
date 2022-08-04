@@ -208,6 +208,7 @@ object LootBoxManager : Listener {
         Bukkit.getScheduler().runTaskLater(app, {
             Arcade.get(player)?.let { data ->
                 lootbox.forEach {
+                    if(data.crate < 0) data.crates = 0;
                     it.banner.content = "§bЛутбокс\n§fДоступно ${data.crates} ${
                         Humanize.plurals(
                             "штука",
