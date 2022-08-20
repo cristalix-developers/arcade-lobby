@@ -45,10 +45,10 @@ object UserCommands {
         register("leave") { sender, _ -> ITransferService.get().transfer(sender.uniqueId, hub) }
         register("play") { sender, _ -> Anime.sendEmptyBuffer("g5e:open", sender) }
         register("battlepass") { sender, _ -> BattlePassManager.show(sender) }
-        register("discord") { sender, _ ->
+        register("bot") { sender, _ ->
             sender.spigot().sendMessage(
-                *ComponentBuilder("\n§7Бесят баги? Пиши сюда - §bhttps://discord.gg/ra2uwWv9QV§7, помоги нам стать лучше!\n")
-                    .event(ClickEvent(ClickEvent.Action.OPEN_URL, "https://discord.gg/ra2uwWv9QV§7"))
+                *ComponentBuilder("\n§7Бесят баги? Пиши сюда - §bhttps://t.me/deadles_bot§7, помоги нам стать лучше!\n")
+                    .event(ClickEvent(ClickEvent.Action.OPEN_URL, "https://t.me/deadles_bot§7"))
                     .create()
             )
         }

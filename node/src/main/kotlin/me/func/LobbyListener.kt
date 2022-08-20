@@ -157,7 +157,7 @@ object LobbyListener : Listener {
                         .create()
                 )
             } else {
-                player.performCommand("discord")
+                player.performCommand("bot")
             }
         }
 
