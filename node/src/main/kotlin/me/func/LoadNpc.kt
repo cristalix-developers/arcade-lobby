@@ -481,17 +481,11 @@ object LoadNpc : Listener {
                 "Аркадный Бот",
                 Screen(
                     "Привет. Нам надоели баги и ошибки!",
-                    "Поэтому сделали нового бота, вы",
-                    "можете напрямую нам писать их через",
-                    "/bug или в Discord."
+                    "С помощью репорт-бота вы",
+                    "можете напрямую сообщить нам о них!"
                 ).buttons(
-                    Button("Закрыть").actions(Action(Actions.CLOSE)),
-                    Button("Быстрая игра").actions(
-                        Action.command("/random"),
-                        Action(Actions.CLOSE)
-                    ),
-                    Button("BattlePass").actions(Action.command("/battlepass"), Action(Actions.CLOSE)),
-                    Button("Открыть Discord").actions(Action.command("/discord"), Action(Actions.CLOSE))
+                    Button("Скопировать ссылку").actions(Action.command("/bot"), Action(Actions.CLOSE)),
+                    Button("Закрыть").actions(Action(Actions.CLOSE))
                 )
             )
         )

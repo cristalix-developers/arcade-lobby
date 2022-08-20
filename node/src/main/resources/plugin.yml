@@ -40,9 +40,9 @@ commands:
   pers:
     description: Дает вам персу
     usage: /<pers> <player> <uuid>
-  discord:
-    description: Показывает вам ссылку на дискорд в чат
-    usage: /<discord>
+  bot:
+    description: Показывает вам ссылку на репорт-бота в чат
+    usage: /<bot>
   bpgive:
     description: Выдать баттлпасс игроку
     usage: /<bpgive> <exp/advanced> <nick>
