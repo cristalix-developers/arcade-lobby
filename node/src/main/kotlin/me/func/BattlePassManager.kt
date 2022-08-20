@@ -469,7 +469,7 @@ object BattlePassManager {
         }
 
         facade.tags.add("Выполняйте квесты - получайте призы!")
-        facade.tags.add("BattlePass завершится в 01.09.2022")
+        facade.tags.add("BattlePass завершится 01.12.2022")
         questStatusUpdater = Function<Player, List<String>> { player ->
             BattlePassUtil.getQuestLore(player)
         }
